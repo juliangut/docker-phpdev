@@ -10,6 +10,8 @@ RUN apk add --no-cache --virtual .build-deps \
     libpng-dev \
     libjpeg-turbo-dev
 
+ENV XDEBUG_VERSION 2.4.1
+
 RUN docker-php-ext-configure \
     gd \
       --enable-gd-native-ttf \
@@ -21,7 +23,7 @@ RUN docker-php-ext-configure \
     bcmath \
     opcache \
   && pecl install \
-    xdebug \
+    xdebug-$XDEBUG_VERSION \
   && docker-php-ext-enable \
     xdebug
 
