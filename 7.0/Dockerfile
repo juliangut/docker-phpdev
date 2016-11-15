@@ -39,6 +39,8 @@ RUN php -r "copy('https://getcomposer.org/installer', '/tmp/composer-setup.php')
 ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV COMPOSER_DISABLE_XDEBUG_WARN 1
 
+ENV PATH /root/.composer/vendor/bin:$PATH
+
 VOLUME ["/app"]
 WORKDIR /app
 

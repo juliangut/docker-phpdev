@@ -106,11 +106,21 @@ docker exec -it [container_id] /bin/bash
 
 ## Extend container
 
+Create your own Dockerfile extending from `juliangut/phpdev`
+
 ```
-# Dockerfile
 FROM juliangut/phpdev:latest
 
+RUN docker-php-ext-install \
+    pdo_mysql \
+  && pecl install \
+    mongodb \
+    redis \
+  && docker-php-ext-enable \
+    mongodb \
+    redis \
 
+RUN composer global require phpunit/phpunit
 ```
 
 ## License
