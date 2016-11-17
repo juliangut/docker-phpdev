@@ -41,7 +41,9 @@ ENV COMPOSER_DISABLE_XDEBUG_WARN 1
 
 ENV PATH /root/.composer/vendor/bin:$PATH
 
-VOLUME ["/app"]
+RUN mkdir -p /var/log/php
+
+VOLUME ["/app", "/var/log/php"]
 WORKDIR /app
 
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh

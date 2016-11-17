@@ -27,71 +27,76 @@ Bundled with:
 
 #### XDEBUG_REMOTE_AUTOSTART
 
-_Defaults to "On"_
-
 Auto start remote debugging.
+
+_Defaults to `0`_
 
 #### XDEBUG_REMOTE_CONNECT_BACK
 
-_Defaults to "Off"_
-
 Auto connect with requesting server.
+
+_Defaults to `0`_
 
 #### XDEBUG_REMOTE_PORT
 
-_Defaults to 9000_
-
 Remote server port to connect to, IDE should be listening on this port.
+
+_Defaults to `9000`_
 
 #### XDEBUG_REMOTE_HOST
 
-_Defaults to 127.0.0.1_
+Remote server (host) IP to connect to. Not used if `XDEBUG_REMOTE_CONNECT_BACK` is activated.
 
-Remote server IP to connect to. Not used if `XDEBUG_REMOTE_CONNECT_BACK` is activated.
+_Defaults to auto discovered `host's ip`_
 
 #### XDEBUG_IDE_KEY
 
-_Defaults to PHPSTORM_
+Fixed remote session identifier.
 
-Remote session identifier.
+_Not set by default_
 
 ## Volumes
 
 #### /app
 
-`/app` volume is the default working directory. You should mount your project root path in this volume. 
+`/app` volume is the default working directory. You should mount your project root path in this volume.
 
-## Getting image
+#### /var/log/php
+
+Logging volume for PHP error log and xDebug's log, trace and profile files.
+
+## Usage
+
+### Getting the image
 
 ```bash
 docker pull juliangut/phpdev:latest
 ```
 
-## Running a container
+### Running a container
 
 ```bash
 docker run -it -v $(pwd):/app juliangut/phpdev:latest
 ```
 
-### Running built-in server in a container
-
-Access running server on `http://localhost:9000`
+#### Running built-in server in a container
 
 ```bash
-docker run -d -p 9000:9000 -v $(pwd):/app juliangut/phpdev:latest php -S 0.0.0.0:9000
+docker run -d -p 9000:9000 -v $(pwd):/app juliangut/phpdev:latest php -S 0.0.0.0:9000 -t /app/public
 ```
 
-#### With Docker Compose
+_Access running server on `http://localhost:9000`_
+
+##### With Docker Compose
  
 ```yaml
-# docker-compose.yml
 app:
-    image: juliangut/phpdev:latest
-    ports:
-        - "9000:9000"
-    volumes:
-        - .:/app
-    command: "php -S 0.0.0.0:9000"
+  image: juliangut/phpdev:latest
+  ports:
+    - "9000:9000"
+  volumes:
+    - .:/app
+  command: "php -S 0.0.0.0:9000"
 ```
 
 ```bash
@@ -104,9 +109,17 @@ docker-compose up
 docker exec -it [container_id] /bin/bash
 ```
 
-## Extend container
+### Starting xDebug session
 
-Create your own Dockerfile extending from `juliangut/phpdev`
+It is **not** recommended to have a fixed remote session identifier and an auto-started remote session using "XDEBUG_IDE_KEY" and "XDEBUG_REMOTE_AUTOSTART".
+
+The preferred way of starting a remote debug session is by setting remote session identifier dynamically by one of the following means
+
+* On browser by adding "XDEBUG_SESSION" cookie with the session identifier as its value. This is the preferred method. (There are browser plugins/extensions to toggle this cookie easily)
+* On HTTP request (cURL) by adding "XDEBUG_SESSION_START" parameter to the URL or as a POST parameter. eg: `http://example.local/?XDEBUG_SESSION_START=PHPSTORM`
+* On CLI by setting "idekey" value on "XDEBUG_CONFIG" environment variable. eg: `docker run  -e XDEBUG_CONFIG="idekey=PHPSTORM" -v $(pwd):/app juliangut/phpdev:latest`
+
+## Extending the image
 
 ```
 FROM juliangut/phpdev:latest
