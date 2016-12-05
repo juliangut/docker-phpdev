@@ -32,7 +32,7 @@ if [ ! -z "${XDEBUG_REMOTE_HOST}" ]; then
 fi
 
 if [ ! -z "${XDEBUG_IDE_KEY}" ]; then
-  sed -i "s/;?xdebug.idekey\s*=.*/xdebug.idekey = ${XDEBUG_IDE_KEY}/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
+  sed -i "s/;\?xdebug.idekey\s*=.*/xdebug.idekey = ${XDEBUG_IDE_KEY}/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
 fi
 
 exec "$@"
