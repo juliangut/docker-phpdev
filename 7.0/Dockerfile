@@ -10,7 +10,7 @@ RUN apk add --no-cache --virtual .build-deps \
     libpng-dev \
     libjpeg-turbo-dev
 
-ENV XDEBUG_VERSION 2.4.1
+ENV XDEBUG_VERSION 2.5.0
 
 RUN docker-php-ext-configure \
     gd \

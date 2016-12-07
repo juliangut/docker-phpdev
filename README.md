@@ -8,7 +8,7 @@ Bundled with:
 
 * XDebug enabled and configured for remote debugging
 * Global Composer installation
-* Additional installed extensions
+* Additionally installed PHP extensions
   * [Multibyte String](http://php.net/manual/en/book.mbstring.php)
   * [cURL](http://php.net/manual/en/book.curl.php)
   * [OpenSSL](http://php.net/manual/en/book.openssl.php)
@@ -20,8 +20,8 @@ Bundled with:
 ## Versions available
 
 * PHP 5.6 - (tags: 5.6, 5) - docker pull juliangut/phpdev:5.6 _([5.6/5/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/5.6/Dockerfile))_
-* PHP 7.0 - (tags: 7.0, 7, latest) - docker pull juliangut/phpdev:7.0 _([7.0/7/latest/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/7.0/Dockerfile))_
-* PHP 7.1-RC - (tags: 7.1-rc, rc) - docker pull juliangut/phpdev:7.1-rc _([7.1-rc/rc/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/7.1-rc/Dockerfile))_
+* PHP 7.0 - (tags: 7.0) - docker pull juliangut/phpdev:7.0 _([7.0/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/7.0/Dockerfile))_
+* PHP 7.1 - (tags: 7.1, 7, latest) - docker pull juliangut/phpdev:7.1 _([7.1/7/latest/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/7.1/Dockerfile))_
 
 ## Environment variables
 
@@ -103,7 +103,13 @@ app:
 docker-compose up
 ```
 
-#### Accessing the container
+#### Running composer command in a container
+
+```bash
+docker run -v $(pwd):/app juliangut/phpdev:latest composer [command]
+```
+
+#### Accessing a running container
 
 ```bash
 docker exec -it [container_id] /bin/bash

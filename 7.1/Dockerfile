@@ -1,4 +1,4 @@
-FROM php:7.1-rc-alpine
+FROM php:7.1-alpine
 
 MAINTAINER Julián Gutiérrez <juliangut@gmail.com>
 
@@ -9,6 +9,8 @@ RUN apk add --no-cache --virtual .build-deps \
     freetype-dev \
     libpng-dev \
     libjpeg-turbo-dev
+
+ENV XDEBUG_VERSION 2.5.0
 
 RUN docker-php-ext-configure \
     gd \
@@ -21,7 +23,7 @@ RUN docker-php-ext-configure \
     bcmath \
     opcache \
   && pecl install \
-    xdebug \
+    xdebug-$XDEBUG_VERSION \
   && docker-php-ext-enable \
     xdebug
 
