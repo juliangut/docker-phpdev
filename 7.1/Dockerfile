@@ -2,32 +2,36 @@ FROM php:7.1-alpine
 
 MAINTAINER Julián Gutiérrez <juliangut@gmail.com>
 
-RUN apk add --no-cache --virtual .build-deps \
+ENV XDEBUG_VERSION 2.5.0
+
+RUN set -xe \
+  && apk add --no-cache --virtual .build-deps \
     $PHPIZE_DEPS \
   && apk add --no-cache \
     bash \
     freetype-dev \
     libpng-dev \
-    libjpeg-turbo-dev
-
-ENV XDEBUG_VERSION 2.5.0
-
-RUN docker-php-ext-configure \
+    libjpeg-turbo-dev \
+  \
+  && docker-php-ext-configure \
     gd \
       --enable-gd-native-ttf \
       --with-freetype-dir=/usr/include/ \
       --with-png-dir=/usr/include/ \
       --with-jpeg-dir=/usr/include/ \
+  \
   && docker-php-ext-install \
     gd \
     bcmath \
     opcache \
+  \
   && pecl install \
     xdebug-$XDEBUG_VERSION \
+  \
   && docker-php-ext-enable \
-    xdebug
-
-RUN apk del .build-deps
+    xdebug \
+  \
+  && apk del .build-deps
 
 COPY php.ini $PHP_INI_DIR/conf.d/zz-php.ini
 COPY xdebug.ini $PHP_INI_DIR/conf.d/zz-xdebug.ini
