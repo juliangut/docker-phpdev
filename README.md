@@ -17,11 +17,14 @@ Bundled with:
   * [GD](http://php.net/manual/en/book.image.php)
   * [OPcache](http://php.net/manual/en/book.opcache.php)
 
-## Versions available
+## Available tags
 
-* PHP 5.6 - (tags: 5.6, 5) - docker pull juliangut/phpdev:5.6 _([5.6/5/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/5.6/Dockerfile))_
-* PHP 7.0 - (tags: 7.0) - docker pull juliangut/phpdev:7.0 _([7.0/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/7.0/Dockerfile))_
-* PHP 7.1 - (tags: 7.1, 7, latest) - docker pull juliangut/phpdev:7.1 _([7.1/7/latest/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/7.1/Dockerfile))_
+* `5.6`, `5` _([5.6/5/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/php/5.6/Dockerfile))_ - docker pull juliangut/phpdev:5.6
+* `7.0` _([7.0/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/php/7.0/Dockerfile))_ - docker pull juliangut/phpdev:7.0
+* `7.1`, `7`, `latest` _([7.1/7/latest/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/php/7.1/Dockerfile))_ - docker pull juliangut/phpdev:7.1
+* `5.6-fpm`, `5-fpm` _([5.6-fpm/5-fpm/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/php/5.6/Dockerfile))_ - docker pull juliangut/phpdev:5.6-fpm
+* `7.0-fpm` _([7.0-fpm/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/fpm/7.0/Dockerfile))_ - docker pull juliangut/phpdev:7.0-fpm
+* `7.1-fpm`, `7-fpm`, `fpm` _([7.1-fpm/7-fpm/fpm/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/fpm/7.1/Dockerfile))_ - docker pull juliangut/phpdev:7.1-fpm
 
 ## Environment variables
 
@@ -65,12 +68,17 @@ _Not set by default_
 
 Logging volume for PHP error log and xDebug's log, trace and profile files.
 
+#### /var/log/php-fpm
+
+Logging volume for PHP-FPM error log.
+
 ## Usage
 
 ### Getting the image
 
 ```bash
 docker pull juliangut/phpdev:latest
+docker pull juliangut/phpdev:7.0-fpm
 ```
 
 ### Running a container

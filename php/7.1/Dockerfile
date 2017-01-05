@@ -1,4 +1,4 @@
-FROM php:7.0-alpine
+FROM php:7.1-alpine
 
 MAINTAINER Julián Gutiérrez <juliangut@gmail.com>
 
@@ -49,10 +49,10 @@ ENV PATH /root/.composer/vendor/bin:$PATH
 
 RUN mkdir -p /var/log/php
 
-VOLUME ["/app", "/var/log/php"]
+VOLUME /app /var/log/php
 WORKDIR /app
 
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-ENTRYPOINT ["docker-entrypoint.sh"]
+ENTRYPOINT docker-entrypoint.sh
 
 CMD ["php", "-a"]

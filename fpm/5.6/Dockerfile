@@ -1,0 +1,62 @@
+FROM php:5.6-fpm-alpine
+
+MAINTAINER Julián Gutiérrez <juliangut@gmail.com>
+
+ENV XDEBUG_VERSION 2.5.0
+
+RUN set -xe \
+  && apk add --no-cache --virtual .build-deps \
+    $PHPIZE_DEPS \
+  && apk add --no-cache \
+    bash \
+    freetype-dev \
+    libpng-dev \
+    libjpeg-turbo-dev \
+  \
+  && docker-php-ext-configure \
+    gd \
+      --enable-gd-native-ttf \
+      --with-freetype-dir=/usr/include/ \
+      --with-png-dir=/usr/include/ \
+      --with-jpeg-dir=/usr/include/ \
+  \
+  && docker-php-ext-install \
+    gd \
+    bcmath \
+    opcache \
+  \
+  && pecl install \
+    xdebug-$XDEBUG_VERSION \
+  \
+  && docker-php-ext-enable \
+    xdebug \
+  \
+  && apk del .build-deps
+
+ENV PHP_FPM_CONF_DIR /usr/local/etc/php-fpm.d
+
+COPY php-fpm.conf $PHP_FPM_CONF_DIR/zz-php-fpm.conf
+
+COPY php.ini $PHP_INI_DIR/conf.d/zz-php.ini
+COPY xdebug.ini $PHP_INI_DIR/conf.d/zz-xdebug.ini
+
+RUN php -r "copy('https://getcomposer.org/installer', '/tmp/composer-setup.php');" \
+  && php -r "copy('https://composer.github.io/installer.sig', '/tmp/composer-setup.sig');"  \
+  && php -r "if (hash('SHA384', file_get_contents('/tmp/composer-setup.php')) !== trim(file_get_contents('/tmp/composer-setup.sig'))) { echo 'Invalid Composer installer' . PHP_EOL; exit(1); }" \
+  && php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer \
+  && rm -f /tmp/composer-setup.php
+
+ENV COMPOSER_ALLOW_SUPERUSER 1
+ENV COMPOSER_DISABLE_XDEBUG_WARN 1
+
+ENV PATH /root/.composer/vendor/bin:$PATH
+
+RUN mkdir -p /var/log/php /var/log/php-fpm
+
+VOLUME /app /var/log/php /var/log/php-fpm
+WORKDIR /app
+
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+ENTRYPOINT docker-entrypoint.sh
+
+CMD php-fpm
