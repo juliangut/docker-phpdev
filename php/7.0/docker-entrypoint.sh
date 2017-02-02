@@ -19,10 +19,6 @@ if [ ! -z "${XDEBUG_REMOTE_AUTOSTART}" ]; then
   sed -i "s/xdebug.remote_autostart\s*=.*/xdebug.remote_autostart = ${XDEBUG_REMOTE_AUTOSTART}/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
 fi
 
-if [ ! -z "${XDEBUG_REMOTE_CONNECT_BACK}" ]; then
-  sed -i "s/xdebug.remote_connect_back\s*=.*/xdebug.remote_connect_back = ${XDEBUG_REMOTE_CONNECT_BACK}/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
-fi
-
 if [ ! -z "${XDEBUG_REMOTE_PORT}" ]; then
   sed -i "s/xdebug.remote_port\s*=.*/xdebug.remote_port = ${XDEBUG_REMOTE_PORT}/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
 fi

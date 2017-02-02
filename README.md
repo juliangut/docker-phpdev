@@ -28,18 +28,6 @@ Bundled with:
 
 ## Environment variables
 
-#### XDEBUG_REMOTE_AUTOSTART
-
-Auto start remote debugging.
-
-_Defaults to `0`_
-
-#### XDEBUG_REMOTE_CONNECT_BACK
-
-Auto connect with requesting server.
-
-_Defaults to `0`_
-
 #### XDEBUG_REMOTE_PORT
 
 Remote server port to connect to, IDE should be listening on this port.
@@ -48,29 +36,31 @@ _Defaults to `9000`_
 
 #### XDEBUG_REMOTE_HOST
 
-Remote server (host) IP to connect to. Not used if `XDEBUG_REMOTE_CONNECT_BACK` is activated.
+Remote server (host) IP to connect to.
 
 _Defaults to auto discovered `host's ip`_
 
 #### XDEBUG_IDE_KEY
 
-Fixed remote session identifier.
+Fixed remote session identifier. _(Not recommended)_
 
 _Not set by default_
+
+#### XDEBUG_REMOTE_AUTOSTART
+
+Auto start remote debugging. _(Not recommended)_
+
+_Defaults to `0`_
 
 ## Volumes
 
 #### /app
 
-`/app` volume is the default working directory. You should mount your project root path in this volume.
+The default working directory. You should mount your project root path in this volume.
 
 #### /var/log/php
 
-Logging volume for PHP error log and xDebug's log, trace and profile files.
-
-#### /var/log/php-fpm
-
-Logging volume for PHP-FPM error log.
+Logging volume for PHP and PHP-FPM logs and xDebug log, profile and trace files.
 
 ## Usage
 
@@ -84,16 +74,16 @@ docker pull juliangut/phpdev:7.0-fpm
 ### Running a container
 
 ```bash
-docker run -it -v $(pwd):/app juliangut/phpdev:latest
+docker run -it -v `pwd`:/app juliangut/phpdev:latest
 ```
 
 #### Running built-in server in a container
 
 ```bash
-docker run -d -p 9000:9000 -v $(pwd):/app juliangut/phpdev:latest php -S 0.0.0.0:9000 -t /app/public
+docker run -d -p 8080:8080 -v `pwd`:/app juliangut/phpdev:latest php -S 0.0.0.0:8080 -t /app/public
 ```
 
-_Access running server on `http://localhost:9000`_
+_Access running server on `http://localhost:8080`_
 
 ##### With Docker Compose
  
@@ -101,10 +91,10 @@ _Access running server on `http://localhost:9000`_
 app:
   image: juliangut/phpdev:latest
   ports:
-    - "9000:9000"
+    - "8080:8080"
   volumes:
     - .:/app
-  command: "php -S 0.0.0.0:9000"
+  command: "php -S 0.0.0.0:8080"
 ```
 
 ```bash
@@ -114,7 +104,7 @@ docker-compose up
 #### Running composer command in a container
 
 ```bash
-docker run -v $(pwd):/app juliangut/phpdev:latest composer [command]
+docker run -v `pwd`:/app juliangut/phpdev:latest composer [command]
 ```
 
 #### Accessing a running container
@@ -123,17 +113,28 @@ docker run -v $(pwd):/app juliangut/phpdev:latest composer [command]
 docker exec -it [container_id] /bin/bash
 ```
 
-### Starting xDebug session
+### Starting an xDebug session
 
 It is **not** recommended to have a fixed remote session identifier and an auto-started remote session using "XDEBUG_IDE_KEY" and "XDEBUG_REMOTE_AUTOSTART".
 
 The preferred way of starting a remote debug session is by setting remote session identifier dynamically by one of the following means
 
-* On browser by adding "XDEBUG_SESSION" cookie with the session identifier as its value. This is the preferred method. (There are browser plugins/extensions to toggle this cookie easily)
-* On HTTP request (cURL) by adding "XDEBUG_SESSION_START" parameter to the URL or as a POST parameter. eg: `http://example.local/?XDEBUG_SESSION_START=PHPSTORM`
-* On CLI by setting "idekey" value on "XDEBUG_CONFIG" environment variable. eg: `docker run  -e XDEBUG_CONFIG="idekey=PHPSTORM" -v $(pwd):/app juliangut/phpdev:latest`
+* On browser by setting "XDEBUG_SESSION" cookie with the session identifier as its value.
+* On HTTP request (cURL) by adding "XDEBUG_SESSION_START" parameter to the URI or as a POST parameter. eg: `curl -X POST -F "XDEBUG_SESSION_START=PHPSTORM" http://example.local`
+
+##### xDebug profiler
+
+To activate the profiler set "XDEBUG_PROFILE" cookie. Profile `cachegrind.out.*` files will be saved into `/var/log/php` directory
+
+##### xDebug trace
+
+To activate the trace set "XDEBUG_TRACE" cookie. Trace files will be saved into `/var/log/php` directory
+
+> There are [browser plugins/extensions](https://xdebug.org/docs/remote#starting) to toggle this cookies easily.
 
 ## Extending the image
+
+The image comes with just the minimum PHP extensions, you most probably will need more.
 
 ```
 FROM juliangut/phpdev:latest
