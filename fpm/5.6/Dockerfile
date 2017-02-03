@@ -57,6 +57,6 @@ VOLUME /app /var/log/php
 WORKDIR /app
 
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-ENTRYPOINT docker-entrypoint.sh
+ENTRYPOINT ["docker-entrypoint.sh"]
 
 CMD ["php-fpm"]
