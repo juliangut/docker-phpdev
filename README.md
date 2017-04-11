@@ -94,7 +94,7 @@ app:
     - "8080:8080"
   volumes:
     - .:/app
-  command: "php -S 0.0.0.0:8080"
+  command: "php -S 0.0.0.0:8080 -t /app/public"
 ```
 
 ```bash
@@ -113,7 +113,7 @@ docker run -v `pwd`:/app juliangut/phpdev:latest composer [command]
 docker exec -it [container_id] /bin/bash
 ```
 
-### Starting an xDebug session
+### Using xDebug
 
 It is **not** recommended to have a fixed remote session identifier and an auto-started remote session using "XDEBUG_IDE_KEY" and "XDEBUG_REMOTE_AUTOSTART".
 
@@ -131,6 +131,54 @@ To activate the profiler set "XDEBUG_PROFILE" cookie. Profile `cachegrind.out.*`
 To activate the trace set "XDEBUG_TRACE" cookie. Trace files will be saved into `/var/log/php` directory
 
 > There are [browser plugins/extensions](https://xdebug.org/docs/remote#starting) to toggle this cookies easily.
+
+#### Debugging with PHPStorm
+
+##### Review xDebug configuration
+
+![xDebug configuration](img_xdebug_config.jpg)
+
+* Port must be the same previously defined in `XDEBUG_REMOTE_PORT`
+
+##### Create a server
+
+![server configuration](img_server_config.jpg)
+
+* Name will be used later, so make it relevant
+* Host and port must be the same set in built-in server
+* Map your project root to container location (/app)
+
+##### Start listening for xDebug
+
+Click the phone icon to start listening
+
+![start listening](img_debug_listen.jpg)
+
+##### Start the container
+
+Setting `PHP_IDE_CONFIG` environment variable to the server name you defined earlier
+
+```bash
+docker run -d -p 8080:8080 -v `pwd`:/app -e PHP_IDE_CONFIG="severName=Test" juliangut/phpdev:latest php -S 0.0.0.0:8080 -t /app/public
+```
+
+##### Using Docker Compose
+
+```yaml
+app:
+  image: juliangut/phpdev:latest
+  ports:
+    - "8080:8080"
+  environemnt:
+    - PHP_IDE_CONFIG: "severName=Test"
+  volumes:
+    - .:/app
+  command: "php -S 0.0.0.0:8080 -t /app/public"
+```
+
+```bash
+docker-compose up
+```
 
 ## Extending the image
 
