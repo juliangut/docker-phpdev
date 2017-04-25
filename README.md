@@ -24,33 +24,46 @@ Bundled with:
 * `7.1`, `7`, `latest` _([7.1/7/latest/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/php/7.1/Dockerfile))_ - docker pull juliangut/phpdev:7.1
 * `5.6-fpm`, `5-fpm` _([5.6-fpm/5-fpm/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/php/5.6/Dockerfile))_ - docker pull juliangut/phpdev:5.6-fpm
 * `7.0-fpm` _([7.0-fpm/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/fpm/7.0/Dockerfile))_ - docker pull juliangut/phpdev:7.0-fpm
-* `7.1-fpm`, `7-fpm`, `fpm` _([7.1-fpm/7-fpm/fpm/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/fpm/7.1/Dockerfile))_ - docker pull juliangut/phpdev:7.1-fpm
+* `7.1-fpm`, `7-fpm`, `fpm-latest` _([7.1-fpm/7-fpm/fpm/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/fpm/7.1/Dockerfile))_ - docker pull juliangut/phpdev:7.1-fpm
 
 ## Environment variables
 
-#### XDEBUG_REMOTE_PORT
-
-Remote server port to connect to, IDE should be listening on this port.
-
-_Defaults to `9000`_
-
 #### XDEBUG_REMOTE_HOST
 
-Remote server (host) IP to connect to.
+* Type: string
+* Default: auto discovered `host's ip`
 
-_Defaults to auto discovered `host's ip`_
+Remote server (host) IP to connect to
 
-#### XDEBUG_IDE_KEY
+#### XDEBUG_REMOTE_PORT
 
-Fixed remote session identifier. _(Not recommended)_
+* Type: integer
+* Default: `9000`
 
-_Not set by default_
+Remote server port to connect to, IDE should be listening on this port
 
 #### XDEBUG_REMOTE_AUTOSTART
 
-Auto start remote debugging. _(Not recommended)_
+* Type: integer
+* Default: `0`
+* _Not recommended_
 
-_Defaults to `0`_
+Auto start remote debugging.
+
+#### XDEBUG_IDE_KEY
+
+* Type: string
+* Default: not set
+* _Not recommended_
+
+Fixed remote session identifier.
+
+#### XDEBUG_FILE_LINK_FORMAT
+
+* Type: string
+* Default: not set
+
+Protocol format to integrate IDEs with stack trace file links. You can provide your custom format or use one of the supported formats: `phpstorm`, `idea`, `sublime`, `textmate`, `emacs` or `macvim`
 
 ## Volumes
 
@@ -68,7 +81,7 @@ Logging volume for PHP and PHP-FPM logs and xDebug log, profile and trace files.
 
 ```bash
 docker pull juliangut/phpdev:latest
-docker pull juliangut/phpdev:7.0-fpm
+docker pull juliangut/phpdev:fpm-latest
 ```
 
 ### Running a container
@@ -144,11 +157,11 @@ To activate the trace set "XDEBUG_TRACE" cookie. Trace files will be saved into 
 
 ![server configuration](img_server_config.jpg)
 
-* Name will be used later, so make it relevant
+* Server name will be used later so make it relevant
 * Host and port must be the same set in built-in server
 * Map your project root to container location (/app)
 
-##### Start listening for xDebug
+##### Start listening for xDebug connections
 
 Click the phone icon to start listening
 
@@ -159,7 +172,7 @@ Click the phone icon to start listening
 Setting `PHP_IDE_CONFIG` environment variable to the server name you defined earlier
 
 ```bash
-docker run -d -p 8080:8080 -v `pwd`:/app -e PHP_IDE_CONFIG="severName=Test" juliangut/phpdev:latest php -S 0.0.0.0:8080 -t /app/public
+docker run -d -p 8080:8080 -e PHP_IDE_CONFIG="severName=Test" -e XDEBUG_FILE_LINK_FORMAT=phpstorm -v `pwd`:/app juliangut/phpdev:latest php -S 0.0.0.0:8080 -t /app/public
 ```
 
 ##### Using Docker Compose
@@ -171,6 +184,7 @@ app:
     - "8080:8080"
   environemnt:
     - PHP_IDE_CONFIG: "severName=Test"
+    - XDEBUG_FILE_LINK_FORMAT: phpstorm
   volumes:
     - .:/app
   command: "php -S 0.0.0.0:8080 -t /app/public"
