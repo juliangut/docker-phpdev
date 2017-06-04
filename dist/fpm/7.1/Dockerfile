@@ -1,8 +1,6 @@
-FROM php:7.0-fpm-alpine
+FROM php:7.1-fpm-alpine
 
 MAINTAINER Julián Gutiérrez <juliangut@gmail.com>
-
-ENV XDEBUG_VERSION 2.5.0
 
 RUN set -xe \
   && apk add --no-cache --virtual .build-deps \
@@ -26,7 +24,7 @@ RUN set -xe \
     opcache \
   \
   && pecl install \
-    xdebug-$XDEBUG_VERSION \
+    xdebug-2.5.4 \
   \
   && docker-php-ext-enable \
     xdebug \
@@ -57,6 +55,8 @@ VOLUME /app /var/log/php
 WORKDIR /app
 
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 CMD ["php-fpm"]

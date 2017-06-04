@@ -4,7 +4,7 @@ set -e
 
 # if command starts with an option, prepend php
 if [ "${1:0:1}" = '-' ]; then
-  set -- php-fpm "$@"
+  set -- php "$@"
 fi
 
 if [ ! -f /var/log/php/xdebug.log ]; then
@@ -31,7 +31,7 @@ if [ ! -z "${XDEBUG_IDE_KEY}" ]; then
   sed -i "s/;\?xdebug.idekey\s*=.*/xdebug.idekey = ${XDEBUG_IDE_KEY}/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
 fi
 
-if [ ! -z "${XDEBUG_FILE_LINK_FORMAT}" ]; then
+if [ ! -z "${XDEBUG_FILE_LINK}" ]; then
   case "${XDEBUG_FILE_LINK_FORMAT}" in
       "phpstorm")
       FORMAT="phpstorm://open?file=%f&line=%l"

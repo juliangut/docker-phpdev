@@ -4,7 +4,7 @@ set -e
 
 # if command starts with an option, prepend php
 if [ "${1:0:1}" = '-' ]; then
-  set -- php-fpm "$@"
+  set -- php "$@"
 fi
 
 if [ ! -f /var/log/php/xdebug.log ]; then

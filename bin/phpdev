@@ -1,0 +1,19 @@
+#!/usr/bin/env php
+<?php
+
+error_reporting(-1);
+ini_set('display_errors', true);
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use Jgut\Docker\PhpDev\ScaffoldCommand;
+use Symfony\Component\Console\Application;
+
+$application = new Application('docker-phpdev');
+
+$scaffoldCommand = new ScaffoldCommand(new Twig_Environment(new \Twig_Loader_Filesystem(__DIR__ . '/../templates')));
+$application->add($scaffoldCommand);
+
+$application->setDefaultCommand($scaffoldCommand->getName());
+
+$application->run();

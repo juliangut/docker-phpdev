@@ -1,8 +1,6 @@
-FROM php:7.0-alpine
+FROM php:5.6-alpine
 
 MAINTAINER Julián Gutiérrez <juliangut@gmail.com>
-
-ENV XDEBUG_VERSION 2.5.0
 
 RUN set -xe \
   && apk add --no-cache --virtual .build-deps \
@@ -26,12 +24,13 @@ RUN set -xe \
     opcache \
   \
   && pecl install \
-    xdebug-$XDEBUG_VERSION \
+    xdebug-2.5.4 \
   \
   && docker-php-ext-enable \
     xdebug \
   \
   && apk del .build-deps
+
 
 COPY php.ini $PHP_INI_DIR/conf.d/zz-php.ini
 COPY xdebug.ini $PHP_INI_DIR/conf.d/zz-xdebug.ini
@@ -53,6 +52,8 @@ VOLUME /app /var/log/php
 WORKDIR /app
 
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 CMD ["php", "-a"]
