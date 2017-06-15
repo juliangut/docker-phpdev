@@ -4,7 +4,7 @@ LABEL description="PHP Docker image for development (based on Alpine Linux for m
   maintainer="Julián Gutiérrez (juliangut@gmail.com)" \
   name="juliangut/phpdev" \
   php_version="7.0" \
-  php_extensions="bcmath, curl, gd, mbstring, opcache, openssl, zlib" \
+  php_extensions="bcmath, curl, gd, mbstring, opcache, openssl, xdebug, zlib" \
   xdebug_version="2.5.4"
 
 RUN set -xe \

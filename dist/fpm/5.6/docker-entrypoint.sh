@@ -15,6 +15,10 @@ fi
 HOST_IP=`ip route | awk '/default/ { print $3 }'`
 sed -i "s/xdebug.remote_host\s*=.*/xdebug.remote_host = ${HOST_IP}/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
 
+if [ ! -z "${XDEBUG_DISABLE}" ] && [ "${XDEBUG_DISABLE}" -ne "0" ]; then
+  sed -i "s/zend_extension/;zend_extension/" $PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini
+fi
+
 if [ ! -z "${XDEBUG_REMOTE_HOST}" ]; then
   sed -i "s/xdebug.remote_host\s*=.*/xdebug.remote_host = ${XDEBUG_REMOTE_HOST}/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
 fi

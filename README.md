@@ -28,6 +28,13 @@ Bundled with:
 
 ## Environment variables
 
+#### XDEBUG_DISABLE
+
+* Type: int
+* Default: 0
+
+Disable xDebug by setting a non zero value
+
 #### XDEBUG_REMOTE_HOST
 
 * Type: string
