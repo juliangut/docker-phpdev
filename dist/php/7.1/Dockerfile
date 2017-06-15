@@ -29,8 +29,8 @@ RUN set -xe \
   && docker-php-ext-enable \
     xdebug \
   \
-  && apk del .build-deps
-
+  && apk del .build-deps \
+  && rm -rf /var/cache/apk/*
 
 COPY php.ini $PHP_INI_DIR/conf.d/zz-php.ini
 COPY xdebug.ini $PHP_INI_DIR/conf.d/zz-xdebug.ini

@@ -29,7 +29,8 @@ RUN set -xe \
   && docker-php-ext-enable \
     xdebug \
   \
-  && apk del .build-deps
+  && apk del .build-deps \
+  && rm -rf /var/cache/apk/*
 
 ENV PHP_FPM_CONF_DIR /usr/local/etc/php-fpm.d
 
