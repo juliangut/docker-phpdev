@@ -4,7 +4,12 @@ MAINTAINER Julián Gutiérrez <juliangut@gmail.com>
 
 RUN set -xe \
   && apk add --no-cache --virtual .build-deps \
+    tzdata \
     $PHPIZE_DEPS \
+  \
+  && cp /usr/share/zoneinfo/UTC /etc/localtime \
+  && echo 'UTC' > /etc/timezone \
+  \
   && apk add --no-cache \
     bash \
     freetype-dev \
