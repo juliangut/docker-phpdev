@@ -1,6 +1,11 @@
 FROM php:7.1-fpm-alpine
 
-MAINTAINER Julián Gutiérrez <juliangut@gmail.com>
+LABEL description="PHP Docker image for development (based on Alpine Linux for minimal size)" \
+  maintainer="Julián Gutiérrez (juliangut@gmail.com)" \
+  name="juliangut/phpdev" \
+  php_version="7.1" \
+  php_extensions="bcmath, curl, gd, mbstring, opcache, openssl, zlib" \
+  xdebug_version="2.5.4"
 
 RUN set -xe \
   && apk add --no-cache --virtual .build-deps \
@@ -35,7 +40,7 @@ RUN set -xe \
     xdebug \
   \
   && apk del .build-deps \
-  && rm -rf /var/cache/apk/*
+  && rm -rf /tmp/* /var/cache/apk/*
 
 ENV PHP_FPM_CONF_DIR /usr/local/etc/php-fpm.d
 

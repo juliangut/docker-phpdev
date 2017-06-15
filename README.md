@@ -123,7 +123,7 @@ docker run -v `pwd`:/app juliangut/phpdev:latest composer [command]
 #### Accessing a running container
 
 ```bash
-docker exec -it [container_id] /bin/bash
+docker exec -it [container_id] /bin/sh
 ```
 
 ### Using xDebug

@@ -48,14 +48,14 @@ class ScaffoldCommand extends Command
 
         $this->versions = [
             'php' => [
-                '5.6' => ['php_image' => 'php:5.6-alpine'],
-                '7.0' => ['php_image' => 'php:7.0-alpine'],
-                '7.1' => ['php_image' => 'php:7.1-alpine'],
+                '5.6' => ['php_version' => '5.6', 'php_image' => 'php:5.6-alpine'],
+                '7.0' => ['php_version' => '7.0', 'php_image' => 'php:7.0-alpine'],
+                '7.1' => ['php_version' => '7.1', 'php_image' => 'php:7.1-alpine'],
             ],
             'fpm' => [
-                '5.6' => ['php_image' => 'php:5.6-fpm-alpine'],
-                '7.0' => ['php_image' => 'php:7.0-fpm-alpine'],
-                '7.1' => ['php_image' => 'php:7.1-fpm-alpine'],
+                '5.6' => ['php_version' => '5.6', 'php_image' => 'php:5.6-fpm-alpine'],
+                '7.0' => ['php_version' => '7.0', 'php_image' => 'php:7.0-fpm-alpine'],
+                '7.1' => ['php_version' => '7.1', 'php_image' => 'php:7.1-fpm-alpine'],
             ],
         ];
     }
@@ -84,6 +84,7 @@ class ScaffoldCommand extends Command
     {
         $distDir = getcwd() . '/' . rtrim($input->getOption('dir'), DIRECTORY_SEPARATOR);
         $xDebugPackage = $this->findLatestXdebugPackage();
+        $xDebugVersion = explode('-', $xDebugPackage)[1];
 
         if (is_dir($distDir)) {
             $this->recursiveRemove($distDir);
@@ -99,6 +100,7 @@ class ScaffoldCommand extends Command
                 'Dockerfile',
             ],
             [
+                'xdebug_version' => $xDebugVersion,
                 'xdebug_package' => $xDebugPackage,
             ]
         );
@@ -114,6 +116,7 @@ class ScaffoldCommand extends Command
                 'Dockerfile',
             ],
             [
+                'xdebug_version' => $xDebugVersion,
                 'xdebug_package' => $xDebugPackage,
                 'use_fpm' => true,
             ]
