@@ -5,7 +5,7 @@ LABEL description="PHP Docker image for development (based on Alpine Linux for m
   name="juliangut/phpdev" \
   php_version="7.0" \
   php_extensions="bcmath, curl, gd, mbstring, opcache, openssl, xdebug, zlib" \
-  xdebug_version="2.5.4"
+  xdebug_version="2.5.5"
 
 RUN set -xe \
   && apk add --no-cache --virtual .build-deps \
@@ -34,7 +34,7 @@ RUN set -xe \
     opcache \
   \
   && pecl install \
-    xdebug-2.5.4 \
+    xdebug-2.5.5 \
   \
   && docker-php-ext-enable \
     xdebug \
@@ -50,6 +50,7 @@ RUN php -r "copy('https://getcomposer.org/installer', '/tmp/composer-setup.php')
   && php -r "if (hash('SHA384', file_get_contents('/tmp/composer-setup.php')) !== trim(file_get_contents('/tmp/composer-setup.sig'))) { echo 'Invalid Composer installer' . PHP_EOL; exit(1); }" \
   && php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer \
   && rm -f /tmp/composer-setup.php \
+  && rm -f /tmp/composer-setup.sig \
   && composer global require hirak/prestissimo
 
 ENV COMPOSER_ALLOW_SUPERUSER 1

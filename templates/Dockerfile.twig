@@ -56,6 +56,7 @@ RUN php -r "copy('https://getcomposer.org/installer', '/tmp/composer-setup.php')
   && php -r "if (hash('SHA384', file_get_contents('/tmp/composer-setup.php')) !== trim(file_get_contents('/tmp/composer-setup.sig'))) { echo 'Invalid Composer installer' . PHP_EOL; exit(1); }" \
   && php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer \
   && rm -f /tmp/composer-setup.php \
+  && rm -f /tmp/composer-setup.sig \
   && composer global require hirak/prestissimo
 
 ENV COMPOSER_ALLOW_SUPERUSER 1
