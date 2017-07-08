@@ -23,9 +23,7 @@ class BuildCommand extends Command
      *
      * @var array
      */
-    protected $phpVersions = [];
-
-    protected $xDebugVersions = [];
+    protected $versions = [];
 
     /**
      * Twig renderer.
@@ -48,7 +46,7 @@ class BuildCommand extends Command
 
         $this->twig = $twig;
 
-        $this->phpVersions = [
+        $this->versions = [
             'php' => [
                 '5.6' => ['php_version' => '5.6', 'php_image' => 'php:5.6-alpine'],
                 '7.0' => ['php_version' => '7.0', 'php_image' => 'php:7.0-alpine'],
@@ -70,8 +68,8 @@ class BuildCommand extends Command
     protected function configure()
     {
         $this->setName(static::NAME)
-            ->setDescription('Build Docker images')
-            ->addOption('dir', 'd', InputArgument::OPTIONAL, 'Distribution directory', 'dist');
+            ->setDescription('Scaffold Docker images')
+            ->addOption('dir', 'd', InputArgument::OPTIONAL, 'Dist directory', 'dist');
     }
 
     /**
@@ -84,7 +82,7 @@ class BuildCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $distDir = getcwd() . '/' . rtrim($input->getOption('dir'), DIRECTORY_SEPARATOR);
+        $distDir = getcwd() . '/' . rtrim($input->getOption('dir'), '/');
         $xDebugPackage = $this->findLatestXdebugPackage();
         $xDebugVersion = explode('-', $xDebugPackage)[1];
 
@@ -94,12 +92,12 @@ class BuildCommand extends Command
 
         $this->scaffoldImages(
             $distDir . '/php',
-            $this->phpVersions['php'],
+            $this->versions['php'],
             [
                 'php.ini',
                 'xdebug.ini',
-                'docker-entrypoint.sh',
-                'Dockerfile',
+                'php/Dockerfile',
+                'php/docker-entrypoint.sh',
             ],
             [
                 'xdebug_version' => $xDebugVersion,
@@ -109,18 +107,17 @@ class BuildCommand extends Command
 
         $this->scaffoldImages(
             $distDir . '/fpm',
-            $this->phpVersions['fpm'],
+            $this->versions['fpm'],
             [
                 'php.ini',
                 'xdebug.ini',
-                'php-fpm.conf',
-                'docker-entrypoint.sh',
-                'Dockerfile',
+                'fpm/Dockerfile',
+                'fpm/docker-entrypoint.sh',
+                'fpm/php-fpm.conf',
             ],
             [
                 'xdebug_version' => $xDebugVersion,
                 'xdebug_package' => $xDebugPackage,
-                'use_fpm' => true,
             ]
         );
 
@@ -133,24 +130,26 @@ class BuildCommand extends Command
      *
      * @param string $distDir
      * @param array  $versions
-     * @param array  $files
+     * @param array  $templateFiles
      * @param array  $defaultData
      *
      * @throws \RuntimeException
      */
-    protected function scaffoldImages(string $distDir, array $versions, array $files, array $defaultData = [])
+    protected function scaffoldImages(string $distDir, array $versions, array $templateFiles, array $defaultData = [])
     {
         foreach ($versions as $version => $data) {
             $versionDir = $distDir . '/' . $version;
 
             if (!mkdir($versionDir, 0755, true) && !is_dir($versionDir)) {
-                throw new \RuntimeException(sprintf('It was not possible to create "%s" directory', $versionDir));
+                throw new \RuntimeException(sprintf('Not possible to create "%s" directory', $versionDir));
             }
 
-            foreach ($files as $file) {
+            foreach ($templateFiles as $templateFile) {
+                $generatedFile = basename($templateFile);
+
                 file_put_contents(
-                    $versionDir . DIRECTORY_SEPARATOR . $file,
-                    $this->twig->render($file . '.twig', array_merge($defaultData, $data))
+                    $versionDir . '/' . $generatedFile,
+                    $this->twig->render($templateFile . '.twig', array_merge($defaultData, $data))
                 );
             }
         }

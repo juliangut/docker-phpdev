@@ -6,14 +6,14 @@ ini_set('display_errors', true);
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use Jgut\Docker\PhpDev\ScaffoldCommand;
+use Jgut\Docker\PhpDev\BuildCommand;
 use Symfony\Component\Console\Application;
 
 $application = new Application('docker-phpdev');
 
-$scaffoldCommand = new ScaffoldCommand(new Twig_Environment(new \Twig_Loader_Filesystem(__DIR__ . '/../templates')));
-$application->add($scaffoldCommand);
+$buildCommand = new BuildCommand(new \Twig_Environment(new \Twig_Loader_Filesystem(__DIR__ . '/../templates')));
+$application->add($buildCommand);
 
-$application->setDefaultCommand($scaffoldCommand->getName());
+$application->setDefaultCommand($buildCommand->getName());
 
 $application->run();
