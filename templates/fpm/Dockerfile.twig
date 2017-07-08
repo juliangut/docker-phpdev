@@ -1,10 +1,10 @@
 {% extends "Dockerfile.twig" %}
 
-{% block extra %}
+{% block files %}
+
 ENV PHP_FPM_CONF_DIR /usr/local/etc/php-fpm.d
 
 COPY php-fpm.conf $PHP_FPM_CONF_DIR/zz-php-fpm.conf
-
 {% endblock %}
 
 {% block command %}

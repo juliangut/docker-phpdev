@@ -40,23 +40,23 @@ RUN set -xe \
     xdebug \
   \
   && apk del .build-deps \
-  && rm -rf /tmp/* /var/cache/apk/*
-
-COPY php.ini $PHP_INI_DIR/conf.d/zz-php.ini
-COPY xdebug.ini $PHP_INI_DIR/conf.d/zz-xdebug.ini
-
-RUN php -r "copy('https://getcomposer.org/installer', '/tmp/composer-setup.php');" \
-  && php -r "copy('https://composer.github.io/installer.sig', '/tmp/composer-setup.sig');"  \
-  && php -r "if (hash('SHA384', file_get_contents('/tmp/composer-setup.php')) !== trim(file_get_contents('/tmp/composer-setup.sig'))) { echo 'Invalid Composer installer' . PHP_EOL; exit(1); }" \
-  && php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer \
-  && rm -f /tmp/composer-setup.php \
-  && rm -f /tmp/composer-setup.sig \
-  && composer global require hirak/prestissimo
+  && rm -rf /tmp/* /var/cache/apk/* \
+  \
+  php -r "copy('https://getcomposer.org/installer', '/tmp/composer-setup.php');" \
+    && php -r "copy('https://composer.github.io/installer.sig', '/tmp/composer-setup.sig');"  \
+    && php -r "if (hash('SHA384', file_get_contents('/tmp/composer-setup.php')) !== trim(file_get_contents('/tmp/composer-setup.sig'))) { echo 'Invalid Composer installer' . PHP_EOL; exit(1); }" \
+    && php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer \
+    && rm -f /tmp/composer-setup.php \
+    && rm -f /tmp/composer-setup.sig \
+    && composer global require hirak/prestissimo
 
 ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV COMPOSER_DISABLE_XDEBUG_WARN 1
 
 ENV PATH /root/.composer/vendor/bin:$PATH
+
+COPY php.ini $PHP_INI_DIR/conf.d/zz-php.ini
+COPY xdebug.ini $PHP_INI_DIR/conf.d/zz-xdebug.ini
 
 RUN mkdir -p /var/log/php
 
@@ -65,7 +65,6 @@ WORKDIR /app
 
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 CMD ["php", "-a"]
