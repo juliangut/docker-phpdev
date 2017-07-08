@@ -9,21 +9,23 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Twig_Environment;
 
 /**
- * Scaffold command.
+ * Build command.
  */
-class ScaffoldCommand extends Command
+class BuildCommand extends Command
 {
     /**
      * Command name.
      */
-    const NAME = 'scaffold';
+    const NAME = 'build';
 
     /**
      * Build versions.
      *
      * @var array
      */
-    protected $versions = [];
+    protected $phpVersions = [];
+
+    protected $xDebugVersions = [];
 
     /**
      * Twig renderer.
@@ -46,7 +48,7 @@ class ScaffoldCommand extends Command
 
         $this->twig = $twig;
 
-        $this->versions = [
+        $this->phpVersions = [
             'php' => [
                 '5.6' => ['php_version' => '5.6', 'php_image' => 'php:5.6-alpine'],
                 '7.0' => ['php_version' => '7.0', 'php_image' => 'php:7.0-alpine'],
@@ -68,8 +70,8 @@ class ScaffoldCommand extends Command
     protected function configure()
     {
         $this->setName(static::NAME)
-            ->setDescription('Scaffold Docker images')
-            ->addOption('dir', 'd', InputArgument::OPTIONAL, 'Dist directory', 'dist');
+            ->setDescription('Build Docker images')
+            ->addOption('dir', 'd', InputArgument::OPTIONAL, 'Distribution directory', 'dist');
     }
 
     /**
@@ -82,7 +84,7 @@ class ScaffoldCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $distDir = getcwd() . '/' . rtrim($input->getOption('dir'), '/');
+        $distDir = getcwd() . '/' . rtrim($input->getOption('dir'), DIRECTORY_SEPARATOR);
         $xDebugPackage = $this->findLatestXdebugPackage();
         $xDebugVersion = explode('-', $xDebugPackage)[1];
 
@@ -92,12 +94,12 @@ class ScaffoldCommand extends Command
 
         $this->scaffoldImages(
             $distDir . '/php',
-            $this->versions['php'],
+            $this->phpVersions['php'],
             [
                 'php.ini',
                 'xdebug.ini',
-                'php/docker-entrypoint.sh',
-                'php/Dockerfile',
+                'docker-entrypoint.sh',
+                'Dockerfile',
             ],
             [
                 'xdebug_version' => $xDebugVersion,
@@ -107,13 +109,13 @@ class ScaffoldCommand extends Command
 
         $this->scaffoldImages(
             $distDir . '/fpm',
-            $this->versions['fpm'],
+            $this->phpVersions['fpm'],
             [
                 'php.ini',
                 'xdebug.ini',
-                'fpm/php-fpm.conf',
-                'fpm/docker-entrypoint.sh',
-                'fpm/Dockerfile',
+                'php-fpm.conf',
+                'docker-entrypoint.sh',
+                'Dockerfile',
             ],
             [
                 'xdebug_version' => $xDebugVersion,
@@ -131,26 +133,24 @@ class ScaffoldCommand extends Command
      *
      * @param string $distDir
      * @param array  $versions
-     * @param array  $templateFiles
+     * @param array  $files
      * @param array  $defaultData
      *
      * @throws \RuntimeException
      */
-    protected function scaffoldImages(string $distDir, array $versions, array $templateFiles, array $defaultData = [])
+    protected function scaffoldImages(string $distDir, array $versions, array $files, array $defaultData = [])
     {
         foreach ($versions as $version => $data) {
             $versionDir = $distDir . '/' . $version;
 
             if (!mkdir($versionDir, 0755, true) && !is_dir($versionDir)) {
-                throw new \RuntimeException(sprintf('Not possible to create "%s" directory', $versionDir));
+                throw new \RuntimeException(sprintf('It was not possible to create "%s" directory', $versionDir));
             }
 
-            foreach ($templateFiles as $templateFile) {
-                $generatedFile = basename($templateFile);
-
+            foreach ($files as $file) {
                 file_put_contents(
-                    $versionDir . '/' . $generatedFile,
-                    $this->twig->render($templateFile . '.twig', array_merge($defaultData, $data))
+                    $versionDir . DIRECTORY_SEPARATOR . $file,
+                    $this->twig->render($file . '.twig', array_merge($defaultData, $data))
                 );
             }
         }

@@ -42,12 +42,7 @@ RUN set -xe \
   && apk del .build-deps \
   && rm -rf /tmp/* /var/cache/apk/*
 
-{% if use_fpm %}
-ENV PHP_FPM_CONF_DIR /usr/local/etc/php-fpm.d
-
-COPY php-fpm.conf $PHP_FPM_CONF_DIR/zz-php-fpm.conf
-
-{% endif %}
+{% block extra %}{% endblock %}
 COPY php.ini $PHP_INI_DIR/conf.d/zz-php.ini
 COPY xdebug.ini $PHP_INI_DIR/conf.d/zz-xdebug.ini
 
@@ -74,8 +69,4 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 
-{% if use_fpm %}
-CMD ["php-fpm"]
-{% else %}
-CMD ["php", "-a"]
-{% endif %}
+{% block command %}{% endblock %}

@@ -1,0 +1,5 @@
+{% extends "docker-entrypoint.sh.twig" %}
+
+{% block command %}
+  set -- php-fpm "$@"
+{% endblock %}

@@ -2,7 +2,7 @@
 
 set -e
 
-# if command starts with an option, prepend to command
+# if command starts with an option, prepend it to command
 if [ "${1:0:1}" = '-' ]; then
   set -- php "$@"
 fi
