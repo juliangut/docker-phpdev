@@ -1,11 +1,11 @@
-FROM {{ php_image }}
+FROM colinodell/php-7.2:fpm-alpine
 
 LABEL description="PHP Docker image for development (based on Alpine Linux for minimal size)" \
   maintainer="Julián Gutiérrez (juliangut@gmail.com)" \
   name="juliangut/phpdev" \
-  php_version="{{ php_version }}" \
+  php_version="7.2" \
   php_extensions="bcmath, curl, gd, mbstring, opcache, openssl, xdebug, zlib" \
-  xdebug_version="{% if use_xdebug %}{{ xdebug_version }}{% else %}none{% endif %}"
+  xdebug_version="none"
 
 RUN set -xe \
   && apk add --no-cache --virtual .build-deps \
@@ -33,14 +33,6 @@ RUN set -xe \
     bcmath \
     opcache \
   \
-{% if use_xdebug %}
-  && pecl install \
-    {{ xdebug_package }} \
-  \
-  && docker-php-ext-enable \
-    xdebug \
-  \
-{% endif %}
   && apk del .build-deps \
   && rm -rf /tmp/* /var/cache/apk/* \
   \
@@ -62,7 +54,9 @@ ENV COMPOSER_ALLOW_SUPERUSER=1 \
 
 COPY php.ini $PHP_INI_DIR/conf.d/zz-php.ini
 COPY xdebug.ini $PHP_INI_DIR/conf.d/zz-xdebug.ini
-{% block files %}{% endblock %}
+
+ENV PHP_FPM_CONF_DIR /usr/local/etc/php-fpm.d
+COPY php-fpm.conf $PHP_FPM_CONF_DIR/zz-php-fpm.conf
 
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
@@ -71,4 +65,4 @@ VOLUME /app /var/log/php
 WORKDIR /app
 ENTRYPOINT ["docker-entrypoint.sh"]
 
-{% block command %}{% endblock %}
+CMD ["php-fpm"]

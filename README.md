@@ -27,9 +27,11 @@ Bundled with:
 * `5.6`, `5` _([5.6/5/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/php/5.6/Dockerfile))_ - docker pull juliangut/phpdev:5.6
 * `7.0` _([7.0/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/php/7.0/Dockerfile))_ - docker pull juliangut/phpdev:7.0
 * `7.1`, `7`, `latest` _([7.1/7/latest/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/php/7.1/Dockerfile))_ - docker pull juliangut/phpdev:7.1
+* `7.2` _([7.2/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/php/7.2/Dockerfile))_ - docker pull juliangut/phpdev:7.2
 * `5.6-fpm`, `5-fpm` _([5.6-fpm/5-fpm/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/5.6/Dockerfile))_ - docker pull juliangut/phpdev:5.6-fpm
 * `7.0-fpm` _([7.0-fpm/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/7.0/Dockerfile))_ - docker pull juliangut/phpdev:7.0-fpm
 * `7.1-fpm`, `7-fpm`, `fpm-latest` _([7.1-fpm/7-fpm/fpm-latest/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/7.1/Dockerfile))_ - docker pull juliangut/phpdev:7.1-fpm
+* `7.2-fpm` _([7.2-fpm/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/7.2/Dockerfile))_ - docker pull juliangut/phpdev:7.2-fpm
 
 ## Environment variables
 

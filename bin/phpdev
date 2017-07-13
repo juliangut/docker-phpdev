@@ -6,14 +6,16 @@ ini_set('display_errors', true);
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use Jgut\Docker\PhpDev\BuildCommand;
-use Symfony\Component\Console\Application;
+$versions = json_decode(file_get_contents(dirname(__DIR__) . '/versions.json'), true);
 
-$application = new Application('docker-phpdev');
+$application = new \Symfony\Component\Console\Application('docker-phpdev');
 
-$buildCommand = new BuildCommand(new \Twig_Environment(new \Twig_Loader_Filesystem(__DIR__ . '/../templates')));
+$buildCommand = new \Jgut\Docker\PhpDev\BuildCommand(
+  new \Twig_Environment(new \Twig_Loader_Filesystem(__DIR__ . '/../templates')),
+  $versions
+);
+
 $application->add($buildCommand);
-
 $application->setDefaultCommand($buildCommand->getName());
 
 $application->run();

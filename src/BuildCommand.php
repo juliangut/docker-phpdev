@@ -22,7 +22,7 @@ class BuildCommand extends Command
      *
      * @var array
      */
-    protected $versions = [];
+    protected $versions;
 
     /**
      * Twig renderer.
@@ -34,29 +34,18 @@ class BuildCommand extends Command
     /**
      * BuildCommand constructor.
      *
-     * @param Twig_Environment $twig
+     * @param \Twig_Environment $twig
+     * @param array             $versions
      *
      * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
      * @throws \Symfony\Component\Console\Exception\LogicException
      */
-    public function __construct(\Twig_Environment $twig)
+    public function __construct(\Twig_Environment $twig, array $versions)
     {
         parent::__construct(static::NAME);
 
         $this->twig = $twig;
-
-        $this->versions = [
-            'php' => [
-                '5.6' => ['php_version' => '5.6', 'php_image' => 'php:5.6-alpine'],
-                '7.0' => ['php_version' => '7.0', 'php_image' => 'php:7.0-alpine'],
-                '7.1' => ['php_version' => '7.1', 'php_image' => 'php:7.1-alpine'],
-            ],
-            'fpm' => [
-                '5.6' => ['php_version' => '5.6', 'php_image' => 'php:5.6-fpm-alpine'],
-                '7.0' => ['php_version' => '7.0', 'php_image' => 'php:7.0-fpm-alpine'],
-                '7.1' => ['php_version' => '7.1', 'php_image' => 'php:7.1-fpm-alpine'],
-            ],
-        ];
+        $this->versions = $versions;
     }
 
     /**
