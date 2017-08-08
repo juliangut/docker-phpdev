@@ -197,8 +197,8 @@ app:
   ports:
     - "8080:8080"
   environemnt:
-    - PHP_IDE_CONFIG: "severName=Test"
-    - XDEBUG_FILE_LINK_FORMAT: phpstorm
+    PHP_IDE_CONFIG: "severName=Test"
+    XDEBUG_FILE_LINK_FORMAT: phpstorm
   volumes:
     - .:/app
   command: "php -S 0.0.0.0:8080 -t /app/public"
