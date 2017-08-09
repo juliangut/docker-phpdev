@@ -33,22 +33,22 @@ fi
 if [ ! -z "${XDEBUG_FILE_LINK_FORMAT}" ]; then
   case "${XDEBUG_FILE_LINK_FORMAT}" in
       "phpstorm")
-      FORMAT="phpstorm://open?file=%f&line=%l"
+      FORMAT="phpstorm:\/\/open?file=%f\&line=%l"
       ;;
     "idea")
-      FORMAT="idea://open?file=%f&line=%l"
+      FORMAT="idea:\/\/open?file=%f\&line=%l"
       ;;
     "sublime")
-      FORMAT="subl://open?url=file://%f&line=%l"
+      FORMAT="subl:\/\/open?url=file:\/\/%f\&line=%l"
       ;;
     "textmate")
-      FORMAT="txmt://open?url=file://%f&line=%l"
+      FORMAT="txmt:\/\/open?url=file:\/\/%f\&line=%l"
       ;;
     "emacs")
-      FORMAT="emacs://open?url=file://%f&line=%l"
+      FORMAT="emacs:\/\/open?url=file:\/\/%f\&line=%l"
       ;;
     "macvim")
-      FORMAT="mvim://open/?url=file://%f&line=%l"
+      FORMAT="mvim:\/\/open/?url=file:\/\/%f\&line=%l"
       ;;
     *)
       FORMAT="${XDEBUG_FILE_LINK_FORMAT}"

@@ -72,12 +72,16 @@ Auto start remote debugging.
 
 Fixed remote session identifier.
 
+_Note: scape the string for use in sed_
+
 #### XDEBUG_FILE_LINK_FORMAT
 
 * Type: string
 * Default: not set
 
 Protocol format to integrate IDEs with stack trace file links. You can provide your custom format or use one of the supported formats: "phpstorm", "idea", "sublime", "textmate", "emacs" or "macvim"
+
+_Note: if you use your custom format remember to scape the string for use in sed_
 
 ## Volumes
 
