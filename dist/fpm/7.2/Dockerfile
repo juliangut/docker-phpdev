@@ -1,4 +1,4 @@
-FROM colinodell/php-7.2:fpm-alpine
+FROM php:7.2-rc-fpm-alpine
 
 LABEL description="PHP Docker image for development (based on Alpine Linux for minimal size)" \
   maintainer="Julián Gutiérrez (juliangut@gmail.com)" \

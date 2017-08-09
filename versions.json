@@ -17,7 +17,7 @@
         },
         "7.2": {
             "php_version": "7.2",
-            "php_image": "colinodell/php-7.2:alpine",
+            "php_image": "php:7.2-rc-alpine",
             "use_xdebug": false
         }
     },
@@ -39,7 +39,7 @@
         },
         "7.2": {
             "php_version": "7.2",
-            "php_image": "colinodell/php-7.2:fpm-alpine",
+            "php_image": "php:7.2-rc-fpm-alpine",
             "use_xdebug": false
         }
     }

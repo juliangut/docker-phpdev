@@ -30,7 +30,7 @@ if [ ! -z "${XDEBUG_IDE_KEY}" ]; then
   sed -i "s/;\?xdebug.idekey\s*=.*/xdebug.idekey = ${XDEBUG_IDE_KEY}/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
 fi
 
-if [ ! -z "${XDEBUG_FILE_LINK}" ]; then
+if [ ! -z "${XDEBUG_FILE_LINK_FORMAT}" ]; then
   case "${XDEBUG_FILE_LINK_FORMAT}" in
       "phpstorm")
       FORMAT="phpstorm://open?file=%f&line=%l"
@@ -51,7 +51,7 @@ if [ ! -z "${XDEBUG_FILE_LINK}" ]; then
       FORMAT="mvim://open/?url=file://%f&line=%l"
       ;;
     *)
-      FORMAT="${XDEBUG_FILE_LINK}"
+      FORMAT="${XDEBUG_FILE_LINK_FORMAT}"
       ;;
   esac
 
