@@ -72,7 +72,7 @@ Auto start remote debugging.
 
 Fixed remote session identifier.
 
-_Note: scape the string for use in sed_
+_Note: escape the string for use in sed_
 
 #### XDEBUG_FILE_LINK_FORMAT
 
@@ -81,7 +81,7 @@ _Note: scape the string for use in sed_
 
 Protocol format to integrate IDEs with stack trace file links. You can provide your custom format or use one of the supported formats: "phpstorm", "idea", "sublime", "textmate", "emacs" or "macvim"
 
-_Note: if you use your custom format remember to scape the string for use in sed_
+_Note: if you use your custom format remember to escape the string for use in sed_
 
 ## Volumes
 
@@ -146,7 +146,7 @@ docker exec -it [container_id] /bin/sh
 
 ### Using xDebug
 
-It is **not** recommended to have a fixed remote session identifier and an auto-started remote session using "XDEBUG_IDE_KEY" and "XDEBUG_REMOTE_AUTOSTART".
+It is **not recommended** to have a fixed remote session identifier and an auto-started remote session using "XDEBUG_IDE_KEY" and "XDEBUG_REMOTE_AUTOSTART" respectively.
 
 The preferred way of starting a remote debug session is by setting remote session identifier dynamically by one of the following means
 
@@ -159,9 +159,11 @@ To activate the profiler set "XDEBUG_PROFILE" cookie. Profile `cachegrind.out.*`
 
 ##### xDebug trace
 
-To activate the trace set "XDEBUG_TRACE" cookie. Trace files will be saved into `/var/log/php` directory
+To activate the trace set "XDEBUG_TRACE" cookie. Trace `*.xt` files will be saved into `/var/log/php` directory
 
-> There are [browser plugins/extensions](https://xdebug.org/docs/remote#starting) to toggle this cookies easily.
+#### Browser support
+
+There are [browser plugins/extensions](https://xdebug.org/docs/remote#starting) to toggle debug cookies easily
 
 #### Debugging with PHPStorm
 
