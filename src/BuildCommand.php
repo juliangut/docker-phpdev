@@ -82,12 +82,16 @@ class BuildCommand extends Command
             $distDir . '/php',
             $this->versions['php'],
             [
-                'php.ini',
-                'xdebug.ini',
-                'php/Dockerfile',
-                'php/docker-entrypoint.sh',
+                'php.ini.twig',
+                'xdebug.ini.twig',
+                'php/Dockerfile.twig',
+                'php/docker-entrypoint.twig',
             ],
             [
+                'build',
+            ],
+            [
+                'use_xdebug' => true,
                 'xdebug_version' => $xDebugVersion,
                 'xdebug_package' => $xDebugPackage,
             ]
@@ -97,13 +101,17 @@ class BuildCommand extends Command
             $distDir . '/fpm',
             $this->versions['fpm'],
             [
-                'php.ini',
-                'xdebug.ini',
-                'fpm/Dockerfile',
-                'fpm/docker-entrypoint.sh',
-                'fpm/php-fpm.conf',
+                'php.ini.twig',
+                'xdebug.ini.twig',
+                'fpm/Dockerfile.twig',
+                'fpm/docker-entrypoint.twig',
+                'fpm/php-fpm.conf.twig',
             ],
             [
+                'build',
+            ],
+            [
+                'use_xdebug' => true,
                 'xdebug_version' => $xDebugVersion,
                 'xdebug_package' => $xDebugPackage,
             ]
@@ -119,26 +127,45 @@ class BuildCommand extends Command
      * @param string $distDir
      * @param array  $versions
      * @param array  $templateFiles
+     * @param array  $hookFiles
      * @param array  $defaultData
      *
      * @throws \RuntimeException
      */
-    protected function scaffoldImages(string $distDir, array $versions, array $templateFiles, array $defaultData = [])
-    {
+    protected function scaffoldImages(
+        string $distDir,
+        array $versions,
+        array $templateFiles,
+        array $hookFiles,
+        array $defaultData = []
+    ) {
         foreach ($versions as $version => $data) {
             $versionDir = $distDir . '/' . $version;
-
             if (!mkdir($versionDir, 0755, true) && !is_dir($versionDir)) {
                 throw new \RuntimeException(sprintf('Not possible to create "%s" directory', $versionDir));
             }
 
-            foreach ($templateFiles as $templateFile) {
-                $generatedFile = basename($templateFile);
+            foreach ($templateFiles as $sourceFile) {
+                $destinationFile = $versionDir . '/' . basename($sourceFile);
+                if (substr($destinationFile, -5) === '.twig') {
+                    $destinationFile = substr($destinationFile, 0, -5);
+                }
 
-                file_put_contents(
-                    $versionDir . '/' . $generatedFile,
-                    $this->twig->render($templateFile . '.twig', array_merge($defaultData, $data))
-                );
+                file_put_contents($destinationFile, $this->twig->render($sourceFile, array_merge($defaultData, $data)));
+            }
+
+            $hooksDir = $versionDir . '/hooks';
+            if (!mkdir($hooksDir, 0755, true) && !is_dir($hooksDir)) {
+                throw new \RuntimeException(sprintf('Not possible to create "%s" directory', $hooksDir));
+            }
+
+            foreach ($hookFiles as $sourceFile) {
+                $destinationFile = $hooksDir . '/' . basename($sourceFile);
+                if (substr($destinationFile, -5) === '.twig') {
+                    $destinationFile = substr($destinationFile, 0, -5);
+                }
+
+                file_put_contents($destinationFile, $this->twig->render($sourceFile, array_merge($defaultData, $data)));
             }
         }
     }

@@ -1,11 +1,18 @@
 FROM php:7.2-rc-fpm-alpine
 
-LABEL description="PHP Docker image for development (based on Alpine Linux for minimal size)" \
-  maintainer="Julián Gutiérrez (juliangut@gmail.com)" \
-  name="juliangut/phpdev" \
-  php_version="7.2" \
-  php_extensions="bcmath, curl, gd, mbstring, opcache, openssl, xdebug, zlib" \
-  xdebug_version="none"
+ARG BUILD_DATE
+ARG VCS_REF
+
+LABEL org.label-schema.schema-version="1.0.0-rc1" \
+  org.label-schema.name="juliangut/phpdev" \
+  org.label-schema.description="PHP Docker image for development (based on Alpine Linux for minimal size)" \
+  org.label-schema.vcs-url="https://github.com/juliangut/docker-phpdev" \
+  org.label-schema.vcs-ref="$VCS_REF" \
+  org.label-schema.build-date="$BUILD_DATE" \
+  com.juliangut.maintainer="Julián Gutiérrez (juliangut@gmail.com)" \
+  com.juliangut.php.version="7.2" \
+  com.juliangut.php.extensions="bcmath, curl, gd, mbstring, opcache, openssl, xdebug, zlib" \
+  com.juliangut.xdebug.version="none"
 
 RUN set -xe \
   && apk add --no-cache --virtual .build-deps \
@@ -58,11 +65,11 @@ COPY xdebug.ini $PHP_INI_DIR/conf.d/zz-xdebug.ini
 ENV PHP_FPM_CONF_DIR /usr/local/etc/php-fpm.d
 COPY php-fpm.conf $PHP_FPM_CONF_DIR/zz-php-fpm.conf
 
-COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+COPY docker-entrypoint /usr/local/bin/docker-entrypoint
+RUN chmod +x /usr/local/bin/docker-entrypoint
 
 VOLUME /app /var/log/php
 WORKDIR /app
-ENTRYPOINT ["docker-entrypoint.sh"]
+ENTRYPOINT ["docker-entrypoint"]
 
 CMD ["php-fpm"]
