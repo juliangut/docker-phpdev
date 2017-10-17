@@ -105,7 +105,7 @@ docker pull juliangut/phpdev:fpm-latest
 ### Running a container
 
 ```bash
-docker run -it -v `pwd`:/app juliangut/phpdev:latest
+docker run -it --rm -v `pwd`:/app juliangut/phpdev:latest
 ```
 
 #### Running built-in server in a container
@@ -122,7 +122,7 @@ _Access running server on `http://localhost:8080`_
 app:
   image: juliangut/phpdev:latest
   ports:
-    - "8080:8080"
+    - 8080:8080
   volumes:
     - .:/app
   command: "php -S 0.0.0.0:8080 -t /app/public"
@@ -135,7 +135,7 @@ docker-compose up
 #### Running composer command in a container
 
 ```bash
-docker run -v `pwd`:/app juliangut/phpdev:latest composer [command]
+docker run --rm -v `pwd`:/app juliangut/phpdev:latest composer [command]
 ```
 
 #### Accessing a running container
@@ -172,6 +172,7 @@ There are [browser plugins/extensions](https://xdebug.org/docs/remote#starting) 
 ![xDebug configuration](img_xdebug_config.jpg)
 
 * Port must be the same previously defined in `XDEBUG_REMOTE_PORT`
+* If you're using PHP_FPM image version remember port 9000 has already been taken by PHP-FPM itself 
 
 ##### Create a server
 
@@ -183,7 +184,7 @@ There are [browser plugins/extensions](https://xdebug.org/docs/remote#starting) 
 
 ##### Start listening for xDebug connections
 
-Click the phone icon to start listening
+Click the phone icon to start listening for incoming connections
 
 ![start listening](img_debug_listen.jpg)
 
@@ -192,7 +193,7 @@ Click the phone icon to start listening
 Setting `PHP_IDE_CONFIG` environment variable to the server name you defined earlier
 
 ```bash
-docker run -d -p 8080:8080 -e PHP_IDE_CONFIG="severName=Test" -e XDEBUG_FILE_LINK_FORMAT=phpstorm -v `pwd`:/app juliangut/phpdev:latest php -S 0.0.0.0:8080 -t /app/public
+docker run -d -p 8080:8080 -e PHP_IDE_CONFIG="serverName=Test" -e XDEBUG_FILE_LINK_FORMAT=phpstorm -v `pwd`:/app juliangut/phpdev:latest php -S 0.0.0.0:8080 -t /app/public
 ```
 
 ##### Using Docker Compose
@@ -201,9 +202,9 @@ docker run -d -p 8080:8080 -e PHP_IDE_CONFIG="severName=Test" -e XDEBUG_FILE_LIN
 app:
   image: juliangut/phpdev:latest
   ports:
-    - "8080:8080"
+    - 8080:8080
   environemnt:
-    PHP_IDE_CONFIG: "severName=Test"
+    PHP_IDE_CONFIG: serverName=Test
     XDEBUG_FILE_LINK_FORMAT: phpstorm
   volumes:
     - .:/app
