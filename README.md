@@ -172,19 +172,19 @@ There are [browser plugins/extensions](https://xdebug.org/docs/remote#starting) 
 ![xDebug configuration](img_xdebug_config.jpg)
 
 * Port must be the same previously defined in `XDEBUG_REMOTE_PORT`
-* If you're using PHP_FPM image version remember port 9000 has already been taken by PHP-FPM itself 
+* If you're using PHP_FPM image version remember port 9000 has already been taken by PHP-FPM itself, use 9001 or any other you please instead
 
 ##### Create a server
 
 ![server configuration](img_server_config.jpg)
 
-* Server name will be used later so make it relevant
-* Host and port must be the same set in built-in server
+* Server name will be used later so make it distinctive
+* Host and port must be the same set in built-in server. You could use 0.0.0.0 to allow any host
 * Map your project root to container location (/app)
 
 ##### Start listening for xDebug connections
 
-Click the phone icon to start listening for incoming connections
+Click the phone icon to start listening for incoming connections and create a breakpoint
 
 ![start listening](img_debug_listen.jpg)
 
@@ -213,6 +213,35 @@ app:
 
 ```bash
 docker-compose up
+```
+
+##### Firewalld & NetworkManager notice
+
+By default firewalld blocks all outgoing connections from docker containers, such as xDebug connection to port 9000 on host. In order to allow docker containers to connect with xDebug server you need to include `docker0` interface into a "trusted" zone both on NetworkManager and firewalld:
+
+Assign docker0 interface to "trusted" zone and stop NetworkManager service
+```
+nmcli connection modify docker0 connection.zone trusted
+systemctl stop NetworkManager.service
+```
+
+Assign "trusted" zone for docker0 interface on firewalld. Additionally 172.0.0.0/8 source is added to cover any created docker network
+
+```
+firewall-cmd --permanent --zone=trusted --change-interface=docker0
+firewall-cmd --permanent --zone=trusted --add-source=172.0.0.0/8
+firewall-cmd --reload
+```
+
+Restart NetworkManager and reassign docker0 interface just in case
+```
+systemctl start NetworkManager.service
+nmcli connection modify docker0 connection.zone trusted
+```
+
+Restart docker service so it recreates its iptables
+```
+systemctl restart docker.service
 ```
 
 ## Extending the image
