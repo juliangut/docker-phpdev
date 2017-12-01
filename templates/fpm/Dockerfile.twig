@@ -1,5 +1,18 @@
 {% extends "Dockerfile.twig" %}
 
+{% block repositories %}
+  && echo http://dl-3.alpinelinux.org/alpine/edge/community/ >> /etc/apk/repositories \
+{% endblock %}
+
+{% block install %}
+    shadow \
+{% endblock %}
+
+{% block user %}
+  && addgroup -g 1551 php-fpm \
+  && adduser -u 1551 -H -G php-fpm -s /sbin/nologin -D php-fpm \
+{% endblock %}
+
 {% block files %}
 
 ENV PHP_FPM_CONF_DIR /usr/local/etc/php-fpm.d

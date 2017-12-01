@@ -68,11 +68,11 @@ ENV COMPOSER_ALLOW_SUPERUSER=1 \
 COPY php.ini $PHP_INI_DIR/conf.d/zz-php.ini
 COPY xdebug.ini $PHP_INI_DIR/conf.d/zz-xdebug.ini
 
-COPY docker-entrypoint /usr/local/bin/docker-entrypoint
-RUN chmod +x /usr/local/bin/docker-entrypoint
-
 VOLUME /app /var/log/php
 WORKDIR /app
+
+COPY docker-entrypoint /usr/local/bin/docker-entrypoint
+RUN chmod +x /usr/local/bin/docker-entrypoint
 ENTRYPOINT ["docker-entrypoint"]
 
 CMD ["php", "-a"]

@@ -26,6 +26,12 @@ log_level = debug
 ; Pool Definitions ;
 ;;;;;;;;;;;;;;;;;;;;
 
+; Unix user/group of processes
+; Note: The user is mandatory. If the group is not set, the default user's group
+;       will be used.
+user = php-fpm
+group = php-fpm
+
 ; The address on which to accept FastCGI requests.
 ; Valid syntaxes are:
 ;   'ip.add.re.ss:port'    - to listen on a TCP socket to a specific IPv4 address on

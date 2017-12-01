@@ -5,7 +5,7 @@
 
 # PHP development Docker image
 
-Yet another PHP Docker image for development (based on Alpine Linux for minimal size)
+Yet another PHP/PHP-FPM Docker image for development (based on Alpine Linux for minimal size)
 
 > Focused on library/package development
 
@@ -34,6 +34,24 @@ Bundled with:
 * `7.2-fpm` _([7.2-fpm/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/7.2/Dockerfile))_ - docker pull juliangut/phpdev:7.2-fpm
 
 ## Environment variables
+
+#### USER_UID
+
+* **Only for PHP-FPM versions**
+* Type: int
+* Default: not set
+* _Recommended_
+
+In order to avoid file access problems it is recommended to set this variable to your user's UID. You can find your UID by running `id`
+
+#### USER_GID
+
+* **Only for PHP-FPM versions**
+* Type: int
+* Default: not set
+* _Recommended_
+
+In order to avoid file access problems it is recommended to set this variable to your user's GID. You can find your GID by running `id`
 
 #### XDEBUG_DISABLE
 

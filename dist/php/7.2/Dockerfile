@@ -12,7 +12,6 @@ LABEL org.label-schema.schema-version="1.0.0-rc1" \
   com.juliangut.maintainer="Julián Gutiérrez (juliangut@gmail.com)" \
   com.juliangut.php.version="7.2" \
   com.juliangut.php.extensions="bcmath, curl, gd, mbstring, opcache, openssl, xdebug, zlib" \
-  com.juliangut.xdebug.version="none"
 
 RUN set -xe \
   && apk add --no-cache --virtual .build-deps \
@@ -62,11 +61,11 @@ ENV COMPOSER_ALLOW_SUPERUSER=1 \
 COPY php.ini $PHP_INI_DIR/conf.d/zz-php.ini
 COPY xdebug.ini $PHP_INI_DIR/conf.d/zz-xdebug.ini
 
-COPY docker-entrypoint /usr/local/bin/docker-entrypoint
-RUN chmod +x /usr/local/bin/docker-entrypoint
-
 VOLUME /app /var/log/php
 WORKDIR /app
+
+COPY docker-entrypoint /usr/local/bin/docker-entrypoint
+RUN chmod +x /usr/local/bin/docker-entrypoint
 ENTRYPOINT ["docker-entrypoint"]
 
 CMD ["php", "-a"]

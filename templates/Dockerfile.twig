@@ -12,9 +12,11 @@ LABEL org.label-schema.schema-version="1.0.0-rc1" \
   com.juliangut.maintainer="Julián Gutiérrez (juliangut@gmail.com)" \
   com.juliangut.php.version="{{ php_version }}" \
   com.juliangut.php.extensions="bcmath, curl, gd, mbstring, opcache, openssl, xdebug, zlib" \
-  com.juliangut.xdebug.version="{% if use_xdebug %}{{ xdebug_version }}{% else %}none{% endif %}"
+{% if use_xdebug %}  com.juliangut.xdebug.version="{{ xdebug_version }}"
+{% endif %}
 
 RUN set -xe \
+{% block repositories %}{% endblock %}
   && apk add --no-cache --virtual .build-deps \
     tzdata \
     $PHPIZE_DEPS \
@@ -23,11 +25,13 @@ RUN set -xe \
   && echo 'UTC' > /etc/timezone \
   \
   && apk add --no-cache \
+{% block install %}{% endblock %}
     bash \
     freetype-dev \
     libpng-dev \
     libjpeg-turbo-dev \
   \
+{% block user %}{% endblock %}
   && docker-php-ext-configure \
     gd \
       --enable-gd-native-ttf \
@@ -71,11 +75,11 @@ COPY php.ini $PHP_INI_DIR/conf.d/zz-php.ini
 COPY xdebug.ini $PHP_INI_DIR/conf.d/zz-xdebug.ini
 {% block files %}{% endblock %}
 
-COPY docker-entrypoint /usr/local/bin/docker-entrypoint
-RUN chmod +x /usr/local/bin/docker-entrypoint
-
 VOLUME /app /var/log/php
 WORKDIR /app
+
+COPY docker-entrypoint /usr/local/bin/docker-entrypoint
+RUN chmod +x /usr/local/bin/docker-entrypoint
 ENTRYPOINT ["docker-entrypoint"]
 
 {% block command %}{% endblock %}

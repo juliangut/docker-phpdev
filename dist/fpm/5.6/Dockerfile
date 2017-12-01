@@ -15,6 +15,7 @@ LABEL org.label-schema.schema-version="1.0.0-rc1" \
   com.juliangut.xdebug.version="2.5.5"
 
 RUN set -xe \
+  && echo http://dl-3.alpinelinux.org/alpine/edge/community/ >> /etc/apk/repositories \
   && apk add --no-cache --virtual .build-deps \
     tzdata \
     $PHPIZE_DEPS \
@@ -23,11 +24,14 @@ RUN set -xe \
   && echo 'UTC' > /etc/timezone \
   \
   && apk add --no-cache \
+    shadow \
     bash \
     freetype-dev \
     libpng-dev \
     libjpeg-turbo-dev \
   \
+  && addgroup -g 1551 php-fpm \
+  && adduser -u 1551 -H -G php-fpm -s /sbin/nologin -D php-fpm \
   && docker-php-ext-configure \
     gd \
       --enable-gd-native-ttf \
@@ -71,11 +75,11 @@ COPY xdebug.ini $PHP_INI_DIR/conf.d/zz-xdebug.ini
 ENV PHP_FPM_CONF_DIR /usr/local/etc/php-fpm.d
 COPY php-fpm.conf $PHP_FPM_CONF_DIR/zz-php-fpm.conf
 
-COPY docker-entrypoint /usr/local/bin/docker-entrypoint
-RUN chmod +x /usr/local/bin/docker-entrypoint
-
 VOLUME /app /var/log/php
 WORKDIR /app
+
+COPY docker-entrypoint /usr/local/bin/docker-entrypoint
+RUN chmod +x /usr/local/bin/docker-entrypoint
 ENTRYPOINT ["docker-entrypoint"]
 
 CMD ["php-fpm"]
