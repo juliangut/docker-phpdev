@@ -11,9 +11,9 @@ LABEL org.label-schema.schema-version="1.0.0-rc1" \
   org.label-schema.build-date="$BUILD_DATE" \
   com.juliangut.maintainer="Julián Gutiérrez (juliangut@gmail.com)" \
   com.juliangut.php.version="{{ php_version }}" \
-  com.juliangut.php.extensions="bcmath, curl, gd, mbstring, opcache, openssl, xdebug, zlib" \
-{% if use_xdebug %}  com.juliangut.xdebug.version="{{ xdebug_version }}"
-{% endif %}
+  com.juliangut.php.extensions="bcmath, curl, gd, mbstring, opcache, openssl, xdebug, zlib"{% if use_xdebug %} \
+  com.juliangut.xdebug.version="{{ xdebug_version }}"{% endif %}
+
 
 RUN set -xe \
 {% block repositories %}{% endblock %}

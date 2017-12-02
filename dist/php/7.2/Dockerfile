@@ -11,7 +11,7 @@ LABEL org.label-schema.schema-version="1.0.0-rc1" \
   org.label-schema.build-date="$BUILD_DATE" \
   com.juliangut.maintainer="Julián Gutiérrez (juliangut@gmail.com)" \
   com.juliangut.php.version="7.2" \
-  com.juliangut.php.extensions="bcmath, curl, gd, mbstring, opcache, openssl, xdebug, zlib" \
+  com.juliangut.php.extensions="bcmath, curl, gd, mbstring, opcache, openssl, xdebug, zlib"
 
 RUN set -xe \
   && apk add --no-cache --virtual .build-deps \

@@ -71,8 +71,8 @@ class BuildCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $distDir = getcwd() . '/' . rtrim($input->getOption('dir'), '/');
-        $xDebugPackage = $this->findLatestXdebugPackage();
-        $xDebugVersion = explode('-', $xDebugPackage)[1];
+        $xDebugVersion = $this->findLatestXdebugVersion();
+        $xDebugPackage = 'xdebug-' . $xDebugVersion;
 
         if (is_dir($distDir)) {
             $this->recursiveRemove($distDir);
@@ -184,14 +184,22 @@ class BuildCommand extends Command
     }
 
     /**
-     * Get latest xDebug package.
+     * Get latest xDebug version.
      *
      * @return string
      */
-    private function findLatestXdebugPackage(): string
+    private function findLatestXdebugVersion(): string
     {
+        $version = null;
         $rss = simplexml_load_string(file_get_contents('https://pecl.php.net/feeds/pkg_xdebug.rss'));
 
-        return str_replace(' ', '-', $rss->item[0]->title);
+        foreach ($rss->item as $release) {
+            if (preg_match('/^xdebug\s(\d+\.\d+(\.\d+)?)$/', $release->title, $matches)) {
+                $version = $matches[1];
+                break;
+            }
+        }
+
+        return $version;
     }
 }
