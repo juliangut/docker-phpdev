@@ -46,7 +46,7 @@ RUN set -xe \
   \
 {% if use_xdebug %}
   && pecl install \
-    {{ xdebug_package }} \
+    xdebug-{{ xdebug_version }} \
   \
   && docker-php-ext-enable \
     xdebug \

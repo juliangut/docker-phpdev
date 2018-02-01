@@ -50,7 +50,8 @@
       "php": {
         "5.6": {
           "php_version": "5.6",
-          "php_image": "php:5.6-alpine"
+          "php_image": "php:5.6-alpine",
+          "xdebug_version": "2.5.5"
         },
         "7.0": {
           "php_version": "7.0",
@@ -62,14 +63,14 @@
         },
         "7.2": {
           "php_version": "7.2",
-          "php_image": "php:7.2-rc-alpine",
-          "use_xdebug": false
+          "php_image": "php:7.2-alpine"
         }
       },
       "fpm": {
         "5.6": {
           "php_version": "5.6",
-          "php_image": "php:5.6-fpm-alpine"
+          "php_image": "php:5.6-fpm-alpine",
+          "xdebug_version": "2.5.5"
         },
         "7.0": {
           "php_version": "7.0",
@@ -81,8 +82,7 @@
         },
         "7.2": {
           "php_version": "7.2",
-          "php_image": "php:7.2-rc-fpm-alpine",
-          "use_xdebug": false
+          "php_image": "php:7.2-fpm-alpine"
         }
       }
     }

@@ -72,7 +72,6 @@ class BuildCommand extends Command
     {
         $distDir = getcwd() . '/' . rtrim($input->getOption('dir'), '/');
         $xDebugVersion = $this->findLatestXdebugVersion();
-        $xDebugPackage = 'xdebug-' . $xDebugVersion;
 
         if (is_dir($distDir)) {
             $this->recursiveRemove($distDir);
@@ -93,7 +92,6 @@ class BuildCommand extends Command
             [
                 'use_xdebug' => true,
                 'xdebug_version' => $xDebugVersion,
-                'xdebug_package' => $xDebugPackage,
             ]
         );
 
@@ -113,7 +111,6 @@ class BuildCommand extends Command
             [
                 'use_xdebug' => true,
                 'xdebug_version' => $xDebugVersion,
-                'xdebug_package' => $xDebugPackage,
             ]
         );
 

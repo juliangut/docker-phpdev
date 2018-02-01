@@ -1,4 +1,4 @@
-FROM php:7.2-rc-alpine
+FROM php:7.2-alpine
 
 ARG BUILD_DATE
 ARG VCS_REF
@@ -11,7 +11,8 @@ LABEL org.label-schema.schema-version="1.0.0-rc1" \
   org.label-schema.build-date="$BUILD_DATE" \
   com.juliangut.maintainer="Julián Gutiérrez (juliangut@gmail.com)" \
   com.juliangut.php.version="7.2" \
-  com.juliangut.php.extensions="bcmath, curl, gd, mbstring, opcache, openssl, xdebug, zlib"
+  com.juliangut.php.extensions="bcmath, curl, gd, mbstring, opcache, openssl, xdebug, zlib" \
+  com.juliangut.xdebug.version="2.6.0"
 
 RUN set -xe \
   && apk add --no-cache --virtual .build-deps \
@@ -38,6 +39,12 @@ RUN set -xe \
     gd \
     bcmath \
     opcache \
+  \
+  && pecl install \
+    xdebug-2.6.0 \
+  \
+  && docker-php-ext-enable \
+    xdebug \
   \
   && apk del .build-deps \
   && rm -rf /tmp/* /var/cache/apk/* \

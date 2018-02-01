@@ -12,7 +12,7 @@ LABEL org.label-schema.schema-version="1.0.0-rc1" \
   com.juliangut.maintainer="Julián Gutiérrez (juliangut@gmail.com)" \
   com.juliangut.php.version="7.1" \
   com.juliangut.php.extensions="bcmath, curl, gd, mbstring, opcache, openssl, xdebug, zlib" \
-  com.juliangut.xdebug.version="2.5.5"
+  com.juliangut.xdebug.version="2.6.0"
 
 RUN set -xe \
   && echo http://dl-3.alpinelinux.org/alpine/edge/community/ >> /etc/apk/repositories \
@@ -45,7 +45,7 @@ RUN set -xe \
     opcache \
   \
   && pecl install \
-    xdebug-2.5.5 \
+    xdebug-2.6.0 \
   \
   && docker-php-ext-enable \
     xdebug \
