@@ -40,10 +40,12 @@
   "autoload-dev": {
   },
   "bin": [
+    "bin/phpdev"
   ],
   "config": {
   },
   "scripts": {
+    "build": "phpdev"
   },
   "extra": {
     "versions": {
