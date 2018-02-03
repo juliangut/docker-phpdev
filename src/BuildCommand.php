@@ -78,13 +78,13 @@ class BuildCommand extends Command
         }
 
         $this->scaffoldImages(
-            $distDir . '/php',
-            $this->versions['php'],
+            $distDir . '/cli',
+            $this->versions['cli'],
             [
                 'php.ini.twig',
                 'xdebug.ini.twig',
-                'php/Dockerfile.twig',
-                'php/docker-entrypoint.twig',
+                'cli/Dockerfile.twig',
+                'cli/docker-entrypoint.twig',
             ],
             [
                 'build',
