@@ -32,6 +32,20 @@ class BuildCommand extends Command
     protected $twig;
 
     /**
+     * XDebug version discovery command.
+     *
+     * @var string
+     */
+    protected $xdebugCommand;
+
+    /**
+     * Note comment.
+     *
+     * @var string
+     */
+    protected $noteComment;
+
+    /**
      * BuildCommand constructor.
      *
      * @param \Twig_Environment $twig
@@ -46,6 +60,22 @@ class BuildCommand extends Command
 
         $this->twig = $twig;
         $this->versions = $versions;
+
+        $this->xdebugCommand = '`curl https://pecl.php.net/feeds/pkg_xdebug.rss'
+            . ' | grep "^<title>xdebug [0-9]*\.[0-9]*\.[0-9]*</title>"'
+            . ' | awk -F \'[ <]\' \'{ print $3; exit }\'`';
+
+        $this->noteComment = <<<EOL
+###
+#
+# NOTE!
+#
+# This file has been automatically generated
+#
+# Do not edit it directly
+#
+###
+EOL;
     }
 
     /**
@@ -86,11 +116,12 @@ class BuildCommand extends Command
                 'cli/docker-entrypoint.twig',
             ],
             [
-                'build',
+                'build.twig',
             ],
             [
+                'note_comment' => $this->noteComment,
                 'use_xdebug' => true,
-                'xdebug_version' => '$PHPUNIT_VERSION',
+                'xdebug_version' => $this->xdebugCommand,
             ]
         );
 
@@ -105,11 +136,12 @@ class BuildCommand extends Command
                 'fpm/php-fpm.conf.twig',
             ],
             [
-                'build',
+                'build.twig',
             ],
             [
+                'note_comment' => $this->noteComment,
                 'use_xdebug' => true,
-                'xdebug_version' => '$PHPUNIT_VERSION',
+                'xdebug_version' => $this->xdebugCommand,
             ]
         );
 

@@ -1,5 +1,15 @@
 #!/bin/bash
 
+###
+#
+# NOTE!
+#
+# This file has been automatically generated
+#
+# Do not edit it directly
+#
+###
+
 set -e
 
 if [ ! -z "$USER_UID" ]; then

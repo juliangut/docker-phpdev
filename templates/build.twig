@@ -1,14 +1,6 @@
 #!/bin/bash
 
-###
-#
-# NOTE!
-#
-# This file has been automatically generated
-#
-# Do not edit it directly
-#
-###
+{{ note_comment }}
 
 set -e
 
@@ -18,6 +10,6 @@ echo "Build hook running"
 
 docker build \
     --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
-    --build-arg VCS_REF=`git rev-parse --short HEAD` \
-    --build-arg XDEBUG_VERSION=2.5.5 \
+    --build-arg VCS_REF=`git rev-parse --short HEAD`{% if use_xdebug %} \
+    --build-arg XDEBUG_VERSION={{ xdebug_version | raw }}{% endif %} \
     -t $IMAGE_NAME .

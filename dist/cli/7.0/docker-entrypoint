@@ -1,5 +1,15 @@
 #!/bin/bash
 
+###
+#
+# NOTE!
+#
+# This file has been automatically generated
+#
+# Do not edit it directly
+#
+###
+
 set -e
 
 # if command starts with an option, prepend it to command

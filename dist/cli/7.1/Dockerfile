@@ -1,8 +1,18 @@
+###
+#
+# NOTE!
+#
+# This file has been automatically generated
+#
+# Do not edit it directly
+#
+###
+
 FROM php:7.1-alpine
 
 ARG BUILD_DATE
 ARG VCS_REF
-ARG PHPUNIT_VERSION
+ARG XDEBUG_VERSION
 
 LABEL org.label-schema.schema-version="1.0.0-rc1" \
   org.label-schema.name="juliangut/phpdev" \
@@ -13,7 +23,7 @@ LABEL org.label-schema.schema-version="1.0.0-rc1" \
   com.juliangut.maintainer="Julián Gutiérrez (juliangut@gmail.com)" \
   com.juliangut.php.version="7.1" \
   com.juliangut.php.extensions="bcmath, curl, gd, mbstring, opcache, openssl, xdebug, zlib" \
-  com.juliangut.xdebug.version="$PHPUNIT_VERSION"
+  com.juliangut.xdebug.version="$XDEBUG_VERSION"
 
 RUN set -xe \
   && apk add --no-cache --virtual .build-deps \
@@ -42,7 +52,7 @@ RUN set -xe \
     opcache \
   \
   && pecl install \
-    xdebug-$PHPUNIT_VERSION \
+    xdebug-$XDEBUG_VERSION \
   \
   && docker-php-ext-enable \
     xdebug \

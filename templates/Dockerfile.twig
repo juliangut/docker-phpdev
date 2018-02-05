@@ -1,8 +1,12 @@
+{{ note_comment }}
+
 FROM {{ php_image }}
 
 ARG BUILD_DATE
-ARG VCS_REF
-ARG PHPUNIT_VERSION
+ARG VCS_REF{% if use_xdebug %}
+
+ARG XDEBUG_VERSION{% endif %}
+
 
 LABEL org.label-schema.schema-version="1.0.0-rc1" \
   org.label-schema.name="juliangut/phpdev" \
@@ -13,7 +17,7 @@ LABEL org.label-schema.schema-version="1.0.0-rc1" \
   com.juliangut.maintainer="Julián Gutiérrez (juliangut@gmail.com)" \
   com.juliangut.php.version="{{ php_version }}" \
   com.juliangut.php.extensions="bcmath, curl, gd, mbstring, opcache, openssl, xdebug, zlib"{% if use_xdebug %} \
-  com.juliangut.xdebug.version="{{ xdebug_version }}"{% endif %}
+  com.juliangut.xdebug.version="$XDEBUG_VERSION"{% endif %}
 
 
 RUN set -xe \
@@ -47,7 +51,7 @@ RUN set -xe \
   \
 {% if use_xdebug %}
   && pecl install \
-    xdebug-{{ xdebug_version }} \
+    xdebug-$XDEBUG_VERSION \
   \
   && docker-php-ext-enable \
     xdebug \
@@ -68,12 +72,14 @@ RUN set -xe \
   && touch /var/log/php/xdebug.log \
   && chmod 666 /var/log/php/xdebug.log
 
-ENV COMPOSER_ALLOW_SUPERUSER=1 \
-  COMPOSER_DISABLE_XDEBUG_WARN=1 \
+ENV COMPOSER_ALLOW_SUPERUSER=1{% if use_xdebug %} \
+  COMPOSER_DISABLE_XDEBUG_WARN=1{% endif %} \
   PATH="/root/.composer/vendor/bin:$PATH"
 
-COPY php.ini $PHP_INI_DIR/conf.d/zz-php.ini
-COPY xdebug.ini $PHP_INI_DIR/conf.d/zz-xdebug.ini
+COPY php.ini $PHP_INI_DIR/conf.d/zz-php.ini{% if use_xdebug %}
+
+COPY xdebug.ini $PHP_INI_DIR/conf.d/zz-xdebug.ini{% endif %}
+
 {% block files %}{% endblock %}
 
 VOLUME /app /var/log/php
