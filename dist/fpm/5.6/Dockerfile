@@ -2,6 +2,7 @@ FROM php:5.6-fpm-alpine
 
 ARG BUILD_DATE
 ARG VCS_REF
+ARG PHPUNIT_VERSION
 
 LABEL org.label-schema.schema-version="1.0.0-rc1" \
   org.label-schema.name="juliangut/phpdev" \
