@@ -12,16 +12,16 @@
 
 set -e
 
+# if command starts with an option, prepend it to command
+if [ "${1:0:1}" = '-' ]; then
+  set -- php-fpm "$@"
+fi
+
 if [ ! -z "$USER_UID" ]; then
   usermod -u $USER_UID php-fpm
 fi
 if [ ! -z "$USER_GID" ]; then
   groupmod -g $USER_GID php-fpm
-fi
-
-# if command starts with an option, prepend it to command
-if [ "${1:0:1}" = '-' ]; then
-  set -- php-fpm "$@"
 fi
 
 HOST_IP=`ip route | awk '/default/ { print $3 }'`

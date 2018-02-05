@@ -31,7 +31,7 @@ RUN set -xe \
     $PHPIZE_DEPS \
   \
   && cp /usr/share/zoneinfo/UTC /etc/localtime \
-  && echo 'UTC' > /etc/timezone \
+  && echo "UTC" > /etc/timezone \
   \
   && apk add --no-cache \
     bash \
@@ -60,6 +60,8 @@ RUN set -xe \
   && apk del .build-deps \
   && rm -rf /tmp/* /var/cache/apk/* \
   \
+  && sed -i "s/bin\/ash/bin\/bash/" /etc/passwd \
+  \
   && php -r "copy('https://getcomposer.org/installer', '/tmp/composer-setup.php');" \
     && php -r "copy('https://composer.github.io/installer.sig', '/tmp/composer-setup.sig');"  \
     && php -r "if (hash('SHA384', file_get_contents('/tmp/composer-setup.php')) !== trim(file_get_contents('/tmp/composer-setup.sig'))) { echo 'Invalid Composer installer' . PHP_EOL; exit(1); }" \
@@ -67,6 +69,7 @@ RUN set -xe \
     && rm -f /tmp/composer-setup.php \
     && rm -f /tmp/composer-setup.sig \
     && composer global require hirak/prestissimo \
+    && composer global clear-cache \
   \
   && mkdir -p /var/log/php \
   && touch /var/log/php/xdebug.log \

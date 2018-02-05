@@ -11,6 +11,7 @@ Yet another PHP/PHP-FPM Docker image for development (based on Alpine Linux for 
 
 Bundled with:
 
+* UTC timezone
 * Latest XDebug configured and enabled for remote debugging
 * Global Composer installation
 * Additionally installed PHP extensions
@@ -26,10 +27,14 @@ Bundled with:
 
 ## Available tags
 
+#### CLI
 * `5.6`, `5` _([5.6/5/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/php/5.6/Dockerfile))_ - docker pull juliangut/phpdev:5.6
 * `7.0` _([7.0/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/php/7.0/Dockerfile))_ - docker pull juliangut/phpdev:7.0
 * `7.1` _([7.1/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/php/7.1/Dockerfile))_ - docker pull juliangut/phpdev:7.1
 * `7.2`, `7`, `latest` _([7.2/7/latest/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/php/7.2/Dockerfile))_ - docker pull juliangut/phpdev:7.2
+
+#### PHP-FPM
+
 * `5.6-fpm`, `5-fpm` _([5.6-fpm/5-fpm/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/5.6/Dockerfile))_ - docker pull juliangut/phpdev:5.6-fpm
 * `7.0-fpm` _([7.0-fpm/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/7.0/Dockerfile))_ - docker pull juliangut/phpdev:7.0-fpm
 * `7.1-fpm` _([7.1-fpm/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/7.1/Dockerfile))_ - docker pull juliangut/phpdev:7.1-fpm
@@ -44,7 +49,7 @@ Bundled with:
 * Default: not set
 * _Recommended_
 
-In order to avoid file access problems it is recommended to set this variable to your user's UID. You can find your UID by running `id`
+In order to avoid file access problems it is recommended to set this variable to your user's UID. You can find your UID by running `id -u`
 
 #### USER_GID
 
@@ -53,7 +58,7 @@ In order to avoid file access problems it is recommended to set this variable to
 * Default: not set
 * _Recommended_
 
-In order to avoid file access problems it is recommended to set this variable to your user's GID. You can find your GID by running `id`
+In order to avoid file access problems it is recommended to set this variable to your user's GID. You can find your GID by running `id -g`
 
 #### XDEBUG_DISABLE
 
@@ -101,7 +106,7 @@ _Note: escape the string for use in sed_
 
 Protocol format to integrate IDEs with stack trace file links. You can provide your custom format or use one of the supported formats: "phpstorm", "idea", "sublime", "textmate", "emacs" or "macvim"
 
-_Note: if you use your custom format remember to escape the string for use in sed_
+_Note: if you use your custom format remember to escape the string for use in "sed" command_
 
 ## Volumes
 
@@ -119,6 +124,7 @@ Logging volume for PHP and PHP-FPM logs and xDebug log, profile and trace files.
 
 ```bash
 docker pull juliangut/phpdev:latest
+
 docker pull juliangut/phpdev:fpm-latest
 ```
 
@@ -126,33 +132,38 @@ docker pull juliangut/phpdev:fpm-latest
 
 ```bash
 docker run -it --rm -v `pwd`:/app juliangut/phpdev:latest
+
+docker run -d -e USER_UID=`id -u` -e USER_GID=`id -g` -v `pwd`:/app juliangut/phpdev:fpm-latest
 ```
 
-#### Running built-in server in a container
+#### Running built-in server
 
 ```bash
 docker run -d -p 8080:8080 -v `pwd`:/app juliangut/phpdev:latest php -S 0.0.0.0:8080 -t /app/public
 ```
 
-_Access running server on `http://localhost:8080`_
-
 ##### With Docker Compose
- 
+
 ```yaml
-app:
-  image: juliangut/phpdev:latest
-  ports:
-    - 8080:8080
-  volumes:
-    - .:/app
-  command: "php -S 0.0.0.0:8080 -t /app/public"
+version: "2"
+
+services:
+  app:
+    image: juliangut/phpdev:latest
+    ports:
+      - 8080:8080
+    volumes:
+      - .:/app
+    command: "php -S 0.0.0.0:8080 -t /app/public"
 ```
 
 ```bash
 docker-compose up
 ```
 
-#### Running composer command in a container
+_Access running server on "http://localhost:8080"_
+
+#### Running a composer command
 
 ```bash
 docker run --rm -v `pwd`:/app juliangut/phpdev:latest composer [command]
@@ -161,16 +172,16 @@ docker run --rm -v `pwd`:/app juliangut/phpdev:latest composer [command]
 #### Accessing a running container
 
 ```bash
-docker exec -it [container_id] /bin/sh
+docker exec -it [container_id] /bin/bash
 ```
 
 ### Using xDebug
 
-It is **not recommended** to have a fixed remote session identifier and an auto-started remote session using "XDEBUG_IDE_KEY" and "XDEBUG_REMOTE_AUTOSTART" respectively.
+It is **not recommended** to have a fixed remote session identifier and an auto-started remote session using "XDEBUG_IDE_KEY" and "XDEBUG_REMOTE_AUTOSTART" environment variables respectively.
 
-The preferred way of starting a remote debug session is by setting remote session identifier dynamically by one of the following means
+The preferred way of starting a remote debug session is by setting remote session identifier dynamically by one of the following means:
 
-* On browser by setting "XDEBUG_SESSION" cookie with the session identifier as its value.
+* On browser by setting "XDEBUG_SESSION" cookie with the session identifier as its value
 * On HTTP request (cURL) by adding "XDEBUG_SESSION_START" parameter to the URI or as a POST parameter. eg: `curl -X POST -F "XDEBUG_SESSION_START=PHPSTORM" http://example.local`
 
 ##### xDebug profiler
@@ -183,7 +194,7 @@ To activate the trace set "XDEBUG_TRACE" cookie. Trace `*.xt` files will be save
 
 #### Browser support
 
-There are [browser plugins/extensions](https://xdebug.org/docs/remote#starting) to toggle debug cookies easily
+There are [browser plugins/extensions](https://xdebug.org/docs/remote#starting) to toggle these debug cookies easily
 
 #### Debugging with PHPStorm
 
@@ -191,15 +202,15 @@ There are [browser plugins/extensions](https://xdebug.org/docs/remote#starting) 
 
 ![xDebug configuration](img_xdebug_config.jpg)
 
-* Port must be the same previously defined in `XDEBUG_REMOTE_PORT`
+* Port must be the same previously defined in `XDEBUG_REMOTE_PORT` environment variable
 * If you're using PHP_FPM image version remember port 9000 has already been taken by PHP-FPM itself, use 9001 or any other you please instead
 
 ##### Create a server
 
 ![server configuration](img_server_config.jpg)
 
-* Server name will be used later so make it distinctive
-* Host and port must be the same set in built-in server. You could use 0.0.0.0 to allow any host
+* Server name will be used later so make it stand out
+* Host and port must be the same set in built-in server. You you can use "0.0.0.0" to allow any host
 * Map your project root to container location (/app)
 
 ##### Start listening for xDebug connections
@@ -219,16 +230,19 @@ docker run -d -p 8080:8080 -e PHP_IDE_CONFIG="serverName=Test" -e XDEBUG_FILE_LI
 ##### Using Docker Compose
 
 ```yaml
-app:
-  image: juliangut/phpdev:latest
-  ports:
-    - 8080:8080
-  environemnt:
-    PHP_IDE_CONFIG: serverName=Test
-    XDEBUG_FILE_LINK_FORMAT: phpstorm
-  volumes:
-    - .:/app
-  command: "php -S 0.0.0.0:8080 -t /app/public"
+version: "2"
+
+services:
+  app:
+    image: juliangut/phpdev:latest
+    ports:
+      - 8080:8080
+    environemnt:
+      PHP_IDE_CONFIG: serverName=Test
+      XDEBUG_FILE_LINK_FORMAT: phpstorm
+    volumes:
+      - .:/app
+    command: "php -S 0.0.0.0:8080 -t /app/public"
 ```
 
 ```bash
