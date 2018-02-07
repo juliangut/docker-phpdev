@@ -27,8 +27,8 @@ Bundled with:
 
 #### CLI
 
-|        |                                                                                              |   |                                  |
-|--------|----------------------------------------------------------------------------------------------|---|----------------------------------|
+|        |                                                                                              |                                                                                                                                                |                                  |
+|--------|----------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------|
 | latest | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/php/7.2/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.2.svg)](https://microbadger.com/images/juliangut/phpdev:latest) | docker pull juliangut/phpdev     |
 | 7      | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/php/7.2/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.2.svg)](https://microbadger.com/images/juliangut/phpdev:7)      | docker pull juliangut/phpdev:7   |
 | 7.2    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/php/7.2/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.2.svg)](https://microbadger.com/images/juliangut/phpdev:7.2)    | docker pull juliangut/phpdev:7.2 |
@@ -39,8 +39,8 @@ Bundled with:
 
 #### PHP-FPM
 
-|                            |                                                                                              |   |                                  |
-|----------------------------|----------------------------------------------------------------------------------------------|---|----------------------------------|
+|            |                                                                                              |                                                                                                                                                        |                                         |
+|------------|----------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------|
 | fpm-latest | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/7.2/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.2-fpm.svg)](https://microbadger.com/images/juliangut/phpdev:fpm-latest) | docker pull juliangut/phpdev:fpm-latest |
 | 7-fpm      | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/7.2/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.2-fpm.svg)](https://microbadger.com/images/juliangut/phpdev:7-fpm)      | docker pull juliangut/phpdev:7-fpm      |
 | 7.2-fpm    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/7.2/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.2-fpm.svg)](https://microbadger.com/images/juliangut/phpdev:7.2-fpm)    | docker pull juliangut/phpdev:7.2-fpm    |
@@ -96,7 +96,7 @@ Remote server port to connect to, IDE should be listening on this port
 * Default: 0
 * _Not recommended_
 
-Auto start remote debugging.
+Auto start remote debugging
 
 #### XDEBUG_IDE_KEY
 
@@ -104,7 +104,7 @@ Auto start remote debugging.
 * Default: not set
 * _Not recommended_
 
-Fixed remote session identifier.
+Fixed remote session identifier
 
 _Note: escape the string for use in sed_
 
@@ -302,8 +302,8 @@ RUN docker-php-ext-install \
   && docker-php-ext-enable \
     mongodb \
     redis \
-
-RUN composer global require phpunit/phpunit
+  \
+  && composer global require phpunit/phpunit
 ```
 
 ## License

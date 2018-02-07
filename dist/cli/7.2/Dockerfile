@@ -21,11 +21,15 @@ LABEL org.label-schema.schema-version="1.0.0-rc1" \
   org.label-schema.vcs-ref="$VCS_REF" \
   org.label-schema.build-date="$BUILD_DATE" \
   com.juliangut.maintainer="Julián Gutiérrez (juliangut@gmail.com)" \
+  com.juliangut.license="BSD-3-Clause" \
   com.juliangut.php.version="7.2" \
   com.juliangut.php.extensions="bcmath, curl, gd, mbstring, opcache, openssl, xdebug, zlib" \
   com.juliangut.xdebug.version="$XDEBUG_VERSION"
 
 RUN set -xe \
+  && echo "@edge http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
+  && echo "@edge-community http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
+  \
   && apk add --no-cache --virtual .build-deps \
     tzdata \
     $PHPIZE_DEPS \
