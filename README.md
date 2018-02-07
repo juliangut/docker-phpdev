@@ -1,9 +1,7 @@
+[![Docker Stats](http://dockeri.co/image/juliangut/phpdev)](https://hub.docker.com/r/juliangut/phpdev/)
+
 [![Docker Build Statu](https://img.shields.io/docker/build/juliangut/phpdev.svg?style=flat-square)](https://hub.docker.com/r/juliangut/phpdev/)
 [![Docker Automated build](https://img.shields.io/docker/automated/juliangut/phpdev.svg?style=flat-square)](https://hub.docker.com/r/juliangut/phpdev/builds/)
-[![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev.svg)](https://microbadger.com/images/juliangut/phpdev)
-
-[![Docker Pulls](https://img.shields.io/docker/pulls/juliangut/phpdev.svg?style=flat-square)](https://hub.docker.com/r/juliangut/phpdev/)
-[![Docker Stars](https://img.shields.io/docker/stars/juliangut/phpdev.svg?style=flat-square)](https://hub.docker.com/r/juliangut/phpdev/)
 
 # PHP development Docker image
 
@@ -28,17 +26,28 @@ Bundled with:
 ## Available tags
 
 #### CLI
-* `5.6`, `5` _([5.6/5/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/php/5.6/Dockerfile))_ - docker pull juliangut/phpdev:5.6
-* `7.0` _([7.0/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/php/7.0/Dockerfile))_ - docker pull juliangut/phpdev:7.0
-* `7.1` _([7.1/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/php/7.1/Dockerfile))_ - docker pull juliangut/phpdev:7.1
-* `7.2`, `7`, `latest` _([7.2/7/latest/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/php/7.2/Dockerfile))_ - docker pull juliangut/phpdev:7.2
+
+|        |                                                                                              |   |                                  |
+|--------|----------------------------------------------------------------------------------------------|---|----------------------------------|
+| latest | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/php/7.2/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.2.svg)](https://microbadger.com/images/juliangut/phpdev:latest) | docker pull juliangut/phpdev     |
+| 7      | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/php/7.2/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.2.svg)](https://microbadger.com/images/juliangut/phpdev:7)      | docker pull juliangut/phpdev:7   |
+| 7.2    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/php/7.2/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.2.svg)](https://microbadger.com/images/juliangut/phpdev:7.2)    | docker pull juliangut/phpdev:7.2 |
+| 7.1    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/php/7.1/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.1.svg)](https://microbadger.com/images/juliangut/phpdev:7.1)    | docker pull juliangut/phpdev:7.1 |
+| 7.0    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/php/7.0/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.0.svg)](https://microbadger.com/images/juliangut/phpdev:7.0)    | docker pull juliangut/phpdev:7.0 |
+| 5      | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/php/5.6/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:5.6.svg)](https://microbadger.com/images/juliangut/phpdev:5)      | docker pull juliangut/phpdev:5   |
+| 5.6    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/php/5.6/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:5.6.svg)](https://microbadger.com/images/juliangut/phpdev:5.6)    | docker pull juliangut/phpdev:5.6 |
 
 #### PHP-FPM
 
-* `5.6-fpm`, `5-fpm` _([5.6-fpm/5-fpm/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/5.6/Dockerfile))_ - docker pull juliangut/phpdev:5.6-fpm
-* `7.0-fpm` _([7.0-fpm/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/7.0/Dockerfile))_ - docker pull juliangut/phpdev:7.0-fpm
-* `7.1-fpm` _([7.1-fpm/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/7.1/Dockerfile))_ - docker pull juliangut/phpdev:7.1-fpm
-* `7.2-fpm`, `7-fpm`, `fpm-latest` _([7.2-fpm/7-fpm/fpm-latest/Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/7.2/Dockerfile))_ - docker pull juliangut/phpdev:7.2-fpm
+|                            |                                                                                              |   |                                  |
+|----------------------------|----------------------------------------------------------------------------------------------|---|----------------------------------|
+| fpm-latest | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/7.2/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.2-fpm.svg)](https://microbadger.com/images/juliangut/phpdev:fpm-latest) | docker pull juliangut/phpdev:fpm-latest |
+| 7-fpm      | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/7.2/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.2-fpm.svg)](https://microbadger.com/images/juliangut/phpdev:7-fpm)      | docker pull juliangut/phpdev:7-fpm      |
+| 7.2-fpm    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/7.2/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.2-fpm.svg)](https://microbadger.com/images/juliangut/phpdev:7.2-fpm)    | docker pull juliangut/phpdev:7.2-fpm    |
+| 7.1-fpm    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/7.1/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.1-fpm.svg)](https://microbadger.com/images/juliangut/phpdev:7.1-fpm)    | docker pull juliangut/phpdev:7.1-fpm    |
+| 7.0-fpm    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/7.0/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.0-fpm.svg)](https://microbadger.com/images/juliangut/phpdev:7.0-fpm)    | docker pull juliangut/phpdev:7.0-fpm    |
+| 5-fpm      | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/5.6/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:5.6-fpm.svg)](https://microbadger.com/images/juliangut/phpdev:5-fpm)      | docker pull juliangut/phpdev:5-fpm      |
+| 5.6-fpm    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/5.6/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:5.6-fpm.svg)](https://microbadger.com/images/juliangut/phpdev:5.6-fpm)    | docker pull juliangut/phpdev:5.6-fpm    |
 
 ## Environment variables
 
