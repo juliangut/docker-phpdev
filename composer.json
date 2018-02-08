@@ -52,7 +52,7 @@
       "cli": {
         "7.2": {
           "php_version": "7.2",
-          "php_image": "php:7.2-alpine3.7"
+          "php_image": "php:7.2-alpine"
         },
         "7.1": {
           "php_version": "7.1",
@@ -71,7 +71,7 @@
       "fpm": {
         "7.2": {
           "php_version": "7.2",
-          "php_image": "php:7.2-fpm-alpine3.7"
+          "php_image": "php:7.2-fpm-alpine"
         },
         "7.1": {
           "php_version": "7.1",
