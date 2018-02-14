@@ -46,6 +46,7 @@ RUN set -xe \
   \
   && addgroup -g 1551 php-fpm \
   && adduser -u 1551 -H -G php-fpm -s /sbin/nologin -D php-fpm \
+  \
   && docker-php-ext-configure \
     gd \
       --enable-gd-native-ttf \

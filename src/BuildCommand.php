@@ -145,6 +145,25 @@ EOL;
             ]
         );
 
+        $this->scaffoldImages(
+            $distDir . '/jenkins',
+            $this->versions['jenkins'],
+            [
+                'php.ini.twig',
+                'xdebug.ini.twig',
+                'jenkins/Dockerfile.twig',
+                'jenkins/docker-entrypoint.twig',
+            ],
+            [
+                'build.twig',
+            ],
+            [
+                'note_comment' => $this->noteComment,
+                'use_xdebug' => true,
+                'xdebug_version' => $this->xdebugCommand,
+            ]
+        );
+
         $output->writeln('<info>Docker images scaffold done</info>');
         $output->writeln('');
     }

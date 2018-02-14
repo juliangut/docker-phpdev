@@ -1,0 +1,22 @@
+{% extends "Dockerfile.twig" %}
+
+{% block install %}
+    shadow \
+    openjdk8-jre \
+    openssh \
+{% endblock %}
+
+{% block custom %}
+  && ssh-keygen -A \
+  \
+  && addgroup -g 1551 jenkins \
+  && adduser -u 1551 -H -G jenkins -s /sbin/bash -D jenkins \
+  && echo "jenkins:jenkins" | chpasswd \
+  \
+{% endblock %}
+
+{% block command %}
+EXPOSE 22
+
+CMD ["/usr/sbin/sshd", "-D"]
+{% endblock %}
