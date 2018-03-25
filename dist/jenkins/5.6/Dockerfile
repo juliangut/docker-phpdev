@@ -8,7 +8,7 @@
 #
 ###
 
-FROM php:5.6-fpm-alpine
+FROM php:5.6-alpine
 
 ARG BUILD_DATE
 ARG VCS_REF
@@ -41,6 +41,7 @@ RUN set -xe \
     shadow \
     openjdk8-jre \
     openssh \
+    git \
     bash \
     freetype-dev \
     libpng-dev \
