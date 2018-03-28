@@ -6,6 +6,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * Build command.
@@ -32,18 +33,11 @@ class BuildCommand extends Command
     protected $twig;
 
     /**
-     * XDebug version discovery command.
+     * Default images data.
      *
-     * @var string
+     * @var string[]
      */
-    protected $xdebugCommand;
-
-    /**
-     * Note comment.
-     *
-     * @var string
-     */
-    protected $noteComment;
+    protected $defaultData;
 
     /**
      * BuildCommand constructor.
@@ -61,11 +55,7 @@ class BuildCommand extends Command
         $this->twig = $twig;
         $this->versions = $versions;
 
-        $this->xdebugCommand = '`curl https://pecl.php.net/feeds/pkg_xdebug.rss'
-            . ' | grep "^<title>xdebug [0-9]*\.[0-9]*\.[0-9]*</title>"'
-            . ' | awk -F \'[ <]\' \'{ print $3; exit }\'`';
-
-        $this->noteComment = <<<EOL
+        $noteComment = <<<EOL
 ###
 #
 # NOTE!
@@ -76,6 +66,15 @@ class BuildCommand extends Command
 #
 ###
 EOL;
+        $xdebugCommand = '`curl https://pecl.php.net/feeds/pkg_xdebug.rss'
+            . ' | grep "^<title>xdebug [0-9]*\.[0-9]*\.[0-9]*</title>"'
+            . ' | awk -F \'[ <]\' \'{ print $3; exit }\'`';
+
+        $this->defaultData = [
+            'note_comment' => $noteComment,
+            'use_xdebug' => true,
+            'xdebug_version' => $xdebugCommand,
+        ];
     }
 
     /**
@@ -102,13 +101,30 @@ EOL;
     {
         $distDir = getcwd() . '/' . rtrim($input->getOption('dir'), '/');
 
-        if (is_dir($distDir)) {
+        if (is_dir($distDir) && count(scandir($distDir, SCANDIR_SORT_ASCENDING)) !== 0) {
             $this->recursiveRemove($distDir);
         }
 
+        $this->scaffoldCli($distDir . '/cli', $this->versions['cli']);
+        $this->scaffoldFpm($distDir . '/fpm', $this->versions['fpm']);
+        $this->scaffoldJenkins($distDir . '/jenkins', $this->versions['jenkins']);
+
+        $ioStyle = new SymfonyStyle($input, $output);
+        $ioStyle->success('Docker images scaffold done');
+        $ioStyle->newLine();
+    }
+
+    /**
+     * Scaffold CLI images.
+     *
+     * @param string $distDir
+     * @param array  $versions
+     */
+    protected function scaffoldCli(string $distDir, array $versions)
+    {
         $this->scaffoldImages(
-            $distDir . '/cli',
-            $this->versions['cli'],
+            $distDir,
+            $versions,
             [
                 'php.ini.twig',
                 'xdebug.ini.twig',
@@ -118,16 +134,21 @@ EOL;
             [
                 'build.twig',
             ],
-            [
-                'note_comment' => $this->noteComment,
-                'use_xdebug' => true,
-                'xdebug_version' => $this->xdebugCommand,
-            ]
+            $this->defaultData
         );
+    }
 
+    /**
+     * Scaffold PHP-FPM images.
+     *
+     * @param string $distDir
+     * @param array  $versions
+     */
+    protected function scaffoldFpm(string $distDir, array $versions)
+    {
         $this->scaffoldImages(
-            $distDir . '/fpm',
-            $this->versions['fpm'],
+            $distDir,
+            $versions,
             [
                 'php.ini.twig',
                 'xdebug.ini.twig',
@@ -138,16 +159,21 @@ EOL;
             [
                 'build.twig',
             ],
-            [
-                'note_comment' => $this->noteComment,
-                'use_xdebug' => true,
-                'xdebug_version' => $this->xdebugCommand,
-            ]
+            $this->defaultData
         );
+    }
 
+    /**
+     * Scaffold Jenkins images.
+     *
+     * @param string $distDir
+     * @param array  $versions
+     */
+    protected function scaffoldJenkins(string $distDir, array $versions)
+    {
         $this->scaffoldImages(
-            $distDir . '/jenkins',
-            $this->versions['jenkins'],
+            $distDir,
+            $versions,
             [
                 'php.ini.twig',
                 'xdebug.ini.twig',
@@ -157,36 +183,29 @@ EOL;
             [
                 'build.twig',
             ],
-            [
-                'note_comment' => $this->noteComment,
-                'use_xdebug' => true,
-                'xdebug_version' => $this->xdebugCommand,
-            ]
+            $this->defaultData
         );
-
-        $output->writeln('<info>Docker images scaffold done</info>');
-        $output->writeln('');
     }
 
     /**
-     * Scaffold versions.
+     * Scaffold images.
      *
      * @param string $distDir
      * @param array  $versions
      * @param array  $templateFiles
      * @param array  $hookFiles
      * @param array  $defaultData
-     *
-     * @throws \RuntimeException
      */
     protected function scaffoldImages(
         string $distDir,
         array $versions,
         array $templateFiles,
         array $hookFiles,
-        array $defaultData = []
+        array $defaultData
     ) {
         foreach ($versions as $version => $data) {
+            $data = array_merge($defaultData, $data);
+
             $versionDir = $distDir . '/' . $version;
             if (!mkdir($versionDir, 0755, true) && !is_dir($versionDir)) {
                 throw new \RuntimeException(sprintf('Not possible to create "%s" directory', $versionDir));
@@ -198,7 +217,7 @@ EOL;
                     $destinationFile = substr($destinationFile, 0, -5);
                 }
 
-                file_put_contents($destinationFile, $this->twig->render($sourceFile, array_merge($defaultData, $data)));
+                file_put_contents($destinationFile, $this->twig->render($sourceFile, $data));
             }
 
             $hooksDir = $versionDir . '/hooks';
@@ -212,7 +231,7 @@ EOL;
                     $destinationFile = substr($destinationFile, 0, -5);
                 }
 
-                file_put_contents($destinationFile, $this->twig->render($sourceFile, array_merge($defaultData, $data)));
+                file_put_contents($destinationFile, $this->twig->render($sourceFile, $data));
             }
         }
     }
@@ -222,7 +241,7 @@ EOL;
      *
      * @param string $path
      */
-    protected function recursiveRemove(string $path) {
+    private function recursiveRemove(string $path) {
         foreach (glob($path . '/*') as $file) {
             is_dir($file) ? $this->recursiveRemove($file) : unlink($file);
         }

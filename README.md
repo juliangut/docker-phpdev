@@ -146,7 +146,9 @@ Logging volume for PHP and PHP-FPM logs and xDebug log, profile and trace files.
 ```bash
 docker pull juliangut/phpdev:latest
 
-docker pull juliangut/phpdev:fpm-latest
+docker pull juliangut/phpdev:fpm
+
+docker pull juliangut/phpdev:jenkins
 ```
 
 ### Running a container
@@ -154,7 +156,7 @@ docker pull juliangut/phpdev:fpm-latest
 ```bash
 docker run -it --rm -v `pwd`:/app juliangut/phpdev:latest
 
-docker run -d -e USER_UID=`id -u` -e USER_GID=`id -g` -v `pwd`:/app juliangut/phpdev:fpm-latest
+docker run -d -e USER_UID=`id -u` -e USER_GID=`id -g` -v `pwd`:/app juliangut/phpdev:fpm
 ```
 
 #### Running built-in server
@@ -186,8 +188,12 @@ _Access running server on "http://localhost:8080"_
 
 #### Running a composer command
 
+In order to run a composer command you should provide docker with your user/group info, otherwise files resulting from composer command won't have your (correct) permissions
+
 ```bash
-docker run --rm -v `pwd`:/app juliangut/phpdev:latest composer [command]
+docker run --rm -u `id -u`:`id -g` -v `pwd`:/app juliangut/phpdev:latest composer [command]
+
+docker run --rm -u `id -u`:`id -g` -v `pwd`:/app juliangut/phpdev:fpm composer [command]
 ```
 
 #### Accessing a running container

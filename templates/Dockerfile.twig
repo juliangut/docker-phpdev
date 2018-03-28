@@ -17,7 +17,7 @@ LABEL org.label-schema.schema-version="1.0.0-rc1" \
   com.juliangut.maintainer="Julián Gutiérrez (juliangut@gmail.com)" \
   com.juliangut.license="BSD-3-Clause" \
   com.juliangut.php.version="{{ php_version }}" \
-  com.juliangut.php.extensions="bcmath, curl, gd, mbstring, opcache, openssl, xdebug, zlib"{% if use_xdebug %} \
+  com.juliangut.php.extensions="bcmath, curl, gd, mbstring, opcache, openssl, {% if use_xdebug %}xdebug, {% endif %}zlib"{% if use_xdebug %} \
   com.juliangut.xdebug.version="$XDEBUG_VERSION"{% endif %}
 
 
