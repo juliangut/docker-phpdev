@@ -1,12 +1,17 @@
-{{ note_comment }}
+###
+#
+# NOTE!
+#
+# This file has been automatically generated
+#
+# Do not edit it directly
+#
+###
 
-FROM {{ php_image }}
+FROM php:7.3-rc-alpine
 
 ARG BUILD_DATE
-ARG VCS_REF{% if use_xdebug %}
-
-ARG XDEBUG_VERSION{% endif %}
-
+ARG VCS_REF
 
 LABEL org.label-schema.schema-version="1.0.0-rc1" \
   org.label-schema.name="juliangut/phpdev" \
@@ -16,10 +21,8 @@ LABEL org.label-schema.schema-version="1.0.0-rc1" \
   org.label-schema.build-date="$BUILD_DATE" \
   com.juliangut.maintainer="Julián Gutiérrez (juliangut@gmail.com)" \
   com.juliangut.license="BSD-3-Clause" \
-  com.juliangut.php.version="{{ php_version }}" \
-  com.juliangut.php.extensions="bcmath, curl, gd, mbstring, opcache, openssl, {% if use_xdebug %}xdebug, {% endif %}zlib"{% if use_xdebug %} \
-  com.juliangut.xdebug.version="$XDEBUG_VERSION"{% endif %}
-
+  com.juliangut.php.version="7.3-rc" \
+  com.juliangut.php.extensions="bcmath, curl, gd, mbstring, opcache, openssl, zlib"
 
 RUN set -xe \
   && echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
@@ -33,13 +36,11 @@ RUN set -xe \
   && echo "UTC" > /etc/timezone \
   \
   && apk add --no-cache \
-{% block install %}{% endblock %}
     bash \
     freetype-dev \
     libpng-dev \
     libjpeg-turbo-dev \
   \
-{% block custom %}{% endblock %}
   && docker-php-ext-configure \
     gd \
       --enable-gd-native-ttf \
@@ -52,14 +53,6 @@ RUN set -xe \
     bcmath \
     opcache \
   \
-{% if use_xdebug %}
-  && pecl install \
-    xdebug-$XDEBUG_VERSION \
-  \
-  && docker-php-ext-enable \
-    xdebug \
-  \
-{% endif %}
   && apk del .build-deps \
   && rm -rf /tmp/* /var/cache/apk/* \
   \
@@ -74,20 +67,12 @@ RUN set -xe \
     && composer global require hirak/prestissimo \
     && composer global clear-cache \
   \
-  && mkdir -p /var/log/php{% if use_xdebug %} \
-  && touch /var/log/php/xdebug.log \
-  && chmod 666 /var/log/php/xdebug.log{% endif %}
+  && mkdir -p /var/log/php
 
-
-ENV COMPOSER_ALLOW_SUPERUSER=1{% if use_xdebug %} \
-  COMPOSER_DISABLE_XDEBUG_WARN=1{% endif %} \
+ENV COMPOSER_ALLOW_SUPERUSER=1 \
   PATH="/root/.composer/vendor/bin:$PATH"
 
-COPY php.ini $PHP_INI_DIR/conf.d/zz-php.ini{% if use_xdebug %}
-
-COPY xdebug.ini $PHP_INI_DIR/conf.d/zz-xdebug.ini{% endif %}
-
-{% block files %}{% endblock %}
+COPY php.ini $PHP_INI_DIR/conf.d/zz-php.ini
 
 VOLUME /app /var/log/php
 WORKDIR /app
@@ -96,4 +81,4 @@ COPY docker-entrypoint /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
 ENTRYPOINT ["docker-entrypoint"]
 
-{% block command %}{% endblock %}
+CMD ["php", "-a"]

@@ -23,21 +23,21 @@ class BuildCommand extends Command
      *
      * @var array
      */
-    protected $versions;
+    private $versions;
 
     /**
      * Twig renderer.
      *
      * @var \Twig_Environment
      */
-    protected $twig;
+    private $twig;
 
     /**
      * Default images data.
      *
      * @var string[]
      */
-    protected $defaultData;
+    private $defaultData;
 
     /**
      * BuildCommand constructor.
@@ -85,8 +85,8 @@ EOL;
     protected function configure()
     {
         $this->setName(static::NAME)
-            ->setDescription('Scaffold Docker images')
-            ->addOption('dir', 'd', InputArgument::OPTIONAL, 'Dist directory', 'dist');
+            ->setDescription('Docker images scaffolder')
+            ->addOption('dir', 'd', InputArgument::OPTIONAL, 'Distribution directory', 'dist');
     }
 
     /**
@@ -99,31 +99,35 @@ EOL;
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $distDir = getcwd() . '/' . rtrim($input->getOption('dir'), '/');
+        $destinationDir = \getcwd() . '/' . \rtrim($input->getOption('dir'), \DIRECTORY_SEPARATOR);
 
-        if (is_dir($distDir) && count(scandir($distDir, SCANDIR_SORT_ASCENDING)) !== 0) {
-            $this->recursiveRemove($distDir);
+        if (\is_dir($destinationDir) && \count(\scandir($destinationDir, SCANDIR_SORT_ASCENDING)) !== 0) {
+            $this->recursiveRemove($destinationDir);
         }
 
-        $this->scaffoldCli($distDir . '/cli', $this->versions['cli']);
-        $this->scaffoldFpm($distDir . '/fpm', $this->versions['fpm']);
-        $this->scaffoldJenkins($distDir . '/jenkins', $this->versions['jenkins']);
+        $this->scaffoldCliImages($destinationDir . '/cli', $this->versions['cli']);
+        $this->scaffoldFpmImages($destinationDir . '/fpm', $this->versions['fpm']);
+        $this->scaffoldJenkinsImages($destinationDir . '/jenkins', $this->versions['jenkins']);
+
+        $imagesCount = \count($this->versions['cli'])
+            + \count($this->versions['fpm'])
+            + \count($this->versions['jenkins']);
 
         $ioStyle = new SymfonyStyle($input, $output);
-        $ioStyle->success('Docker images scaffold done');
+        $ioStyle->success(\sprintf('%s Docker images scaffolded', $imagesCount));
         $ioStyle->newLine();
     }
 
     /**
      * Scaffold CLI images.
      *
-     * @param string $distDir
+     * @param string $directory
      * @param array  $versions
      */
-    protected function scaffoldCli(string $distDir, array $versions)
+    private function scaffoldCliImages(string $directory, array $versions)
     {
         $this->scaffoldImages(
-            $distDir,
+            $directory,
             $versions,
             [
                 'php.ini.twig',
@@ -133,21 +137,20 @@ EOL;
             ],
             [
                 'build.twig',
-            ],
-            $this->defaultData
+            ]
         );
     }
 
     /**
      * Scaffold PHP-FPM images.
      *
-     * @param string $distDir
+     * @param string $directory
      * @param array  $versions
      */
-    protected function scaffoldFpm(string $distDir, array $versions)
+    private function scaffoldFpmImages(string $directory, array $versions)
     {
         $this->scaffoldImages(
-            $distDir,
+            $directory,
             $versions,
             [
                 'php.ini.twig',
@@ -158,21 +161,20 @@ EOL;
             ],
             [
                 'build.twig',
-            ],
-            $this->defaultData
+            ]
         );
     }
 
     /**
      * Scaffold Jenkins images.
      *
-     * @param string $distDir
+     * @param string $directory
      * @param array  $versions
      */
-    protected function scaffoldJenkins(string $distDir, array $versions)
+    private function scaffoldJenkinsImages(string $directory, array $versions)
     {
         $this->scaffoldImages(
-            $distDir,
+            $directory,
             $versions,
             [
                 'php.ini.twig',
@@ -182,57 +184,86 @@ EOL;
             ],
             [
                 'build.twig',
-            ],
-            $this->defaultData
+            ]
         );
     }
 
     /**
      * Scaffold images.
      *
-     * @param string $distDir
+     * @param string $directory
      * @param array  $versions
      * @param array  $templateFiles
      * @param array  $hookFiles
-     * @param array  $defaultData
      */
-    protected function scaffoldImages(
-        string $distDir,
+    private function scaffoldImages(
+        string $directory,
         array $versions,
         array $templateFiles,
-        array $hookFiles,
-        array $defaultData
+        array $hookFiles
     ) {
         foreach ($versions as $version => $data) {
-            $data = array_merge($defaultData, $data);
+            $data = \array_merge($this->defaultData, $data);
 
-            $versionDir = $distDir . '/' . $version;
-            if (!mkdir($versionDir, 0755, true) && !is_dir($versionDir)) {
-                throw new \RuntimeException(sprintf('Not possible to create "%s" directory', $versionDir));
+            $versionDir = $directory . '/' . $version;
+            if (!\mkdir($versionDir, 0755, true) && !\is_dir($versionDir)) {
+                throw new \RuntimeException(\sprintf('Not possible to create "%s" directory', $versionDir));
             }
 
-            foreach ($templateFiles as $sourceFile) {
-                $destinationFile = $versionDir . '/' . basename($sourceFile);
-                if (substr($destinationFile, -5) === '.twig') {
-                    $destinationFile = substr($destinationFile, 0, -5);
-                }
-
-                file_put_contents($destinationFile, $this->twig->render($sourceFile, $data));
-            }
+            $this->scaffoldTemplateFiles($templateFiles, $versionDir, $data);
 
             $hooksDir = $versionDir . '/hooks';
-            if (!mkdir($hooksDir, 0755, true) && !is_dir($hooksDir)) {
-                throw new \RuntimeException(sprintf('Not possible to create "%s" directory', $hooksDir));
+            if (!\mkdir($hooksDir, 0755, true) && !\is_dir($hooksDir)) {
+                throw new \RuntimeException(\sprintf('Not possible to create "%s" directory', $hooksDir));
             }
 
-            foreach ($hookFiles as $sourceFile) {
-                $destinationFile = $hooksDir . '/' . basename($sourceFile);
-                if (substr($destinationFile, -5) === '.twig') {
-                    $destinationFile = substr($destinationFile, 0, -5);
-                }
+            $this->scaffoldHookFiles($hookFiles, $hooksDir, $data);
+        }
+    }
 
-                file_put_contents($destinationFile, $this->twig->render($sourceFile, $data));
+    /**
+     * Scaffold templates files.
+     *
+     * @param array  $files
+     * @param string $directory
+     * @param array  $data
+     *
+     * @return void
+     */
+    private function scaffoldTemplateFiles(array $files, string $directory, array $data)
+    {
+        foreach ($files as $sourceFile) {
+            if (\basename($sourceFile) === 'xdebug.ini.twig' && $data['use_xdebug'] === false) {
+                continue;
             }
+
+            $destinationFile = $directory . '/' . \basename($sourceFile);
+            if (\substr($destinationFile, -5) === '.twig') {
+                $destinationFile = \substr($destinationFile, 0, -5);
+            }
+
+            \file_put_contents($destinationFile, $this->twig->render($sourceFile, $data));
+        }
+    }
+
+    /**
+     * Scaffold hook files.
+     *
+     * @param array  $files
+     * @param string $directory
+     * @param array  $data
+     *
+     * @return void
+     */
+    private function scaffoldHookFiles(array $files, string $directory, array $data)
+    {
+        foreach ($files as $sourceFile) {
+            $destinationFile = $directory . '/' . \basename($sourceFile);
+            if (\substr($destinationFile, -5) === '.twig') {
+                $destinationFile = \substr($destinationFile, 0, -5);
+            }
+
+            \file_put_contents($destinationFile, $this->twig->render($sourceFile, $data));
         }
     }
 
@@ -242,10 +273,10 @@ EOL;
      * @param string $path
      */
     private function recursiveRemove(string $path) {
-        foreach (glob($path . '/*') as $file) {
-            is_dir($file) ? $this->recursiveRemove($file) : unlink($file);
+        foreach (\glob($path . '/*') as $file) {
+            \is_dir($file) ? $this->recursiveRemove($file) : \unlink($file);
         }
 
-        rmdir($path);
+        \rmdir($path);
     }
 }
