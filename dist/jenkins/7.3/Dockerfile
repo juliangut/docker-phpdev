@@ -8,7 +8,7 @@
 #
 ###
 
-FROM php:7.3-alpine
+FROM php:7.3-rc-alpine
 
 ARG BUILD_DATE
 ARG VCS_REF

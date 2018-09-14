@@ -100,7 +100,7 @@
       "jenkins": {
         "7.3": {
           "php_version": "7.3-rc",
-          "php_image": "php:7.3-alpine",
+          "php_image": "php:7.3-rc-alpine",
           "use_xdebug": false
         },
         "7.2": {
