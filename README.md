@@ -5,14 +5,14 @@
 
 # PHP development Docker image
 
-Yet another PHP/PHP-FPM/Jenkins Docker image for development/CI, based on Alpine Linux for minimal size
+PHP/PHP-FPM/Jenkins Docker image for development/CI, based on Alpine Linux for minimal size
 
 Bundled with:
 
 * UTC timezone
-* Latest XDebug configured and enabled for remote debugging (except for PHP release candidate versions)
-* Global Composer installation
-* Additionally installed PHP extensions
+* Latest stable [Xdebug](https://xdebug.org/), configured and enabled for remote debugging
+* [Composer](https://getcomposer.org/) installed globally
+* Additionally installed PHP extensions:
   * [Multibyte String](http://php.net/manual/en/book.mbstring.php)
   * [cURL](http://php.net/manual/en/book.curl.php)
   * [OpenSSL](http://php.net/manual/en/book.openssl.php)
@@ -41,7 +41,7 @@ Bundled with:
 
 |            |            |                                                                                              |                                                                                                                                                               |
 |------------|------------|----------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| fpm-latest | PHP 7.2    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/7.2/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.2-fpm-latest.svg)](https://microbadger.com/images/juliangut/phpdev:fpm-latest) |
+| fpm-latest | PHP 7.2    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/7.2/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:fpm-latest.svg)](https://microbadger.com/images/juliangut/phpdev:fpm-latest) |
 | fpm        | PHP 7.2    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/7.2/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.2-fpm.svg)](https://microbadger.com/images/juliangut/phpdev:fpm)               |
 | 7-fpm      | PHP 7.2    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/7.2/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.2-fpm.svg)](https://microbadger.com/images/juliangut/phpdev:7-fpm)             |
 | 7.3-fpm    | PHP 7.3-rc | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/7.3/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.3-fpm.svg)](https://microbadger.com/images/juliangut/phpdev:7.3-fpm)           |
@@ -55,7 +55,7 @@ Bundled with:
 
 |                |            |                                                                                                  |                                                                                                                                                                       |
 |----------------|------------|--------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| jenkins-latest | PHP 7.2    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/jenkins/7.2/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.2-jenkins-latest.svg)](https://microbadger.com/images/juliangut/phpdev:jenkins-latest) |
+| jenkins-latest | PHP 7.2    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/jenkins/7.2/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:jenkins-latest.svg)](https://microbadger.com/images/juliangut/phpdev:jenkins-latest) |
 | jenkins        | PHP 7.2    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/jenkins/7.2/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.2-jenkins.svg)](https://microbadger.com/images/juliangut/phpdev:jenkins)               |
 | 7-jenkins      | PHP 7.2    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/jenkins/7.2/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.2-jenkins.svg)](https://microbadger.com/images/juliangut/phpdev:7-jenkins)             |
 | 7.3-jenkins    | PHP 7.3-rc | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/jenkins/7.3/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.3-jenkins.svg)](https://microbadger.com/images/juliangut/phpdev:7.3-jenkins)           |
@@ -96,7 +96,7 @@ In order to avoid file access problems it is recommended to set this variable to
 * Type: int
 * Default: 0
 
-Disable xDebug by setting a non zero value
+Disable Xdebug by setting a non zero value
 
 #### XDEBUG_REMOTE_HOST
 
@@ -147,7 +147,7 @@ The default working directory. You should mount your project root path in this v
 
 #### /var/log/php
 
-Logging volume for PHP and PHP-FPM logs and xDebug log, profile and trace files.
+Logging volume for PHP and PHP-FPM logs and Xdebug log, profile and trace files.
 
 ## Usage
 
@@ -156,9 +156,9 @@ Logging volume for PHP and PHP-FPM logs and xDebug log, profile and trace files.
 ```bash
 docker pull juliangut/phpdev:latest
 
-docker pull juliangut/phpdev:fpm
+docker pull juliangut/phpdev:fpm-latest
 
-docker pull juliangut/phpdev:jenkins
+docker pull juliangut/phpdev:jenkins-latest
 ```
 
 ### Running a container
@@ -166,7 +166,7 @@ docker pull juliangut/phpdev:jenkins
 ```bash
 docker run -it --rm -v `pwd`:/app juliangut/phpdev:latest
 
-docker run -d -e USER_UID=`id -u` -e USER_GID=`id -g` -v `pwd`:/app juliangut/phpdev:fpm
+docker run -d -e USER_UID=`id -u` -e USER_GID=`id -g` -v `pwd`:/app juliangut/phpdev:fpm-latest
 ```
 
 #### Running built-in server
@@ -178,7 +178,7 @@ docker run -d -p 8080:8080 -v `pwd`:/app juliangut/phpdev:latest php -S 0.0.0.0:
 ##### With Docker Compose
 
 ```yaml
-version: "2"
+version: "3"
 
 services:
   app:
@@ -190,10 +190,6 @@ services:
     command: "php -S 0.0.0.0:8080 -t /app/public"
 ```
 
-```bash
-docker-compose up
-```
-
 _Access running server on "http://localhost:8080"_
 
 #### Running a composer command
@@ -203,7 +199,7 @@ In order to run a composer command you should provide docker with your user/grou
 ```bash
 docker run --rm -u `id -u`:`id -g` -v `pwd`:/app juliangut/phpdev:latest composer [command]
 
-docker run --rm -u `id -u`:`id -g` -v `pwd`:/app juliangut/phpdev:fpm composer [command]
+docker run --rm -u `id -u`:`id -g` -v `pwd`:/app juliangut/phpdev:fpm-latest composer [command]
 ```
 
 #### Accessing a running container
@@ -212,20 +208,20 @@ docker run --rm -u `id -u`:`id -g` -v `pwd`:/app juliangut/phpdev:fpm composer [
 docker exec -it [container_id] /bin/bash
 ```
 
-### Using xDebug
+### Using Xdebug
 
-It is **not recommended** to have a fixed remote session identifier and an auto-started remote session using "XDEBUG_IDE_KEY" and "XDEBUG_REMOTE_AUTOSTART" environment variables respectively.
+It is **not recommended** to have a fixed remote session identifier and/or an auto-started remote session using "XDEBUG_IDE_KEY" and "XDEBUG_REMOTE_AUTOSTART" environment variables respectively.
 
 The preferred way of starting a remote debug session is by setting remote session identifier dynamically by one of the following means:
 
 * On browser by setting "XDEBUG_SESSION" cookie with the session identifier as its value
 * On HTTP request (cURL) by adding "XDEBUG_SESSION_START" parameter to the URI or as a POST parameter. eg: `curl -X POST -F "XDEBUG_SESSION_START=PHPSTORM" http://example.local`
 
-##### xDebug profiler
+##### Xdebug profiler
 
 To activate the profiler set "XDEBUG_PROFILE" cookie. Profile `cachegrind.out.*` files will be saved into `/var/log/php` directory
 
-##### xDebug trace
+##### Xdebug trace
 
 To activate the trace set "XDEBUG_TRACE" cookie. Trace `*.xt` files will be saved into `/var/log/php` directory
 
@@ -235,26 +231,26 @@ There are [browser plugins/extensions](https://xdebug.org/docs/remote#starting) 
 
 #### Debugging with PHPStorm
 
-##### Review xDebug configuration
+##### Review Xdebug configuration
 
-![xDebug configuration](img_xdebug_config.jpg)
+![Xdebug configuration](https://raw.githubusercontent.com/juliangut/docker-phpdev/master/img_xdebug_config.jpg)
 
 * Port must be the same previously defined in `XDEBUG_REMOTE_PORT` environment variable
-* If you're using PHP_FPM image version remember port 9000 has already been taken by PHP-FPM itself, use 9001 or any other you please instead
+* If you're using any of juliangut/pphpdev:fpm* versions remember that **port 9000 has already been taken by PHP-FPM, use 9001** or any other you please instead
 
 ##### Create a server
 
-![server configuration](img_server_config.jpg)
+![server configuration](https://raw.githubusercontent.com/juliangut/docker-phpdev/master/img_server_config.jpg)
 
 * Server name will be used later so make it stand out
 * Host and port must be the same set in built-in server. You you can use "0.0.0.0" to allow any host
 * Map your project root to container location (/app)
 
-##### Start listening for xDebug connections
+##### Start listening for Xdebug connections
 
 Click the phone icon to start listening for incoming connections and create a breakpoint
 
-![start listening](img_debug_listen.jpg)
+![start listening](https://raw.githubusercontent.com/juliangut/docker-phpdev/master/img_debug_listen.jpg)
 
 ##### Start the container
 
@@ -267,7 +263,7 @@ docker run -d -p 8080:8080 -e PHP_IDE_CONFIG="serverName=Test" -e XDEBUG_FILE_LI
 ##### Using Docker Compose
 
 ```yaml
-version: "2"
+version: "3"
 
 services:
   app:
@@ -282,13 +278,9 @@ services:
     command: "php -S 0.0.0.0:8080 -t /app/public"
 ```
 
-```bash
-docker-compose up
-```
+#### Firewalld & NetworkManager notice
 
-##### Firewalld & NetworkManager notice
-
-By default firewalld blocks all outgoing connections from docker containers, such as xDebug connection to port 9000 on host. In order to allow docker containers to connect with xDebug server you need to include `docker0` interface into a "trusted" zone both on NetworkManager and firewalld:
+By default firewalld blocks all outgoing connections from docker containers, such as Xdebug connection to port 9000 on host. In order to allow docker containers to connect with Xdebug server you need to include `docker0` interface into a "trusted" zone both on NetworkManager and firewalld:
 
 Assign docker0 interface to "trusted" zone and stop NetworkManager service
 ```
