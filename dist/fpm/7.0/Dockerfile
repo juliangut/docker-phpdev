@@ -27,9 +27,6 @@ LABEL org.label-schema.schema-version="1.0.0-rc1" \
   com.juliangut.xdebug.version="$XDEBUG_VERSION"
 
 RUN set -xe \
-  && echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
-  && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
-  \
   && apk add --no-cache --virtual .build-deps \
     tzdata \
     $PHPIZE_DEPS \
