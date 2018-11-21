@@ -80,7 +80,8 @@ ENV COMPOSER_ALLOW_SUPERUSER=1{% if use_xdebug %} \
   COMPOSER_DISABLE_XDEBUG_WARN=1{% endif %} \
   PATH="/root/.composer/vendor/bin:$PATH"
 
-COPY php.ini $PHP_INI_DIR/conf.d/zz-php.ini{% if use_xdebug %}
+COPY php.ini $PHP_INI_DIR/conf.d/zz-php.ini
+COPY opcache.ini $PHP_INI_DIR/conf.d/zz-opcache.ini{% if use_xdebug %}
 
 COPY xdebug.ini $PHP_INI_DIR/conf.d/zz-xdebug.ini{% endif %}
 

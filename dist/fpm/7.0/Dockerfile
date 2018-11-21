@@ -85,6 +85,7 @@ ENV COMPOSER_ALLOW_SUPERUSER=1 \
   PATH="/root/.composer/vendor/bin:$PATH"
 
 COPY php.ini $PHP_INI_DIR/conf.d/zz-php.ini
+COPY opcache.ini $PHP_INI_DIR/conf.d/zz-opcache.ini
 COPY xdebug.ini $PHP_INI_DIR/conf.d/zz-xdebug.ini
 
 ENV PHP_FPM_CONF_DIR /usr/local/etc/php-fpm.d
