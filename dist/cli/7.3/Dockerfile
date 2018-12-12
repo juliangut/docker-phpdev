@@ -8,7 +8,7 @@
 #
 ###
 
-FROM php:7.3-rc-alpine
+FROM php:7.3-alpine
 
 ARG BUILD_DATE
 ARG VCS_REF
@@ -22,7 +22,7 @@ LABEL org.label-schema.schema-version="1.0.0-rc1" \
   org.label-schema.build-date="$BUILD_DATE" \
   com.juliangut.maintainer="Julián Gutiérrez (juliangut@gmail.com)" \
   com.juliangut.license="BSD-3-Clause" \
-  com.juliangut.php.version="7.3-rc" \
+  com.juliangut.php.version="7.3" \
   com.juliangut.php.extensions="bcmath, curl, gd, mbstring, opcache, openssl, xdebug, zlib" \
   com.juliangut.xdebug.version="$XDEBUG_VERSION"
 
