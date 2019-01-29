@@ -33,9 +33,6 @@ Bundled with:
 | 7.3    | PHP 7.3    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/cli/7.3/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.3.svg)](https://microbadger.com/images/juliangut/phpdev:7.3)    |
 | 7.2    | PHP 7.2    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/cli/7.2/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.2.svg)](https://microbadger.com/images/juliangut/phpdev:7.2)    |
 | 7.1    | PHP 7.1    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/cli/7.1/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.1.svg)](https://microbadger.com/images/juliangut/phpdev:7.1)    |
-| 7.0    | PHP 7.0    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/cli/7.0/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.0.svg)](https://microbadger.com/images/juliangut/phpdev:7.0)    |
-| 5      | PHP 5.6    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/cli/5.6/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:5.6.svg)](https://microbadger.com/images/juliangut/phpdev:5)      |
-| 5.6    | PHP 5.6    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/cli/5.6/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:5.6.svg)](https://microbadger.com/images/juliangut/phpdev:5.6)    |
 
 #### FPM
 
@@ -47,9 +44,6 @@ Bundled with:
 | 7.3-fpm    | PHP 7.3    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/7.3/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.3-fpm.svg)](https://microbadger.com/images/juliangut/phpdev:7.3-fpm)           |
 | 7.2-fpm    | PHP 7.2    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/7.2/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.2-fpm.svg)](https://microbadger.com/images/juliangut/phpdev:7.2-fpm)           |
 | 7.1-fpm    | PHP 7.1    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/7.1/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.1-fpm.svg)](https://microbadger.com/images/juliangut/phpdev:7.1-fpm)           |
-| 7.0-fpm    | PHP 7.0    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/7.0/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.0-fpm.svg)](https://microbadger.com/images/juliangut/phpdev:7.0-fpm)           |
-| 5-fpm      | PHP 5.6    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/5.6/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:5.6-fpm.svg)](https://microbadger.com/images/juliangut/phpdev:5-fpm)             |
-| 5.6-fpm    | PHP 5.6    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/5.6/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:5.6-fpm.svg)](https://microbadger.com/images/juliangut/phpdev:5.6-fpm)           |
 
 #### Jenkins
 
@@ -61,15 +55,8 @@ Bundled with:
 | 7.3-jenkins    | PHP 7.3    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/jenkins/7.3/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.3-jenkins.svg)](https://microbadger.com/images/juliangut/phpdev:7.3-jenkins)           |
 | 7.2-jenkins    | PHP 7.2    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/jenkins/7.2/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.2-jenkins.svg)](https://microbadger.com/images/juliangut/phpdev:7.2-jenkins)           |
 | 7.1-jenkins    | PHP 7.1    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/jenkins/7.1/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.1-jenkins.svg)](https://microbadger.com/images/juliangut/phpdev:7.1-jenkins)           |
-| 7.0-jenkins    | PHP 7.0    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/jenkins/7.0/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:7.0-jenkins.svg)](https://microbadger.com/images/juliangut/phpdev:7.0-jenkins)           |
-| 5-jenkins      | PHP 5.6    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/jenkins/5.6/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:5.6-jenkins.svg)](https://microbadger.com/images/juliangut/phpdev:5-jenkins)             |
-| 5.6-jenkins    | PHP 5.6    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/jenkins/5.6/Dockerfile) | [![Docker Size](https://images.microbadger.com/badges/image/juliangut/phpdev:5.6-jenkins.svg)](https://microbadger.com/images/juliangut/phpdev:5.6-jenkins)           |
 
 Jenkins version is specially designed to be run as a Jenkins slave on a CI pipeline
-
-### Important support notice!
-
-PHP 5.6 and PHP 7.0 will reach end of life during December 2018, all tags related with this versions of PHP will be removed at the end of January 2019 (no exact date). Start migration to newer versions as soon as possible
 
 ## Environment variables
 

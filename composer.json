@@ -62,15 +62,6 @@
         "7.1": {
           "php_version": "7.1",
           "php_image": "php:7.1-alpine"
-        },
-        "7.0": {
-          "php_version": "7.0",
-          "php_image": "php:7.0-alpine"
-        },
-        "5.6": {
-          "php_version": "5.6",
-          "php_image": "php:5.6-alpine",
-          "xdebug_version": "2.5.5"
         }
       },
       "fpm": {
@@ -86,15 +77,6 @@
         "7.1": {
           "php_version": "7.1",
           "php_image": "php:7.1-fpm-alpine"
-        },
-        "7.0": {
-          "php_version": "7.0",
-          "php_image": "php:7.0-fpm-alpine"
-        },
-        "5.6": {
-          "php_version": "5.6",
-          "php_image": "php:5.6-fpm-alpine",
-          "xdebug_version": "2.5.5"
         }
       },
       "jenkins": {
@@ -110,15 +92,6 @@
         "7.1": {
           "php_version": "7.1",
           "php_image": "php:7.1-alpine"
-        },
-        "7.0": {
-          "php_version": "7.0",
-          "php_image": "php:7.0-alpine"
-        },
-        "5.6": {
-          "php_version": "5.6",
-          "php_image": "php:5.6-alpine",
-          "xdebug_version": "2.5.5"
         }
       }
     }
