@@ -10,7 +10,7 @@ PHP/PHP-FPM/Jenkins Docker image for development/CI, based on Alpine Linux for m
 Bundled with:
 
 * UTC timezone
-* Latest stable [Xdebug](https://xdebug.org/), configured and enabled for remote debugging
+* Latest [Xdebug](https://xdebug.org/), configured and enabled for remote debugging
 * [Composer](https://getcomposer.org/) installed globally
 * Additionally installed PHP extensions:
   * [Multibyte String](http://php.net/manual/en/book.mbstring.php)
