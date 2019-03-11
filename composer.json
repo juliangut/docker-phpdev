@@ -52,8 +52,7 @@
       "cli": {
         "7.3": {
           "php_version": "7.3",
-          "php_image": "php:7.3-alpine",
-          "xdebug_version": "2.7.0RC2"
+          "php_image": "php:7.3-alpine"
         },
         "7.2": {
           "php_version": "7.2",
@@ -67,8 +66,7 @@
       "fpm": {
         "7.3": {
           "php_version": "7.3",
-          "php_image": "php:7.3-fpm-alpine",
-          "xdebug_version": "2.7.0RC2"
+          "php_image": "php:7.3-fpm-alpine"
         },
         "7.2": {
           "php_version": "7.2",
@@ -82,8 +80,7 @@
       "jenkins": {
         "7.3": {
           "php_version": "7.3",
-          "php_image": "php:7.3-alpine",
-          "xdebug_version": "2.7.0RC2"
+          "php_image": "php:7.3-alpine"
         },
         "7.2": {
           "php_version": "7.2",
