@@ -35,7 +35,6 @@ RUN set -xe \
   && echo "UTC" > /etc/timezone \
   \
   && apk add --no-cache \
-    shadow \
     openjdk8-jre \
     openssh \
     git \
@@ -52,7 +51,6 @@ RUN set -xe \
   \
   && docker-php-ext-configure \
     gd \
-      --enable-gd-native-ttf \
       --with-freetype-dir=/usr/include/ \
       --with-png-dir=/usr/include/ \
       --with-jpeg-dir=/usr/include/ \

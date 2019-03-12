@@ -46,7 +46,6 @@ RUN set -xe \
   \
   && docker-php-ext-configure \
     gd \
-      --enable-gd-native-ttf \
       --with-freetype-dir=/usr/include/ \
       --with-png-dir=/usr/include/ \
       --with-jpeg-dir=/usr/include/ \
