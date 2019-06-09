@@ -12,41 +12,48 @@
 
 set -e
 
+CMD="php-fpm"
+
 # if command starts with an option, prepend it to command
-if [ "${1:0:1}" = '-' ]; then
-  set -- php-fpm "$@"
+if [[ "${1:0:1}" = '-' ]]; then
+  set -- $CMD "$@"
 fi
 
-if [ ! -z "$USER_UID" ]; then
-  usermod -u $USER_UID php-fpm
-fi
-if [ ! -z "$USER_GID" ]; then
-  groupmod -g $USER_GID php-fpm
+# alter docker user and group based on mounted volume
+USER_UID=`ls -l / | grep app | awk '/ +/{ printf "%s",$3 }'`
+if [[ "${USER_UID}" != "root" ]]; then
+    USER_GID=`ls -l / | grep app | awk '/ +/{ printf "%s",$4 }'`
+
+    groupmod -g $USER_GID docker
+    usermod -u $USER_UID docker
+
+    chown docker:docker -R /home/docker
+    chown docker:docker -R /var/log/php
 fi
 
-if [ ! -z "${XDEBUG_DISABLE}" ] && [ "${XDEBUG_DISABLE}" -ne "0" ]; then
+if [[ ! -z "${XDEBUG_DISABLE}" ]] && [[ "${XDEBUG_DISABLE}" -ne "0" ]]; then
   sed -i "s/zend_extension/;zend_extension/" $PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini
 else
   HOST_IP=`ip route | awk '/default/ { print $3 }'`
   sed -i "s/xdebug.remote_host\s*=.*/xdebug.remote_host = ${HOST_IP}/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
 
-  if [ ! -z "${XDEBUG_REMOTE_HOST}" ]; then
+  if [[ ! -z "${XDEBUG_REMOTE_HOST}" ]]; then
     sed -i "s/xdebug.remote_host\s*=.*/xdebug.remote_host = ${XDEBUG_REMOTE_HOST}/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
   fi
 
-  if [ ! -z "${XDEBUG_REMOTE_PORT}" ]; then
+  if [[ ! -z "${XDEBUG_REMOTE_PORT}" ]]; then
     sed -i "s/xdebug.remote_port\s*=.*/xdebug.remote_port = ${XDEBUG_REMOTE_PORT}/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
   fi
 
-  if [ ! -z "${XDEBUG_REMOTE_AUTOSTART}" ]; then
+  if [[ ! -z "${XDEBUG_REMOTE_AUTOSTART}" ]]; then
     sed -i "s/xdebug.remote_autostart\s*=.*/xdebug.remote_autostart = ${XDEBUG_REMOTE_AUTOSTART}/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
   fi
 
-  if [ ! -z "${XDEBUG_IDE_KEY}" ]; then
+  if [[ ! -z "${XDEBUG_IDE_KEY}" ]]; then
     sed -i "s/;\?xdebug.idekey\s*=.*/xdebug.idekey = ${XDEBUG_IDE_KEY}/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
   fi
 
-  if [ ! -z "${XDEBUG_FILE_LINK_FORMAT}" ]; then
+  if [[ ! -z "${XDEBUG_FILE_LINK_FORMAT}" ]]; then
     case "${XDEBUG_FILE_LINK_FORMAT}" in
       "phpstorm")
         FORMAT="phpstorm:\/\/open?file=%f\&line=%l"
@@ -75,4 +82,9 @@ else
   fi
 fi
 
-exec "$@"
+if [[ "$@" = "${CMD}" ]] || [[ "`echo "$@" | awk '/ +/{ printf "%s",$1 }'`" = "${CMD}" ]]; then
+  echo "root"
+  exec "$@"
+else
+  exec "sudo" "-E" "-H" "-u" docker "$@"
+fi

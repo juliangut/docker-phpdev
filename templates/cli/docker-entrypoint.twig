@@ -1,5 +1,3 @@
 {% extends "docker-entrypoint.twig" %}
 
-{% block command %}
-  set -- php "$@"
-{% endblock %}
+{% block command %}php{% endblock %}

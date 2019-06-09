@@ -1,15 +1,5 @@
 {% extends "Dockerfile.twig" %}
 
-{% block install %}
-    shadow \
-{% endblock %}
-
-{% block custom %}
-  && addgroup -g 1551 php-fpm \
-  && adduser -u 1551 -H -G php-fpm -s /sbin/nologin -D php-fpm \
-  \
-{% endblock %}
-
 {% block files %}
 
 ENV PHP_FPM_CONF_DIR /usr/local/etc/php-fpm.d

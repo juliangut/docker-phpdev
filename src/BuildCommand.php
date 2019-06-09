@@ -72,6 +72,7 @@ EOL;
             . ' | awk -F \'[ <]\' \'{ print $4; exit }\'`';
 
         $this->defaultData = [
+            'root_allowed' => true,
             'note_comment' => $noteComment,
             'use_xdebug' => true,
             'xdebug_version' => $xdebugCommand,

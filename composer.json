@@ -25,6 +25,7 @@
   "prefer-stable": true,
   "require": {
     "php": "^7.0",
+    "ext-json": "*",
     "symfony/console": "^3.0",
     "twig/twig": "^2.0"
   },
@@ -52,15 +53,18 @@
       "cli": {
         "7.3": {
           "php_version": "7.3",
-          "php_image": "php:7.3-alpine"
+          "php_image": "php:7.3-alpine",
+          "root_allowed": false
         },
         "7.2": {
           "php_version": "7.2",
-          "php_image": "php:7.2-alpine"
+          "php_image": "php:7.2-alpine",
+          "root_allowed": false
         },
         "7.1": {
           "php_version": "7.1",
-          "php_image": "php:7.1-alpine"
+          "php_image": "php:7.1-alpine",
+          "root_allowed": false
         }
       },
       "fpm": {

@@ -60,24 +60,6 @@ Jenkins version is specially designed to be run as a Jenkins slave on a CI pipel
 
 ## Environment variables
 
-#### USER_UID
-
-* **For FPM and Jenkins versions**
-* Type: int
-* Default: not set
-* _Recommended_
-
-In order to avoid file access problems it is recommended to set this variable to your user's UID. You can find your UID by running `id -u`
-
-#### USER_GID
-
-* **For FPM and Jenkins versions**
-* Type: int
-* Default: not set
-* _Recommended_
-
-In order to avoid file access problems it is recommended to set this variable to your user's GID. You can find your GID by running `id -g`
-
 #### XDEBUG_DISABLE
 
 * Type: int
@@ -126,15 +108,23 @@ Protocol format to integrate IDEs with stack trace file links. You can provide y
 
 _Note: if you use your custom format remember to escape the string for use in "sed" command_
 
+#### USER_UID and USER_GID?
+
+_Where did USER_UID and USER_GID environment variables go?_
+
+On previous versions of this containers there was a need to set user's UID and GID in order to avoid file permission problems between container's and host's user, either by environment variables or docker run parameters.
+
+This need has been completely removed and the situation has been vastly improved by automatically detecting those values from mounted `app` volume thanks to some _heuristic magic_. This means anything you do inside container will have same permissions as your host's user, as long as you mount the volume 
+
 ## Volumes
 
 #### /app
 
-The default working directory. You should mount your project root path in this volume.
+The default working directory. You should mount your project root path in this volume
 
 #### /var/log/php
 
-Logging volume for PHP and PHP-FPM logs and Xdebug log, profile and trace files.
+Logging volume for PHP and PHP-FPM logs and Xdebug log, profile and trace files
 
 ## Usage
 
@@ -151,9 +141,9 @@ docker pull juliangut/phpdev:jenkins-latest
 ### Running a container
 
 ```bash
-docker run -it --rm -v `pwd`:/app juliangut/phpdev:latest
+docker run --rm -it -v `pwd`:/app juliangut/phpdev:latest
 
-docker run -d -e USER_UID=`id -u` -e USER_GID=`id -g` -v `pwd`:/app juliangut/phpdev:fpm-latest
+docker run -d -v `pwd`:/app juliangut/phpdev:fpm-latest
 ```
 
 #### Running built-in server
@@ -181,12 +171,10 @@ _Access running server on "http://localhost:8080"_
 
 #### Running a composer command
 
-In order to run a composer command you should provide docker with your user/group info, otherwise files resulting from composer command won't have your (correct) permissions
-
 ```bash
-docker run --rm -u `id -u`:`id -g` -v `pwd`:/app juliangut/phpdev:latest composer [command]
+docker run --rm -v `pwd`:/app juliangut/phpdev:latest composer [command]
 
-docker run --rm -u `id -u`:`id -g` -v `pwd`:/app juliangut/phpdev:fpm-latest composer [command]
+docker run --rm -v `pwd`:/app juliangut/phpdev:fpm-latest composer [command]
 ```
 
 #### Accessing a running container

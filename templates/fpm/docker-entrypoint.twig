@@ -1,15 +1,3 @@
 {% extends "docker-entrypoint.twig" %}
 
-{% block user %}
-
-if [ ! -z "$USER_UID" ]; then
-  usermod -u $USER_UID php-fpm
-fi
-if [ ! -z "$USER_GID" ]; then
-  groupmod -g $USER_GID php-fpm
-fi
-{% endblock %}
-
-{% block command %}
-  set -- php-fpm "$@"
-{% endblock %}
+{% block command %}php-fpm{% endblock %}

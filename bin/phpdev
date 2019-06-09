@@ -4,14 +4,19 @@
 \error_reporting(-1);
 \ini_set('display_errors', true);
 
+use Jgut\Docker\PhpDev\BuildCommand;
+use Symfony\Component\Console\Application;
+use Twig_Environment as Twig;
+use Twig_Loader_Filesystem as TwigLoader;
+
 require __DIR__ . '/../vendor/autoload.php';
 
 $versions = \json_decode(\file_get_contents(\dirname(__DIR__) . '/composer.json'), true)['extra']['versions'];
 
-$application = new \Symfony\Component\Console\Application('docker-phpdev');
+$application = new Application('docker-phpdev');
 
-$buildCommand = new \Jgut\Docker\PhpDev\BuildCommand(
-  new \Twig_Environment(new \Twig_Loader_Filesystem(__DIR__ . '/../templates')),
+$buildCommand = new BuildCommand(
+  new Twig(new TwigLoader(__DIR__ . '/../templates')),
   $versions
 );
 

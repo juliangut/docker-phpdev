@@ -35,10 +35,16 @@ RUN set -xe \
   && echo "UTC" > /etc/timezone \
   \
   && apk add --no-cache \
+    shadow \
+    sudo \
     bash \
     freetype-dev \
     libpng-dev \
     libjpeg-turbo-dev \
+  \
+  && groupmod -n docker www-data \
+  && usermod -l docker -m -d /home/docker -s /sbin/bash -G wheel -a www-data \
+  && sed -e 's;^# \(%wheel.*NOPASSWD.*\);\1;g' -i /etc/sudoers \
   \
   && docker-php-ext-configure \
     gd \
@@ -71,9 +77,13 @@ RUN set -xe \
     && composer global require hirak/prestissimo \
     && composer global clear-cache \
   \
+  && mv /root/.composer /home/docker/.composer \
+  && chown docker:docker -R /home/docker/.composer \
+  \
   && mkdir -p /var/log/php \
   && touch /var/log/php/xdebug.log \
-  && chmod 666 /var/log/php/xdebug.log
+  && chown docker:docker -R /var/log/php \
+  && chmod 774 -R /var/log/php
 
 ENV COMPOSER_ALLOW_SUPERUSER=1 \
   COMPOSER_DISABLE_XDEBUG_WARN=1 \

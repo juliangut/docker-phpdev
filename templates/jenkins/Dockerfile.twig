@@ -9,8 +9,11 @@
 {% block custom %}
   && ssh-keygen -A \
   \
+{% endblock %}
+
+{% block user %}
   && addgroup -g 1551 jenkins \
-  && adduser -u 1551 -H -G jenkins -s /sbin/bash -D jenkins \
+  && adduser -u 1551 -G jenkins -h /home/jenkins -s /sbin/bash -D jenkins \
   && echo "jenkins:jenkins" | chpasswd \
   \
 {% endblock %}
