@@ -45,8 +45,6 @@ RUN set -xe \
     openssh \
     git \
   \
-  && ssh-keygen -A \
-  \
   && groupmod -n docker www-data \
   && usermod -l docker -m -d /home/docker -s /sbin/bash -G wheel -a www-data \
   && sed -e 's;^# \(%wheel.*NOPASSWD.*\);\1;g' -i /etc/sudoers \

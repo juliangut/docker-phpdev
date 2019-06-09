@@ -31,6 +31,8 @@ if [[ "${USER_UID}" != "root" ]]; then
     chown docker:docker -R /var/log/php
 fi
 
+ssh-keygen -A \
+
 if [[ ! -z "${XDEBUG_DISABLE}" ]] && [[ "${XDEBUG_DISABLE}" -ne "0" ]]; then
   sed -i "s/zend_extension/;zend_extension/" $PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini
 else
@@ -83,7 +85,6 @@ else
 fi
 
 if [[ "$@" = "${CMD}" ]] || [[ "`echo "$@" | awk '/ +/{ printf "%s",$1 }'`" = "${CMD}" ]]; then
-  echo "root"
   exec "$@"
 else
   exec "sudo" "-E" "-H" "-u" docker "$@"

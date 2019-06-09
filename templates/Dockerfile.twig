@@ -38,7 +38,6 @@ RUN set -xe \
     libjpeg-turbo-dev \
 {% block install %}{% endblock %}
   \
-{% block custom %}{% endblock %}
   && groupmod -n docker www-data \
   && usermod -l docker -m -d /home/docker -s /sbin/bash -G wheel -a www-data \
   && sed -e 's;^# \(%wheel.*NOPASSWD.*\);\1;g' -i /etc/sudoers \

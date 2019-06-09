@@ -1,3 +1,8 @@
 {% extends "docker-entrypoint.twig" %}
 
 {% block command %}/usr/sbin/sshd{% endblock %}
+
+{% block custom %}
+
+ssh-keygen -A \
+{% endblock %}

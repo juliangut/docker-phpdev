@@ -83,7 +83,6 @@ else
 fi
 
 if [[ "$@" = "${CMD}" ]] || [[ "`echo "$@" | awk '/ +/{ printf "%s",$1 }'`" = "${CMD}" ]]; then
-  echo "root"
   exec "$@"
 else
   exec "sudo" "-E" "-H" "-u" docker "$@"

@@ -112,7 +112,7 @@ _Note: if you use your custom format remember to escape the string for use in "s
 
 _Where did USER_UID and USER_GID environment variables go?_
 
-On previous versions of this containers there was a need to set user's UID and GID in order to avoid file permission problems between container's and host's user, either by environment variables or docker run parameters.
+On previous versions of this containers there was a need to set user's UID and GID in order to avoid file permission problems between container's and host's user, either by environment variables or docker run parameters
 
 This need has been completely removed and the situation has been vastly improved by automatically detecting those values from mounted `app` volume thanks to some _heuristic magic_. This means anything you do inside container will have same permissions as your host's user, as long as you mount the volume 
 
@@ -185,7 +185,7 @@ docker exec -it [container_id] /bin/bash
 
 ### Using Xdebug
 
-It is **not recommended** to have a fixed remote session identifier and/or an auto-started remote session using "XDEBUG_IDE_KEY" and "XDEBUG_REMOTE_AUTOSTART" environment variables respectively.
+It is **not recommended** to have a fixed remote session identifier and/or an auto-started remote session using "XDEBUG_IDE_KEY" and "XDEBUG_REMOTE_AUTOSTART" environment variables respectively
 
 The preferred way of starting a remote debug session is by setting remote session identifier dynamically by one of the following means:
 
@@ -284,7 +284,7 @@ systemctl restart docker.service
 
 ## Extending the image
 
-The image comes with just the minimum PHP extensions, you most probably will need more.
+The image comes with just the minimum PHP extensions, you most probably will need more
 
 ```
 FROM juliangut/phpdev:latest
@@ -297,10 +297,20 @@ RUN docker-php-ext-install \
   && docker-php-ext-enable \
     mongodb \
     redis \
-  \
-  && composer global require phpunit/phpunit
+
+USER docker
+
+RUN composer global require phpunit/phpunit
+
+USER root
 ```
+
+_You should always return to root user_
+
+## Contributing
+
+Found a bug or have a feature request? [Please open a new issue](https://github.com/phpgears/event-sourcing/issues). Have a look at existing issues before
 
 ## License
 
-See file [LICENSE](https://github.com/juliangut/docker-phpdev/blob/master/LICENSE) included with the source code for a copy of the license terms.
+See file [LICENSE](https://github.com/juliangut/docker-phpdev/blob/master/LICENSE) included with the source code for a copy of the license terms
