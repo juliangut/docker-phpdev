@@ -54,7 +54,7 @@
         "7.4": {
           "php_version": "7.4RC",
           "php_image": "php:7.4-rc-alpine",
-          "xdebug_version": "2.8.0beta1",
+          "xdebug_version": "2.8.0beta2",
           "root_allowed": false
         },
         "7.3": {
@@ -77,7 +77,7 @@
         "7.4": {
           "php_version": "7.4RC",
           "php_image": "php:7.4-rc-fpm-alpine",
-          "xdebug_version": "2.8.0beta1"
+          "xdebug_version": "2.8.0beta2"
         },
         "7.3": {
           "php_version": "7.3",
@@ -96,7 +96,7 @@
         "7.4": {
           "php_version": "7.4RC",
           "php_image": "php:7.4-rc-alpine",
-          "xdebug_version": "2.8.0beta1"
+          "xdebug_version": "2.8.0beta2"
         },
         "7.3": {
           "php_version": "7.3",
