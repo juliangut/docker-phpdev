@@ -63,6 +63,13 @@ Jenkins version is specially designed to be run as a Jenkins slave on a CI pipel
 
 ## Environment variables
 
+#### STDOUT_LOG
+
+* Type: int
+* Default: 0
+
+Output logs to stdout by setting a non zero value
+
 #### XDEBUG_DISABLE
 
 * Type: int
@@ -117,7 +124,7 @@ _Where did USER_UID and USER_GID environment variables go?_
 
 On previous versions of this containers there was a need to set user's UID and GID in order to avoid file permission problems between container's and host's user, either by environment variables or docker run parameters
 
-This need has been completely removed and the situation has been vastly improved by automatically detecting those values from mounted `app` volume thanks to some _heuristic magic_. This means anything you do inside container will have same permissions as your host's user, as long as you mount the volume 
+This need has been completely removed and the execution has been vastly improved by automatically detecting those values from mounted `app` volume thanks to some _heuristic magic_. This means anything you do inside container will have the same permissions as your host's user, as long as you mount the volume 
 
 ## Volumes
 

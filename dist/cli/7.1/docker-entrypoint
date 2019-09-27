@@ -22,13 +22,18 @@ fi
 # alter docker user and group based on mounted volume
 USER_UID=`ls -l / | grep app | awk '/ +/{ printf "%s",$3 }'`
 if [[ "${USER_UID}" != "root" ]]; then
-    USER_GID=`ls -l / | grep app | awk '/ +/{ printf "%s",$4 }'`
+  USER_GID=`ls -l / | grep app | awk '/ +/{ printf "%s",$4 }'`
 
-    groupmod -g $USER_GID docker
-    usermod -u $USER_UID docker
+  groupmod -g $USER_GID docker
+  usermod -u $USER_UID docker
 
-    chown docker:docker -R /home/docker
-    chown docker:docker -R /var/log/php
+  chown docker:docker -R /home/docker
+  chown docker:docker -R /var/log/php
+fi
+
+if [[ ! -z "${STDOUT_LOG}" ]] && [[ "${STDOUT_LOG}" -ne "0" ]]; then
+  sed -i "s/error_log\s*=.*/error_log = \/proc\/self\/fd\/2/" $PHP_INI_DIR/conf.d/zz-php.ini
+  sed -i "s/xdebug.remote_log\s*=.*/xdebug.remote_log = \/proc\/self\/fd\/2/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
 fi
 
 if [[ ! -z "${XDEBUG_DISABLE}" ]] && [[ "${XDEBUG_DISABLE}" -ne "0" ]]; then
