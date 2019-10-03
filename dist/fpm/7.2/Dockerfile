@@ -14,14 +14,14 @@ ARG BUILD_DATE
 ARG VCS_REF
 ARG XDEBUG_VERSION
 
-LABEL org.label-schema.schema-version="1.0.0-rc1" \
-  org.label-schema.name="juliangut/phpdev" \
-  org.label-schema.description="PHP/PHP-FPM/Jenkins Docker image for development/CI, based on Alpine Linux for minimal size" \
-  org.label-schema.vcs-url="https://github.com/juliangut/docker-phpdev" \
-  org.label-schema.vcs-ref="$VCS_REF" \
-  org.label-schema.build-date="$BUILD_DATE" \
-  com.juliangut.maintainer="Julián Gutiérrez (juliangut@gmail.com)" \
-  com.juliangut.license="BSD-3-Clause" \
+LABEL org.opencontainers.image.title="juliangut/phpdev" \
+  org.opencontainers.image.description="PHP/PHP-FPM/Jenkins Docker image for development/CI, based on Alpine Linux for minimal size" \
+  org.opencontainers.image.url="https://github.com/juliangut/docker-phpdev" \
+  org.opencontainers.image.source="https://github.com/juliangut/docker-phpdev/tree/master/dist/fpm/7.2" \
+  org.opencontainers.image.revision="$VCS_REF" \
+  org.opencontainers.image.created="$BUILD_DATE" \
+  org.opencontainers.image.authors="Julián Gutiérrez (juliangut@gmail.com)" \
+  org.opencontainers.image.licenses="BSD-3-Clause" \
   com.juliangut.php.version="7.2" \
   com.juliangut.php.extensions="bcmath, curl, gd, mbstring, opcache, openssl, xdebug, zlib" \
   com.juliangut.xdebug.version="$XDEBUG_VERSION"

@@ -208,12 +208,13 @@ EOL;
         array $hookFiles
     ) {
         foreach ($versions as $version => $data) {
-            $data = \array_merge($this->defaultData, $data);
-
             $versionDir = $directory . '/' . $version;
             if (!\mkdir($versionDir, 0755, true) && !\is_dir($versionDir)) {
                 throw new \RuntimeException(\sprintf('Not possible to create "%s" directory', $versionDir));
             }
+
+            $sourcePath = basename($directory) . '/' . $version;
+            $data = \array_merge($this->defaultData, ['source_path' => $sourcePath], $data);
 
             $this->scaffoldTemplateFiles($templateFiles, $versionDir, $data);
 
