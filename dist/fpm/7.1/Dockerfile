@@ -85,9 +85,22 @@ RUN set -xe \
   && chown docker:docker -R /var/log/php \
   && chmod 774 -R /var/log/php
 
-ENV COMPOSER_ALLOW_SUPERUSER=1 \
+ENV STDOUT_LOG=0 \
+  \
+  XDEBUG_DISABLE=0 \
+  XDEBUG_REMOTE_AUTOSTART=0 \
+  XDEBUG_REMOTE_PORT=9000 \
+  XDEBUG_PROFILER_ENABLE=0 \
+  XDEBUG_AUTO_TRACE=0 \
+  \
+  OPCACHE_VALIDATE_TIMESTAMP=1 \
+  OPCACHE_MEMORY_CONSUMPTION=128 \
+  OPCACHE_MAX_ACCELERATED_FILES=1000 \
+  \
+  COMPOSER_ALLOW_SUPERUSER=1 \
   COMPOSER_DISABLE_XDEBUG_WARN=1 \
-  PATH="/root/.composer/vendor/bin:$PATH"
+  \
+  PATH="/home/docker/.composer/vendor/bin:$PATH"
 
 COPY php.ini $PHP_INI_DIR/conf.d/zz-php.ini
 COPY opcache.ini $PHP_INI_DIR/conf.d/zz-opcache.ini
@@ -104,3 +117,13 @@ RUN chmod +x /usr/local/bin/docker-entrypoint
 ENTRYPOINT ["docker-entrypoint"]
 
 CMD ["php-fpm"]
+
+###
+#
+# NOTE!
+#
+# This file has been automatically generated
+#
+# Do not edit it directly
+#
+###

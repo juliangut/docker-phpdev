@@ -63,35 +63,39 @@ Jenkins version is specially designed to be run as a Jenkins slave on a CI pipel
 
 ## Environment variables
 
-#### STDOUT_LOG
+#### General
+
+###### STDOUT_LOG
 
 * Type: int
 * Default: 0
 
 Output logs to stdout by setting a non zero value
 
-#### XDEBUG_DISABLE
+#### Xdebug
+
+###### XDEBUG_DISABLE
 
 * Type: int
 * Default: 0
 
 Disable Xdebug by setting a non zero value
 
-#### XDEBUG_REMOTE_HOST
+###### XDEBUG_REMOTE_HOST
 
 * Type: string
-* Default: auto discovered host's ip
+* Default: auto-discovered host's ip
 
 Remote server (host) IP to connect to
 
-#### XDEBUG_REMOTE_PORT
+###### XDEBUG_REMOTE_PORT
 
 * Type: integer
 * Default: 9000
 
 Remote server port to connect to, IDE should be listening on this port
 
-#### XDEBUG_REMOTE_AUTOSTART
+###### XDEBUG_REMOTE_AUTOSTART
 
 * Type: integer
 * Default: 0
@@ -99,7 +103,21 @@ Remote server port to connect to, IDE should be listening on this port
 
 Auto start remote debugging
 
-#### XDEBUG_IDE_KEY
+###### XDEBUG_PROFILER_ENABLE
+
+* Type: int
+* Default: 0
+
+Enable Xdebug profiler by setting a non zero value. Output dir es /var/log/php
+
+###### XDEBUG_AUTO_TRACE
+
+* Type: int
+* Default: 0
+
+Enable Xdebug trace by setting a non zero value. Output dir es /var/log/php
+
+###### XDEBUG_IDE_KEY
 
 * Type: string
 * Default: not set
@@ -109,7 +127,7 @@ Fixed remote session identifier
 
 _Note: escape the string for use in sed_
 
-#### XDEBUG_FILE_LINK_FORMAT
+###### XDEBUG_FILE_LINK_FORMAT
 
 * Type: string
 * Default: not set
@@ -118,13 +136,36 @@ Protocol format to integrate IDEs with stack trace file links. You can provide y
 
 _Note: if you use your custom format remember to escape the string for use in "sed" command_
 
+#### OPcache
+
+###### OPCACHE_VALIDATE_TIMESTAMP
+
+* Type: int
+* Default: 1
+
+Disable file timestamp validation by setting to 0
+
+###### OPCACHE_MEMORY_CONSUMPTION
+
+* Type: int
+* Default: 128
+
+Memory consumption limit in megabytes
+
+###### OPCACHE_MAX_ACCELERATED_FILES
+
+* Type: int
+* Default: 1000
+
+Max number of in-memory cached files
+
 #### USER_UID and USER_GID?
 
 _Where did USER_UID and USER_GID environment variables go?_
 
-On previous versions of this containers there was a need to set user's UID and GID in order to avoid file permission problems between container's and host's user, either by environment variables or docker run parameters
+On previous versions of the containers there was a need to set user's UID and GID in order to avoid file permission problems between container's and host's user, either by environment variables or docker run parameters
 
-This need has been completely removed and the execution has been vastly improved by automatically detecting those values from mounted `app` volume thanks to some _heuristic magic_. This means anything you do inside container will have the same permissions as your host's user, as long as you mount the volume 
+This need has been completely removed and the execution has been vastly improved by automatically detecting those values from mounted `app` volume thanks to some _heuristic magic_. This means anything you do inside container will have the same permissions as your host's user, as long as you mount the volume
 
 ## Volumes
 
@@ -134,7 +175,7 @@ The default working directory. You should mount your project root path in this v
 
 #### /var/log/php
 
-Logging volume for PHP and PHP-FPM logs and Xdebug log, profile and trace files
+Logging volume for PHP logs (PHP-FPM too) and Xdebug log, profile and trace files
 
 ## Usage
 
@@ -199,8 +240,9 @@ It is **not recommended** to have a fixed remote session identifier and/or an au
 
 The preferred way of starting a remote debug session is by setting remote session identifier dynamically by one of the following means:
 
-* On browser by setting "XDEBUG_SESSION" cookie with the session identifier as its value
-* On HTTP request (cURL) by adding "XDEBUG_SESSION_START" parameter to the URI or as a POST parameter. eg: `curl -X POST -F "XDEBUG_SESSION_START=PHPSTORM" http://example.local`
+* By setting "XDEBUG_SESSION" cookie with the session identifier as its value. eg: `curl -b "XDEBUG_SESSION=session-identifier" http://example.local/`
+* On HTTP request by adding "XDEBUG_SESSION_START" query parameter to the URI.  eg: `curl http://example.local?XDEBUG_SESSION_START=session-identifier`
+* On POST requests by adding a "XDEBUG_SESSION_START" parameter. eg: `curl -X POST -F "XDEBUG_SESSION_START=session-identifier" http://example.local`
 
 ##### Xdebug profiler
 
@@ -212,7 +254,7 @@ To activate the trace set "XDEBUG_TRACE" cookie. Trace `*.xt` files will be save
 
 #### Browser support
 
-There are [browser plugins/extensions](https://xdebug.org/docs/remote#starting) to toggle these debug cookies easily
+There are [browser plugins/extensions](https://xdebug.org/docs/remote#starting) to very easily toggle these cookies
 
 #### Debugging with PHPStorm
 
@@ -221,7 +263,7 @@ There are [browser plugins/extensions](https://xdebug.org/docs/remote#starting) 
 ![Xdebug configuration](https://raw.githubusercontent.com/juliangut/docker-phpdev/master/img_xdebug_config.jpg)
 
 * Port must be the same previously defined in `XDEBUG_REMOTE_PORT` environment variable
-* If you're using any of juliangut/pphpdev:fpm* versions remember that **port 9000 has already been taken by PHP-FPM, use 9001** or any other you please instead
+* If you're using any of juliangut/phpdev:fpm* versions remember that **port 9000 has already been taken by PHP-FPM, use 9001** or any other you please instead
 
 ##### Create a server
 
@@ -257,7 +299,6 @@ services:
       - 8080:8080
     environment:
       PHP_IDE_CONFIG: serverName=Test
-      XDEBUG_FILE_LINK_FORMAT: phpstorm
     volumes:
       - .:/app
     command: "php -S 0.0.0.0:8080 -t /app/public"
