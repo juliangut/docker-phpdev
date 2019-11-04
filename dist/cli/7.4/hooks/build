@@ -19,5 +19,5 @@ echo "Build hook running"
 docker build \
     --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
     --build-arg VCS_REF=`git rev-parse --short HEAD` \
-    --build-arg XDEBUG_VERSION=2.8.0beta2 \
+    --build-arg XDEBUG_VERSION=`curl -s https://pecl.php.net/feeds/pkg_xdebug.rss | grep "<title>xdebug [0-9]*\.[0-9]*\.[0-9]*</title>" | sed 's/\s\+/ /g' | awk -F '[ <]' '{ print $4; exit }'` \
     -t $IMAGE_NAME .
