@@ -11,15 +11,8 @@ Bundled with:
 
 * UTC timezone
 * Latest [Xdebug](https://xdebug.org/), configured and enabled for remote debugging
-* [Composer](https://getcomposer.org/) installed globally
-* Additionally installed PHP extensions:
-  * [Multibyte String](http://php.net/manual/en/book.mbstring.php)
-  * [cURL](http://php.net/manual/en/book.curl.php)
-  * [OpenSSL](http://php.net/manual/en/book.openssl.php)
-  * [Zlib](http://php.net/manual/en/book.zlib.php)
-  * [BCMath](http://php.net/manual/en/book.bc.php)
-  * [GD](http://php.net/manual/en/book.image.php)
-  * [OPcache](http://php.net/manual/en/book.opcache.php)
+* [Composer](https://getcomposer.org/) installed globally (with [Prestissimo](https://github.com/hirak/prestissimo))
+* Additionally installed PHP extensions: [Multibyte String](http://php.net/manual/en/book.mbstring.php), [cURL](http://php.net/manual/en/book.curl.php), [OpenSSL](http://php.net/manual/en/book.openssl.php), [Zlib](http://php.net/manual/en/book.zlib.php), [BCMath](http://php.net/manual/en/book.bc.php), [GD](http://php.net/manual/en/book.image.php), [OPcache](http://php.net/manual/en/book.opcache.php)
 
 ## Available tags
 

@@ -57,6 +57,7 @@ RUN set -xe \
     bcmath \
     opcache \
   \
+  && pecl update-channels \
   && pecl install \
     xdebug-$XDEBUG_VERSION \
   \

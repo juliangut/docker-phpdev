@@ -55,6 +55,7 @@ RUN set -xe \
     opcache \
   \
 {% if use_xdebug %}
+  && pecl update-channels \
   && pecl install \
     xdebug-$XDEBUG_VERSION \
   \
