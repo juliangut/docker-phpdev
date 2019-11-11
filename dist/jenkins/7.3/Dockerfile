@@ -88,6 +88,9 @@ RUN set -xe \
   && mv /root/.composer /home/docker/.composer \
   && chown docker:docker -R /home/docker/.composer \
   \
+  && mkdir /app \
+  && chown docker:docker /app \
+  \
   && mkdir -p /var/log/php \
   && touch /var/log/php/xdebug.log \
   && chown docker:docker -R /var/log/php \

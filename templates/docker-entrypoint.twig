@@ -13,7 +13,7 @@ fi
 
 # alter docker user and group based on mounted volume
 USER_UID=`ls -l / | grep app | awk '/ +/{ printf "%s",$3 }'`
-if [[ "${USER_UID}" != "root" ]]; then
+if [[ "${USER_UID}" != "docker" ]]; then
   USER_GID=`ls -l / | grep app | awk '/ +/{ printf "%s",$4 }'`
 
   groupmod -g $USER_GID docker
