@@ -3,10 +3,10 @@
 FROM {{ php_image }}
 
 ARG BUILD_DATE
-ARG VCS_REF{% if use_xdebug %}
-
-ARG XDEBUG_VERSION{% endif %}
-
+ARG VCS_REF
+{% if use_xdebug %}
+ARG XDEBUG_VERSION
+{% endif %}
 
 LABEL org.opencontainers.image.title="juliangut/phpdev" \
   org.opencontainers.image.description="PHP/PHP-FPM/Jenkins Docker image for development/CI, based on Alpine Linux for minimal size" \
@@ -36,6 +36,7 @@ RUN set -xe \
     freetype-dev \
     libpng-dev \
     libjpeg-turbo-dev \
+    libwebp-dev \
 {% block install %}{% endblock %}
   \
   && groupmod -n docker www-data \
@@ -45,9 +46,16 @@ RUN set -xe \
 {% block user %}{% endblock %}
   && docker-php-ext-configure \
     gd \
-      --with-freetype-dir=/usr/include/ \
-      --with-png-dir=/usr/include/ \
-      --with-jpeg-dir=/usr/include/ \
+{% if php_version < 7.4 %}
+      --with-freetype-dir \
+      --with-png-dir \
+      --with-jpeg-dir \
+      --with-webp-dir \
+{% else %}
+      --with-freetype \
+      --with-jpeg \
+      --with-webp \
+{% endif %}
   \
   && docker-php-ext-install \
     gd \
@@ -83,8 +91,10 @@ RUN set -xe \
   && mkdir /app \
   && chown docker:docker /app \
   \
-  && mkdir -p /var/log/php{% if use_xdebug %} \
-  && touch /var/log/php/xdebug.log{% endif %} \
+  && mkdir -p /var/log/php \
+{% if use_xdebug %}
+  && touch /var/log/php/xdebug.log \
+{% endif %}
   && chown docker:docker -R /var/log/php \
   && chmod 774 -R /var/log/php
 
@@ -100,16 +110,18 @@ ENV STDOUT_LOG=0 \
   OPCACHE_MEMORY_CONSUMPTION=128 \
   OPCACHE_MAX_ACCELERATED_FILES=1000 \
   \
-  COMPOSER_ALLOW_SUPERUSER=1{% if use_xdebug %} \
-  COMPOSER_DISABLE_XDEBUG_WARN=1{% endif %} \
+  COMPOSER_ALLOW_SUPERUSER=1 \
+{% if use_xdebug %}
+  COMPOSER_DISABLE_XDEBUG_WARN=1 \
+{% endif %}
   \
   PATH="/home/docker/.composer/vendor/bin:$PATH"
 
 COPY php.ini $PHP_INI_DIR/conf.d/zz-php.ini
-COPY opcache.ini $PHP_INI_DIR/conf.d/zz-opcache.ini{% if use_xdebug %}
-
-COPY xdebug.ini $PHP_INI_DIR/conf.d/zz-xdebug.ini{% endif %}
-
+COPY opcache.ini $PHP_INI_DIR/conf.d/zz-opcache.ini
+{% if use_xdebug %}
+COPY xdebug.ini $PHP_INI_DIR/conf.d/zz-xdebug.ini
+{% endif %}
 {% block files %}{% endblock %}
 
 VOLUME /app /var/log/php

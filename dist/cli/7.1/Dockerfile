@@ -41,6 +41,7 @@ RUN set -xe \
     freetype-dev \
     libpng-dev \
     libjpeg-turbo-dev \
+    libwebp-dev \
   \
   && groupmod -n docker www-data \
   && usermod -l docker -m -d /home/docker -s /sbin/bash -G wheel -a www-data \
@@ -48,9 +49,10 @@ RUN set -xe \
   \
   && docker-php-ext-configure \
     gd \
-      --with-freetype-dir=/usr/include/ \
-      --with-png-dir=/usr/include/ \
-      --with-jpeg-dir=/usr/include/ \
+      --with-freetype-dir \
+      --with-png-dir \
+      --with-jpeg-dir \
+      --with-webp-dir \
   \
   && docker-php-ext-install \
     gd \

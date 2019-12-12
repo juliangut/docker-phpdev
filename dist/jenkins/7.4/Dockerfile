@@ -41,6 +41,7 @@ RUN set -xe \
     freetype-dev \
     libpng-dev \
     libjpeg-turbo-dev \
+    libwebp-dev \
     openjdk8-jre \
     openssh \
     git \
@@ -55,9 +56,9 @@ RUN set -xe \
   \
   && docker-php-ext-configure \
     gd \
-      --with-freetype-dir=/usr/include/ \
-      --with-png-dir=/usr/include/ \
-      --with-jpeg-dir=/usr/include/ \
+      --with-freetype \
+      --with-jpeg \
+      --with-webp \
   \
   && docker-php-ext-install \
     gd \
