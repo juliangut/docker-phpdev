@@ -8,7 +8,7 @@
 #
 ###
 
-FROM php:7.4-rc-alpine
+FROM php:7.4-alpine
 
 ARG BUILD_DATE
 ARG VCS_REF
@@ -22,7 +22,7 @@ LABEL org.opencontainers.image.title="juliangut/phpdev" \
   org.opencontainers.image.created="$BUILD_DATE" \
   org.opencontainers.image.authors="Julián Gutiérrez (juliangut@gmail.com)" \
   org.opencontainers.image.licenses="BSD-3-Clause" \
-  com.juliangut.php.version="7.4RC" \
+  com.juliangut.php.version="7.4" \
   com.juliangut.php.extensions="bcmath, curl, gd, mbstring, opcache, openssl, xdebug, zlib" \
   com.juliangut.xdebug.version="$XDEBUG_VERSION"
 

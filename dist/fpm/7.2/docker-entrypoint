@@ -35,7 +35,7 @@ if [[ "${STDOUT_LOG}" -ne "0" ]]; then
   sed -i "s/error_log\s*=.*/error_log = \/proc\/self\/fd\/2/" $PHP_INI_DIR/conf.d/zz-php.ini
   sed -i "s/xdebug.remote_log\s*=.*/xdebug.remote_log = \/proc\/self\/fd\/2/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
 fi
-if [[ ! -z "${STDOUT_LOG}" ]] && [[ "${STDOUT_LOG}" -ne "0" ]]; then
+if [[ "${STDOUT_LOG}" -ne "0" ]]; then
   sed -i "s/error_log\s*=.*/error_log = \/proc\/self\/fd\/2/" $PHP_FPM_CONF_DIR/zz-php-fpm.conf
 fi
 

@@ -1,7 +1,7 @@
 {% extends "docker-entrypoint.twig" %}
 
 {% block custom %}
-if [[ ! -z "${STDOUT_LOG}" ]] && [[ "${STDOUT_LOG}" -ne "0" ]]; then
+if [[ "${STDOUT_LOG}" -ne "0" ]]; then
   sed -i "s/error_log\s*=.*/error_log = \/proc\/self\/fd\/2/" $PHP_FPM_CONF_DIR/zz-php-fpm.conf
 fi
 {% endblock %}

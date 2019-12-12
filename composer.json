@@ -52,8 +52,8 @@
     "versions": {
       "cli": {
         "7.4": {
-          "php_version": "7.4RC",
-          "php_image": "php:7.4-rc-alpine",
+          "php_version": "7.4",
+          "php_image": "php:7.4-alpine",
           "root_allowed": false
         },
         "7.3": {
@@ -74,8 +74,8 @@
       },
       "fpm": {
         "7.4": {
-          "php_version": "7.4RC",
-          "php_image": "php:7.4-rc-fpm-alpine"
+          "php_version": "7.4",
+          "php_image": "php:7.4-fpm-alpine"
         },
         "7.3": {
           "php_version": "7.3",
@@ -92,8 +92,8 @@
       },
       "jenkins": {
         "7.4": {
-          "php_version": "7.4RC",
-          "php_image": "php:7.4-rc-alpine"
+          "php_version": "7.4",
+          "php_image": "php:7.4-alpine"
         },
         "7.3": {
           "php_version": "7.3",
