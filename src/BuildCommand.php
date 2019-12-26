@@ -87,7 +87,7 @@ EOL;
     protected function configure()
     {
         $this->setName(static::NAME)
-            ->setDescription('Docker images scaffolder')
+            ->setDescription('Docker images scaffold')
             ->addOption('dir', 'd', InputArgument::OPTIONAL, 'Distribution directory', 'dist');
     }
 
@@ -213,8 +213,11 @@ EOL;
                 throw new \RuntimeException(\sprintf('Not possible to create "%s" directory', $versionDir));
             }
 
-            $sourcePath = basename($directory) . '/' . $version;
-            $data = \array_merge($this->defaultData, ['source_path' => $sourcePath], $data);
+            $data = \array_merge(
+                $this->defaultData,
+                ['source_path' => basename($directory) . '/' . $version],
+                $data
+            );
 
             $this->scaffoldTemplateFiles($templateFiles, $versionDir, $data);
 
