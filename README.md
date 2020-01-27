@@ -67,7 +67,7 @@ PHP 7.1 reached end of life on 1 December 2019, all tags related to this version
 * Type: int
 * Default: 0
 
-Output logs to stdout by setting a non zero value
+Output logs to stdout by setting a non zero value. By default PHP errors are sent to `/var/log/php/php.log`
 
 #### Xdebug
 
