@@ -26,7 +26,6 @@ Bundled with:
 | 7.4    | PHP 7.4    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/cli/7.4/Dockerfile) | [![Docker Layers](https://img.shields.io/microbadger/layers/juliangut/phpdev/7.4?style=flat-square)](https://microbadger.com/images/juliangut/phpdev:7.4)       | ![Docker size](https://img.shields.io/microbadger/image-size/juliangut/phpdev/7.4?label=size&style=flat-square)       |
 | 7.3    | PHP 7.3    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/cli/7.3/Dockerfile) | [![Docker Layers](https://img.shields.io/microbadger/layers/juliangut/phpdev/7.3?style=flat-square)](https://microbadger.com/images/juliangut/phpdev:7.3)       | ![Docker size](https://img.shields.io/microbadger/image-size/juliangut/phpdev/7.3?label=size&style=flat-square)       |
 | 7.2    | PHP 7.2    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/cli/7.2/Dockerfile) | [![Docker Layers](https://img.shields.io/microbadger/layers/juliangut/phpdev/7.2?style=flat-square)](https://microbadger.com/images/juliangut/phpdev:7.2)       | ![Docker size](https://img.shields.io/microbadger/image-size/juliangut/phpdev/7.2?label=size&style=flat-square)       |
-| 7.1    | PHP 7.1    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/cli/7.1/Dockerfile) | [![Docker Layers](https://img.shields.io/microbadger/layers/juliangut/phpdev/7.1?style=flat-square)](https://microbadger.com/images/juliangut/phpdev:7.1)       | ![Docker size](https://img.shields.io/microbadger/image-size/juliangut/phpdev/7.1?label=size&style=flat-square)       |
 
 #### FPM
 
@@ -38,7 +37,6 @@ Bundled with:
 | 7.4-fpm    | PHP 7.4    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/7.4/Dockerfile) | [![Docker Layers](https://img.shields.io/microbadger/layers/juliangut/phpdev/7.4-fpm?style=flat-square)](https://microbadger.com/images/juliangut/phpdev:7.4-fpm)           | ![Docker size](https://img.shields.io/microbadger/image-size/juliangut/phpdev/7.4-fpm?label=size&style=flat-square)    |
 | 7.3-fpm    | PHP 7.3    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/7.3/Dockerfile) | [![Docker Layers](https://img.shields.io/microbadger/layers/juliangut/phpdev/7.3-fpm?style=flat-square)](https://microbadger.com/images/juliangut/phpdev:7.3-fpm)           | ![Docker size](https://img.shields.io/microbadger/image-size/juliangut/phpdev/7.3-fpm?label=size&style=flat-square)    |
 | 7.2-fpm    | PHP 7.2    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/7.2/Dockerfile) | [![Docker Layers](https://img.shields.io/microbadger/layers/juliangut/phpdev/7.2-fpm?style=flat-square)](https://microbadger.com/images/juliangut/phpdev:7.2-fpm)           | ![Docker size](https://img.shields.io/microbadger/image-size/juliangut/phpdev/7.2-fpm?label=size&style=flat-square)    |
-| 7.1-fpm    | PHP 7.1    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/7.1/Dockerfile) | [![Docker Layers](https://img.shields.io/microbadger/layers/juliangut/phpdev/7.1-fpm?style=flat-square)](https://microbadger.com/images/juliangut/phpdev:7.1-fpm)           | ![Docker size](https://img.shields.io/microbadger/image-size/juliangut/phpdev/7.1-fpm?label=size&style=flat-square)    |
 
 #### Jenkins
 
@@ -50,13 +48,8 @@ Bundled with:
 | 7.4-jenkins    | PHP 7.4    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/jenkins/7.4/Dockerfile) | [![Docker Layers](https://img.shields.io/microbadger/layers/juliangut/phpdev/7.4-jenkins?style=flat-square)](https://microbadger.com/images/juliangut/phpdev:7.4-jenkins)           | ![Docker size](https://img.shields.io/microbadger/image-size/juliangut/phpdev/7.4-jenkins?label=size&style=flat-square)    |
 | 7.3-jenkins    | PHP 7.3    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/jenkins/7.3/Dockerfile) | [![Docker Layers](https://img.shields.io/microbadger/layers/juliangut/phpdev/7.3-jenkins?style=flat-square)](https://microbadger.com/images/juliangut/phpdev:7.3-jenkins)           | ![Docker size](https://img.shields.io/microbadger/image-size/juliangut/phpdev/7.3-jenkins?label=size&style=flat-square)    |
 | 7.2-jenkins    | PHP 7.2    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/jenkins/7.2/Dockerfile) | [![Docker Layers](https://img.shields.io/microbadger/layers/juliangut/phpdev/7.2-jenkins?style=flat-square)](https://microbadger.com/images/juliangut/phpdev:7.2-jenkins)           | ![Docker size](https://img.shields.io/microbadger/image-size/juliangut/phpdev/7.2-jenkins?label=size&style=flat-square)    |
-| 7.1-jenkins    | PHP 7.1    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/jenkins/7.1/Dockerfile) | [![Docker Layers](https://img.shields.io/microbadger/layers/juliangut/phpdev/7.1-jenkins?style=flat-square)](https://microbadger.com/images/juliangut/phpdev:7.1-jenkins)           | ![Docker size](https://img.shields.io/microbadger/image-size/juliangut/phpdev/7.1-jenkins?label=size&style=flat-square)    |
 
 Jenkins version is specially designed to be run as a Jenkins slave on a CI pipeline
-
-### Important support notice!
-
-PHP 7.1 reached end of life on 1 December 2019, all tags related to this version of PHP will be removed by the end of January 2020 (no exact date). Start migration to newer versions as soon as possible
 
 ## Environment variables
 
