@@ -331,20 +331,31 @@ The image comes with just the minimum PHP extensions, you most probably will nee
 FROM juliangut/phpdev:latest
 
 # Add PHP extensions
-RUN docker-php-ext-install \
+RUN set -xe \
+  && apk add --no-cache --virtual .build-deps \
+    $PHPIZE_DEPS \
+  \
+  && docker-php-ext-configure \
     pdo_mysql \
+      --with-pdo-mysql=mysqlnd \
+  && docker-php-ext-install \
+    pdo_mysql \
+  \
   && pecl install \
     mongodb \
     redis \
   && docker-php-ext-enable \
     mongodb \
     redis \
+  \
+  && apk del .build-deps \
+  && rm -rf /tmp/* /var/cache/apk/* /usr/share/php
 
-# Add global composer dependencies
+# Add global composer dependencies with user 'docker'
 USER docker
 RUN composer global require phpunit/phpunit
 
-# You should always return to root user
+# You should always return to user 'root'
 USER root
 ```
 
