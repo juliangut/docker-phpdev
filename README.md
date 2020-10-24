@@ -11,7 +11,7 @@ Bundled with:
 
 * UTC timezone
 * Latest [Xdebug](https://xdebug.org/), configured and enabled for remote debugging
-* [Composer](https://getcomposer.org/) installed globally (with [Prestissimo](https://github.com/hirak/prestissimo))
+* Latest [Composer](https://getcomposer.org/) installed globally
 * Additionally installed PHP extensions: [Multibyte String](http://php.net/manual/en/book.mbstring.php), [cURL](http://php.net/manual/en/book.curl.php), [OpenSSL](http://php.net/manual/en/book.openssl.php), [Zlib](http://php.net/manual/en/book.zlib.php), [BCMath](http://php.net/manual/en/book.bc.php), [GD](http://php.net/manual/en/book.image.php), [OPcache](http://php.net/manual/en/book.opcache.php)
 
 ## Available tags
@@ -49,7 +49,7 @@ Bundled with:
 | 7.3-jenkins    | PHP 7.3    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/jenkins/7.3/Dockerfile) | [![Docker layers](https://img.shields.io/microbadger/layers/juliangut/phpdev/7.3-jenkins?style=flat-square)](https://microbadger.com/images/juliangut/phpdev:7.3-jenkins)       | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/7.3-jenkins?label=size&style=flat-square)    |
 | 7.2-jenkins    | PHP 7.2    | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/jenkins/7.2/Dockerfile) | [![Docker layers](https://img.shields.io/microbadger/layers/juliangut/phpdev/7.2-jenkins?style=flat-square)](https://microbadger.com/images/juliangut/phpdev:7.2-jenkins)       | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/7.2-jenkins?label=size&style=flat-square)    |
 
-Jenkins version is specially designed to be run as a Jenkins slave on a CI pipeline
+Jenkins' images are specially designed to be run as a Jenkins slave on a CI pipeline
 
 ## Environment variables
 
@@ -76,7 +76,7 @@ Disable Xdebug by setting a non zero value
 * Type: string
 * Default: auto-discovered host's ip
 
-Remote server (host) IP to connect to
+Remote server IP (host IP) to connect to
 
 ###### XDEBUG_REMOTE_PORT
 
@@ -89,7 +89,7 @@ Remote server port to connect to, IDE should be listening on this port
 
 * Type: integer
 * Default: 0
-* _Not recommended_
+* _**Usage not recommended**, read Using Xdebug section_
 
 Auto start remote debugging
 
@@ -111,7 +111,7 @@ Enable Xdebug trace by setting a non zero value. Output dir es /var/log/php
 
 * Type: string
 * Default: not set
-* _Not recommended_
+* _**Usage not recommended**, read Using Xdebug section_ 
 
 Fixed remote session identifier
 
@@ -149,14 +149,6 @@ Memory consumption limit in megabytes
 
 Max number of in-memory cached files
 
-#### USER_UID and USER_GID?
-
-_Where did USER_UID and USER_GID environment variables go?_
-
-On previous versions of the containers there was a need to set user's UID and GID in order to avoid file permission problems between container's and host's user, either by environment variables or docker run parameters
-
-This need has been completely removed and the execution has been vastly improved by automatically detecting those values from mounted `app` volume thanks to some _heuristic magic_. This means anything you do inside container will have the same permissions as your host's user, as long as you mount the volume
-
 ## Volumes
 
 #### /app
@@ -165,7 +157,7 @@ The default working directory. You should mount your project root path in this v
 
 #### /var/log/php
 
-Logging volume for PHP logs (PHP-FPM too) and Xdebug log, profile and trace files
+Logging volume for PHP logs (PHP-FPM too) and Xdebug's log, profile and trace files
 
 ## Usage
 
@@ -236,15 +228,15 @@ The preferred way of starting a remote debug session is by setting remote sessio
 
 ##### Xdebug profiler
 
-To activate the profiler set "XDEBUG_PROFILE" cookie. Profile `cachegrind.out.*` files will be saved into `/var/log/php` directory
+To activate the profiler set "XDEBUG_PROFILE" cookie. `cachegrind.out.*` files will be saved into `/var/log/php` directory
 
 ##### Xdebug trace
 
-To activate the trace set "XDEBUG_TRACE" cookie. Trace `*.xt` files will be saved into `/var/log/php` directory
+To activate the trace set "XDEBUG_TRACE" cookie. `xdebug_trace.*.xt` files will be saved into `/var/log/php` directory
 
 #### Browser support
 
-There are [browser plugins/extensions](https://xdebug.org/docs/remote#starting) to very easily toggle these cookies
+There are [browser plugins/extensions](https://xdebug.org/docs/remote#starting) available to very easily toggle these cookies
 
 #### Debugging with PHPStorm
 
@@ -253,21 +245,21 @@ There are [browser plugins/extensions](https://xdebug.org/docs/remote#starting) 
 ![Xdebug configuration](https://raw.githubusercontent.com/juliangut/docker-phpdev/master/img_xdebug_config.jpg)
 
 * Port must be the same previously defined in `XDEBUG_REMOTE_PORT` environment variable
-* If you're using any of juliangut/phpdev:fpm* versions remember that **port 9000 has already been taken by PHP-FPM, use 9001** or any other you please instead
+* If you're using any of juliangut/phpdev:fpm* versions remember that **port 9000 is already in use by PHP-FPM itself, use port 9001 instead**, or any other you please
 
 ##### Create a server
 
 ![server configuration](https://raw.githubusercontent.com/juliangut/docker-phpdev/master/img_server_config.jpg)
 
 * Server name will be used later so make it stand out
-* Host and port must be the same set in built-in server. You you can use "0.0.0.0" to allow any host
+* Host and port must be the same set in the built-in server. You can use "0.0.0.0" to allow any host
 * Map your project root to container location (/app)
 
 ##### Start listening for Xdebug connections
 
-Click the phone icon to start listening for incoming connections and create a breakpoint
-
 ![start listening](https://raw.githubusercontent.com/juliangut/docker-phpdev/master/img_debug_listen.jpg)
+
+Start listening for incoming connections by toggling _Run > Start Listening for PHP Debug Connections_, or by clicking the phone icon, and finally create a breakpoint
 
 ##### Start the container
 
@@ -296,7 +288,7 @@ services:
 
 #### Firewalld & NetworkManager notice
 
-By default firewalld blocks all outgoing connections from docker containers, such as Xdebug connection to port 9000 on host. In order to allow docker containers to connect with Xdebug server you need to include `docker0` interface into a "trusted" zone both on NetworkManager and firewalld:
+By default, firewalld blocks all outgoing connections from docker containers, such as Xdebug connection to port 9000 on the host. In order to allow docker containers to connect with Xdebug server you need to include `docker0` interface into a "trusted" zone both on NetworkManager and firewalld:
 
 Assign docker0 interface to "trusted" zone and stop NetworkManager service
 ```
@@ -318,14 +310,16 @@ systemctl start NetworkManager.service
 nmcli connection modify docker0 connection.zone trusted
 ```
 
-Restart docker service so it recreates its iptables
+Restart docker service, so it recreates its iptables
 ```
 systemctl restart docker.service
 ```
 
 ## Extending the image
 
-The image comes with just the minimum PHP extensions, you most probably will need more
+The image comes with just the minimum PHP extensions, you will most probably need more
+
+This is an example on extending the image adding extra extensions and composer dependencies
 
 ```
 FROM juliangut/phpdev:latest
@@ -341,17 +335,17 @@ RUN set -xe \
   && docker-php-ext-install \
     pdo_mysql \
   \
-  && pecl install \
-    mongodb \
+  && pickle install \ # use pecl install in PHP < 8.0
+    apcu \
     redis \
   && docker-php-ext-enable \
-    mongodb \
+    apcu \
     redis \
   \
   && apk del .build-deps \
   && rm -rf /tmp/* /var/cache/apk/* /usr/share/php
 
-# Add global composer dependencies with user 'docker'
+# Add global composer dependencies as 'docker' user
 USER docker
 RUN composer global require phpunit/phpunit
 

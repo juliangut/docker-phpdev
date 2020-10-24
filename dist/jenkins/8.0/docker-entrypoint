@@ -1,0 +1,44 @@
+#!/bin/bash
+
+###
+#
+# NOTE!
+#
+# This file has been automatically generated
+#
+# Do not edit it directly
+#
+###
+
+set -e
+
+CMD="/usr/sbin/sshd"
+
+# if command starts with an option, prepend it to command
+if [[ "${1:0:1}" = '-' ]]; then
+  set -- $CMD "$@"
+fi
+
+# alter docker user and group based on mounted volume
+USER_UID=`ls -l / | grep app | awk '/ +/{ printf "%s",$3 }'`
+if [[ "${USER_UID}" != "docker" ]]; then
+  USER_GID=`ls -l / | grep app | awk '/ +/{ printf "%s",$4 }'`
+
+  groupmod -g $USER_GID docker
+  usermod -u $USER_UID docker
+
+  chown docker:docker -R /home/docker
+  chown docker:docker -R /var/log/php
+fi
+
+if [[ "${STDOUT_LOG}" -ne "0" ]]; then
+  sed -i "s/error_log\s*=.*/error_log = \/proc\/self\/fd\/2/" $PHP_INI_DIR/conf.d/zz-php.ini
+fi
+
+ssh-keygen -A \
+
+if [[ "$@" = "${CMD}" ]] || [[ "`echo "$@" | awk '/ +/{ printf "%s",$1 }'`" = "${CMD}" ]]; then
+  exec "$@"
+else
+  exec "sudo" "-E" "-H" "-u" docker "$@"
+fi

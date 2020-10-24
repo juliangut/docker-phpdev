@@ -25,10 +25,13 @@ fi
 
 if [[ "${STDOUT_LOG}" -ne "0" ]]; then
   sed -i "s/error_log\s*=.*/error_log = \/proc\/self\/fd\/2/" $PHP_INI_DIR/conf.d/zz-php.ini
+{% if use_xdebug %}
   sed -i "s/xdebug.remote_log\s*=.*/xdebug.remote_log = \/proc\/self\/fd\/2/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
+{% endif %}
 fi
 {% block custom %}{% endblock %}
 
+{% if use_xdebug %}
 if [[ "${XDEBUG_DISABLE}" -ne "0" ]]; then
   if [[ -f $PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini ]]; then
     rm $PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini
@@ -74,6 +77,7 @@ else
   fi
 fi
 
+{% endif %}
 {% if root_allowed %}
 if [[ "$@" = "${CMD}" ]] || [[ "`echo "$@" | awk '/ +/{ printf "%s",$1 }'`" = "${CMD}" ]]; then
   exec "$@"

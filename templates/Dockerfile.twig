@@ -37,6 +37,9 @@ RUN set -xe \
     libpng-dev \
     libjpeg-turbo-dev \
     libwebp-dev \
+{% if php_version >= 8.0 %}
+    libzip-dev \
+{% endif %}
 {% block install %}{% endblock %}
   \
   && groupmod -n docker www-data \
@@ -44,6 +47,11 @@ RUN set -xe \
   && sed -e 's;^# \(%wheel.*NOPASSWD.*\);\1;g' -i /etc/sudoers \
   \
 {% block user %}{% endblock %}
+{% if php_version >= 8.0 %}
+  && curl -L -o /usr/local/bin/pickle https://github.com/FriendsOfPHP/pickle/releases/latest/download/pickle.phar \
+  && chmod +x /usr/local/bin/pickle \
+  \
+{% endif %}
   && docker-php-ext-configure \
     gd \
 {% if php_version < 7.4 %}
@@ -61,10 +69,15 @@ RUN set -xe \
     gd \
     bcmath \
     opcache \
+{% if php_version >= 8.0 %}
+    zip \
+{% endif %}
   \
 {% if use_xdebug %}
+{% if php_version <= 7.4 %}
   && pecl update-channels \
-  && pecl install \
+{% endif %}
+  && {% if php_version <= 7.4 %}pecl{% else %}pickle{% endif%} install \
     xdebug-$XDEBUG_VERSION \
   \
   && docker-php-ext-enable \
@@ -80,10 +93,7 @@ RUN set -xe \
     && php -r "copy('https://composer.github.io/installer.sig', '/tmp/composer-setup.sig');"  \
     && php -r "if (hash('SHA384', file_get_contents('/tmp/composer-setup.php')) !== trim(file_get_contents('/tmp/composer-setup.sig'))) { echo 'Invalid Composer installer' . PHP_EOL; exit(1); }" \
     && php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer \
-    && rm -f /tmp/composer-setup.php \
-    && rm -f /tmp/composer-setup.sig \
-    && composer global require hirak/prestissimo \
-    && composer global clear-cache \
+    && rm -f /tmp/composer-setup.php /tmp/composer-setup.sig \
   \
   && mv /root/.composer /home/docker/.composer \
   && chown docker:docker -R /home/docker/.composer \
@@ -100,21 +110,22 @@ RUN set -xe \
 
 ENV STDOUT_LOG=0 \
   \
+  OPCACHE_VALIDATE_TIMESTAMP=1 \
+  OPCACHE_MEMORY_CONSUMPTION=128 \
+  OPCACHE_MAX_ACCELERATED_FILES=1000 \
+  \
+  COMPOSER_ALLOW_SUPERUSER=1 \
+  \
+{% if use_xdebug %}
   XDEBUG_DISABLE=0 \
   XDEBUG_REMOTE_AUTOSTART=0 \
   XDEBUG_REMOTE_PORT=9000 \
   XDEBUG_PROFILER_ENABLE=0 \
   XDEBUG_AUTO_TRACE=0 \
   \
-  OPCACHE_VALIDATE_TIMESTAMP=1 \
-  OPCACHE_MEMORY_CONSUMPTION=128 \
-  OPCACHE_MAX_ACCELERATED_FILES=1000 \
-  \
-  COMPOSER_ALLOW_SUPERUSER=1 \
-{% if use_xdebug %}
   COMPOSER_DISABLE_XDEBUG_WARN=1 \
-{% endif %}
   \
+{% endif %}
   PATH="/home/docker/.composer/vendor/bin:$PATH"
 
 COPY php.ini $PHP_INI_DIR/conf.d/zz-php.ini

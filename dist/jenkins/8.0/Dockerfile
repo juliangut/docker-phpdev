@@ -8,23 +8,21 @@
 #
 ###
 
-FROM php:7.3-alpine
+FROM php:8.0-rc-cli-alpine
 
 ARG BUILD_DATE
 ARG VCS_REF
-ARG XDEBUG_VERSION
 
 LABEL org.opencontainers.image.title="juliangut/phpdev" \
   org.opencontainers.image.description="PHP/PHP-FPM/Jenkins Docker image for development/CI, based on Alpine Linux for minimal size" \
   org.opencontainers.image.url="https://github.com/juliangut/docker-phpdev" \
-  org.opencontainers.image.source="https://github.com/juliangut/docker-phpdev/tree/master/dist/jenkins/7.3" \
+  org.opencontainers.image.source="https://github.com/juliangut/docker-phpdev/tree/master/dist/jenkins/8.0" \
   org.opencontainers.image.revision="$VCS_REF" \
   org.opencontainers.image.created="$BUILD_DATE" \
   org.opencontainers.image.authors="Julián Gutiérrez (juliangut@gmail.com)" \
   org.opencontainers.image.licenses="BSD-3-Clause" \
-  com.juliangut.php.version="7.3" \
-  com.juliangut.php.extensions="bcmath, curl, gd, mbstring, opcache, openssl, xdebug, zlib" \
-  com.juliangut.xdebug.version="$XDEBUG_VERSION"
+  com.juliangut.php.version="8.0" \
+  com.juliangut.php.extensions="bcmath, curl, gd, mbstring, opcache, openssl, zlib"
 
 RUN set -xe \
   && apk add --no-cache --virtual .build-deps \
@@ -42,6 +40,7 @@ RUN set -xe \
     libpng-dev \
     libjpeg-turbo-dev \
     libwebp-dev \
+    libzip-dev \
     openjdk8-jre \
     openssh \
     git \
@@ -54,24 +53,20 @@ RUN set -xe \
   && adduser -u 1551 -G jenkins -h /home/jenkins -s /sbin/bash -D jenkins \
   && echo "jenkins:jenkins" | chpasswd \
   \
+  && curl -L -o /usr/local/bin/pickle https://github.com/FriendsOfPHP/pickle/releases/latest/download/pickle.phar \
+  && chmod +x /usr/local/bin/pickle \
+  \
   && docker-php-ext-configure \
     gd \
-      --with-freetype-dir \
-      --with-png-dir \
-      --with-jpeg-dir \
-      --with-webp-dir \
+      --with-freetype \
+      --with-jpeg \
+      --with-webp \
   \
   && docker-php-ext-install \
     gd \
     bcmath \
     opcache \
-  \
-  && pecl update-channels \
-  && pecl install \
-    xdebug-$XDEBUG_VERSION \
-  \
-  && docker-php-ext-enable \
-    xdebug \
+    zip \
   \
   && apk del .build-deps \
   && rm -rf /tmp/* /var/cache/apk/* \
@@ -91,7 +86,6 @@ RUN set -xe \
   && chown docker:docker /app \
   \
   && mkdir -p /var/log/php \
-  && touch /var/log/php/xdebug.log \
   && chown docker:docker -R /var/log/php \
   && chmod 774 -R /var/log/php
 
@@ -103,19 +97,10 @@ ENV STDOUT_LOG=0 \
   \
   COMPOSER_ALLOW_SUPERUSER=1 \
   \
-  XDEBUG_DISABLE=0 \
-  XDEBUG_REMOTE_AUTOSTART=0 \
-  XDEBUG_REMOTE_PORT=9000 \
-  XDEBUG_PROFILER_ENABLE=0 \
-  XDEBUG_AUTO_TRACE=0 \
-  \
-  COMPOSER_DISABLE_XDEBUG_WARN=1 \
-  \
   PATH="/home/docker/.composer/vendor/bin:$PATH"
 
 COPY php.ini $PHP_INI_DIR/conf.d/zz-php.ini
 COPY opcache.ini $PHP_INI_DIR/conf.d/zz-opcache.ini
-COPY xdebug.ini $PHP_INI_DIR/conf.d/zz-xdebug.ini
 
 VOLUME /app /var/log/php
 WORKDIR /app

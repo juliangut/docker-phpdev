@@ -81,10 +81,7 @@ RUN set -xe \
     && php -r "copy('https://composer.github.io/installer.sig', '/tmp/composer-setup.sig');"  \
     && php -r "if (hash('SHA384', file_get_contents('/tmp/composer-setup.php')) !== trim(file_get_contents('/tmp/composer-setup.sig'))) { echo 'Invalid Composer installer' . PHP_EOL; exit(1); }" \
     && php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer \
-    && rm -f /tmp/composer-setup.php \
-    && rm -f /tmp/composer-setup.sig \
-    && composer global require hirak/prestissimo \
-    && composer global clear-cache \
+    && rm -f /tmp/composer-setup.php /tmp/composer-setup.sig \
   \
   && mv /root/.composer /home/docker/.composer \
   && chown docker:docker -R /home/docker/.composer \
@@ -99,17 +96,18 @@ RUN set -xe \
 
 ENV STDOUT_LOG=0 \
   \
+  OPCACHE_VALIDATE_TIMESTAMP=1 \
+  OPCACHE_MEMORY_CONSUMPTION=128 \
+  OPCACHE_MAX_ACCELERATED_FILES=1000 \
+  \
+  COMPOSER_ALLOW_SUPERUSER=1 \
+  \
   XDEBUG_DISABLE=0 \
   XDEBUG_REMOTE_AUTOSTART=0 \
   XDEBUG_REMOTE_PORT=9000 \
   XDEBUG_PROFILER_ENABLE=0 \
   XDEBUG_AUTO_TRACE=0 \
   \
-  OPCACHE_VALIDATE_TIMESTAMP=1 \
-  OPCACHE_MEMORY_CONSUMPTION=128 \
-  OPCACHE_MAX_ACCELERATED_FILES=1000 \
-  \
-  COMPOSER_ALLOW_SUPERUSER=1 \
   COMPOSER_DISABLE_XDEBUG_WARN=1 \
   \
   PATH="/home/docker/.composer/vendor/bin:$PATH"

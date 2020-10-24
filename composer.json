@@ -51,6 +51,12 @@
   "extra": {
     "versions": {
       "cli": {
+        "8.0": {
+          "php_version": "8.0",
+          "php_image": "php:8.0-rc-cli-alpine",
+          "root_allowed": false,
+          "use_xdebug": false
+        },
         "7.4": {
           "php_version": "7.4",
           "php_image": "php:7.4-alpine",
@@ -68,6 +74,11 @@
         }
       },
       "fpm": {
+        "8.0": {
+          "php_version": "8.0",
+          "php_image": "php:8.0-rc-cli-fpm-alpine",
+          "use_xdebug": false
+        },
         "7.4": {
           "php_version": "7.4",
           "php_image": "php:7.4-fpm-alpine"
@@ -82,6 +93,11 @@
         }
       },
       "jenkins": {
+        "8.0": {
+          "php_version": "8.0",
+          "php_image": "php:8.0-rc-cli-alpine",
+          "use_xdebug": false
+        },
         "7.4": {
           "php_version": "7.4",
           "php_image": "php:7.4-alpine"
