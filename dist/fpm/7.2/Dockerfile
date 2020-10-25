@@ -47,6 +47,8 @@ RUN set -xe \
   && usermod -l docker -m -d /home/docker -s /sbin/bash -G wheel -a www-data \
   && sed -e 's;^# \(%wheel.*NOPASSWD.*\);\1;g' -i /etc/sudoers \
   \
+  && mv $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini \
+  \
   && docker-php-ext-configure \
     gd \
       --with-freetype-dir \

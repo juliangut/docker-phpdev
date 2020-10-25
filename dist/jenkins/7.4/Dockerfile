@@ -54,6 +54,8 @@ RUN set -xe \
   && adduser -u 1551 -G jenkins -h /home/jenkins -s /sbin/bash -D jenkins \
   && echo "jenkins:jenkins" | chpasswd \
   \
+  && mv $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini \
+  \
   && docker-php-ext-configure \
     gd \
       --with-freetype \

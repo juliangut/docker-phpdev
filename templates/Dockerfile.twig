@@ -47,6 +47,8 @@ RUN set -xe \
   && sed -e 's;^# \(%wheel.*NOPASSWD.*\);\1;g' -i /etc/sudoers \
   \
 {% block user %}{% endblock %}
+  && mv $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini \
+  \
 {% if php_version >= 8.0 %}
   && curl -L -o /usr/local/bin/pickle https://github.com/FriendsOfPHP/pickle/releases/latest/download/pickle.phar \
   && chmod +x /usr/local/bin/pickle \
