@@ -66,10 +66,9 @@ class BuildCommand extends Command
 #
 ###
 EOL;
-        $xdebugCommand = '`curl -s https://pecl.php.net/feeds/pkg_xdebug.rss'
-            . ' | grep "<title>xdebug [0-9]*\.[0-9]*\.[0-9]*</title>"'
-            . ' | sed \'s/\s\+/ /g\''
-            . ' | awk -F \'[ <]\' \'{ print $4; exit }\'`';
+        $xdebugCommand = '`curl -s https://github.com/xdebug/xdebug/releases.atom'
+            . ' | grep "<title>[0-9]*\.[0-9]*\.[0-9]*</title>"'
+            . ' | awk -F \'[<>]\' \'{ print $3; exit }\'`';
 
         $this->defaultData = [
             'root_allowed' => true,

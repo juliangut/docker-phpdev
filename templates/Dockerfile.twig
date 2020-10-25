@@ -76,9 +76,12 @@ RUN set -xe \
 {% if use_xdebug %}
 {% if php_version <= 7.4 %}
   && pecl update-channels \
-{% endif %}
-  && {% if php_version <= 7.4 %}pecl{% else %}pickle{% endif%} install \
+  && pecl install \
     xdebug-$XDEBUG_VERSION \
+{% else %}
+  && pickle install \
+    xdebug@$XDEBUG_VERSION \
+{% endif %}
   \
   && docker-php-ext-enable \
     xdebug \
