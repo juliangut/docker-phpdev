@@ -76,7 +76,7 @@
       "fpm": {
         "8.0": {
           "php_version": "8.0",
-          "php_image": "php:8.0-rc-cli-fpm-alpine",
+          "php_image": "php:8.0-rc-fpm-alpine",
           "use_xdebug": false
         },
         "7.4": {

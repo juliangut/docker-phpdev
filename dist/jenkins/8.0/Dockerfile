@@ -40,7 +40,6 @@ RUN set -xe \
     libpng-dev \
     libjpeg-turbo-dev \
     libwebp-dev \
-    libzip-dev \
     openjdk8-jre \
     openssh \
     git \
@@ -55,9 +54,6 @@ RUN set -xe \
   \
   && mv $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini \
   \
-  && curl -L -o /usr/local/bin/pickle https://github.com/FriendsOfPHP/pickle/releases/latest/download/pickle.phar \
-  && chmod +x /usr/local/bin/pickle \
-  \
   && docker-php-ext-configure \
     gd \
       --with-freetype \
@@ -68,7 +64,6 @@ RUN set -xe \
     gd \
     bcmath \
     opcache \
-    zip \
   \
   && apk del .build-deps \
   && rm -rf /tmp/* /var/cache/apk/* \

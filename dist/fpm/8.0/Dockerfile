@@ -8,7 +8,7 @@
 #
 ###
 
-FROM php:8.0-rc-cli-fpm-alpine
+FROM php:8.0-rc-fpm-alpine
 
 ARG BUILD_DATE
 ARG VCS_REF
@@ -40,16 +40,12 @@ RUN set -xe \
     libpng-dev \
     libjpeg-turbo-dev \
     libwebp-dev \
-    libzip-dev \
   \
   && groupmod -n docker www-data \
   && usermod -l docker -m -d /home/docker -s /sbin/bash -G wheel -a www-data \
   && sed -e 's;^# \(%wheel.*NOPASSWD.*\);\1;g' -i /etc/sudoers \
   \
   && mv $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini \
-  \
-  && curl -L -o /usr/local/bin/pickle https://github.com/FriendsOfPHP/pickle/releases/latest/download/pickle.phar \
-  && chmod +x /usr/local/bin/pickle \
   \
   && docker-php-ext-configure \
     gd \
@@ -61,7 +57,6 @@ RUN set -xe \
     gd \
     bcmath \
     opcache \
-    zip \
   \
   && apk del .build-deps \
   && rm -rf /tmp/* /var/cache/apk/* \

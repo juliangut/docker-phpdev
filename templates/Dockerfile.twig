@@ -37,9 +37,6 @@ RUN set -xe \
     libpng-dev \
     libjpeg-turbo-dev \
     libwebp-dev \
-{% if php_version >= 8.0 %}
-    libzip-dev \
-{% endif %}
 {% block install %}{% endblock %}
   \
   && groupmod -n docker www-data \
@@ -49,11 +46,6 @@ RUN set -xe \
 {% block user %}{% endblock %}
   && mv $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini \
   \
-{% if php_version >= 8.0 %}
-  && curl -L -o /usr/local/bin/pickle https://github.com/FriendsOfPHP/pickle/releases/latest/download/pickle.phar \
-  && chmod +x /usr/local/bin/pickle \
-  \
-{% endif %}
   && docker-php-ext-configure \
     gd \
 {% if php_version < 7.4 %}
@@ -71,19 +63,11 @@ RUN set -xe \
     gd \
     bcmath \
     opcache \
-{% if php_version >= 8.0 %}
-    zip \
-{% endif %}
   \
 {% if use_xdebug %}
-{% if php_version <= 7.4 %}
   && pecl update-channels \
   && pecl install \
     xdebug-$XDEBUG_VERSION \
-{% else %}
-  && pickle install \
-    xdebug@$XDEBUG_VERSION \
-{% endif %}
   \
   && docker-php-ext-enable \
     xdebug \
