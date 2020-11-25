@@ -60,16 +60,19 @@
         "7.4": {
           "php_version": "7.4",
           "php_image": "php:7.4-alpine",
+          "xdebug_version": "2.9.8",
           "root_allowed": false
         },
         "7.3": {
           "php_version": "7.3",
           "php_image": "php:7.3-alpine",
+          "xdebug_version": "2.9.8",
           "root_allowed": false
         },
         "7.2": {
           "php_version": "7.2",
           "php_image": "php:7.2-alpine",
+          "xdebug_version": "2.9.8",
           "root_allowed": false
         }
       },
@@ -81,15 +84,18 @@
         },
         "7.4": {
           "php_version": "7.4",
-          "php_image": "php:7.4-fpm-alpine"
+          "php_image": "php:7.4-fpm-alpine",
+          "xdebug_version": "2.9.8"
         },
         "7.3": {
           "php_version": "7.3",
-          "php_image": "php:7.3-fpm-alpine"
+          "php_image": "php:7.3-fpm-alpine",
+          "xdebug_version": "2.9.8"
         },
         "7.2": {
           "php_version": "7.2",
-          "php_image": "php:7.2-fpm-alpine"
+          "php_image": "php:7.2-fpm-alpine",
+          "xdebug_version": "2.9.8"
         }
       },
       "jenkins": {
@@ -100,15 +106,18 @@
         },
         "7.4": {
           "php_version": "7.4",
-          "php_image": "php:7.4-alpine"
+          "php_image": "php:7.4-alpine",
+          "xdebug_version": "2.9.8"
         },
         "7.3": {
           "php_version": "7.3",
-          "php_image": "php:7.3-alpine"
+          "php_image": "php:7.3-alpine",
+          "xdebug_version": "2.9.8"
         },
         "7.2": {
           "php_version": "7.2",
-          "php_image": "php:7.2-alpine"
+          "php_image": "php:7.2-alpine",
+          "xdebug_version": "2.9.8"
         }
       }
     }
