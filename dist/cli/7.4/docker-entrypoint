@@ -2,7 +2,7 @@
 
 ###
 #
-# NOTE!
+# NOTE
 #
 # This file has been automatically generated
 #
@@ -33,7 +33,7 @@ fi
 
 if [[ "${STDOUT_LOG}" -ne "0" ]]; then
   sed -i "s/error_log\s*=.*/error_log = \/proc\/self\/fd\/2/" $PHP_INI_DIR/conf.d/zz-php.ini
-  sed -i "s/xdebug.remote_log\s*=.*/xdebug.remote_log = \/proc\/self\/fd\/2/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
+  sed -i "s/xdebug.log\s*=.*/xdebug.log = \/proc\/self\/fd\/2/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
 fi
 
 if [[ "${XDEBUG_DISABLE}" -ne "0" ]]; then
@@ -41,15 +41,11 @@ if [[ "${XDEBUG_DISABLE}" -ne "0" ]]; then
     rm $PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini
   fi
 else
-  if [[ ! -z "${XDEBUG_REMOTE_HOST}" ]]; then
-    sed -i "s/xdebug.remote_host\s*=.*/xdebug.remote_host = ${XDEBUG_REMOTE_HOST}/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
+  if [[ ! -z "${XDEBUG_CLIENT_HOST}" ]]; then
+    sed -i "s/xdebug.client_host\s*=.*/xdebug.client_host = ${XDEBUG_CLIENT_HOST}/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
   else
     HOST_IP=`ip route | awk '/default/ { print $3 }'`
-    sed -i "s/xdebug.remote_host\s*=.*/xdebug.remote_host = ${HOST_IP}/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
-  fi
-
-  if [[ ! -z "${XDEBUG_IDE_KEY}" ]]; then
-    sed -i "s/;\?xdebug.idekey\s*=.*/xdebug.idekey = ${XDEBUG_IDE_KEY}/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
+    sed -i "s/xdebug.client_host\s*=.*/xdebug.client_host = ${HOST_IP}/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
   fi
 
   if [[ ! -z "${XDEBUG_FILE_LINK_FORMAT}" ]]; then
@@ -60,14 +56,26 @@ else
       "idea")
         FORMAT="idea:\/\/open?file=%f\&line=%l"
       ;;
+      "vscode")
+        FORMAT="vscode:\/\/file\/%f:%l"
+      ;;
       "sublime")
         FORMAT="subl:\/\/open?url=file:\/\/%f\&line=%l"
       ;;
-      "textmate")
-        FORMAT="txmt:\/\/open?url=file:\/\/%f\&line=%l"
+      "netbeans")
+        FORMAT="netbeans:\/\/open\/?f=%f:%l"
+      ;;
+      "vim")
+        FORMAT="vim:\/\/%f@%l"
       ;;
       "emacs")
         FORMAT="emacs:\/\/open?url=file:\/\/%f\&line=%l"
+      ;;
+      "gvim")
+        FORMAT="gvim:\/\/%f@%l"
+      ;;
+      "textmate")
+        FORMAT="txmt:\/\/open?url=file:\/\/%f\&line=%l"
       ;;
       "macvim")
         FORMAT="mvim:\/\/open/?url=file:\/\/%f\&line=%l"
@@ -82,3 +90,13 @@ else
 fi
 
 exec "sudo" "-E" "-H" "-u" docker "$@"
+
+###
+#
+# NOTE
+#
+# This file has been automatically generated
+#
+# Do not edit it directly
+#
+###

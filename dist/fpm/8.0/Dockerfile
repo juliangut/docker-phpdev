@@ -1,6 +1,6 @@
 ###
 #
-# NOTE!
+# NOTE
 #
 # This file has been automatically generated
 #
@@ -8,10 +8,11 @@
 #
 ###
 
-FROM php:8.0-rc-fpm-alpine
+FROM php:8.0-fpm-alpine
 
 ARG BUILD_DATE
 ARG VCS_REF
+ARG XDEBUG_VERSION
 
 LABEL org.opencontainers.image.title="juliangut/phpdev" \
   org.opencontainers.image.description="PHP/PHP-FPM/Jenkins Docker image for development/CI, based on Alpine Linux for minimal size" \
@@ -22,7 +23,8 @@ LABEL org.opencontainers.image.title="juliangut/phpdev" \
   org.opencontainers.image.authors="Julián Gutiérrez (juliangut@gmail.com)" \
   org.opencontainers.image.licenses="BSD-3-Clause" \
   com.juliangut.php.version="8.0" \
-  com.juliangut.php.extensions="bcmath, curl, gd, mbstring, opcache, openssl, zlib"
+  com.juliangut.php.extensions="bcmath, curl, gd, mbstring, opcache, openssl, xdebug, zlib" \
+  com.juliangut.xdebug.version="$XDEBUG_VERSION"
 
 RUN set -xe \
   && apk add --no-cache --virtual .build-deps \
@@ -58,6 +60,13 @@ RUN set -xe \
     bcmath \
     opcache \
   \
+  && pecl update-channels \
+  && pecl install \
+    xdebug-$XDEBUG_VERSION \
+  \
+  && docker-php-ext-enable \
+    xdebug \
+  \
   && apk del .build-deps \
   && rm -rf /tmp/* /var/cache/apk/* \
   \
@@ -67,6 +76,7 @@ RUN set -xe \
     && php -r "copy('https://composer.github.io/installer.sig', '/tmp/composer-setup.sig');"  \
     && php -r "if (hash('SHA384', file_get_contents('/tmp/composer-setup.php')) !== trim(file_get_contents('/tmp/composer-setup.sig'))) { echo 'Invalid Composer installer' . PHP_EOL; exit(1); }" \
     && php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer \
+    && chmod o+w /usr/local/bin/composer \
     && rm -f /tmp/composer-setup.php /tmp/composer-setup.sig \
   \
   && mv /root/.composer /home/docker/.composer \
@@ -76,6 +86,7 @@ RUN set -xe \
   && chown docker:docker /app \
   \
   && mkdir -p /var/log/php \
+  && touch /var/log/php/xdebug.log \
   && chown docker:docker -R /var/log/php \
   && chmod 774 -R /var/log/php
 
@@ -87,10 +98,17 @@ ENV STDOUT_LOG=0 \
   \
   COMPOSER_ALLOW_SUPERUSER=1 \
   \
+  XDEBUG_DISABLE=0 \
+  XDEBUG_MODE=develop,coverage,debug \
+  XDEBUG_CLIENT_PORT=9003 \
+  \
+  COMPOSER_DISABLE_XDEBUG_WARN=1 \
+  \
   PATH="/home/docker/.composer/vendor/bin:$PATH"
 
 COPY php.ini $PHP_INI_DIR/conf.d/zz-php.ini
 COPY opcache.ini $PHP_INI_DIR/conf.d/zz-opcache.ini
+COPY xdebug.ini $PHP_INI_DIR/conf.d/zz-xdebug.ini
 
 ENV PHP_FPM_CONF_DIR /usr/local/etc/php-fpm.d
 COPY php-fpm.conf $PHP_FPM_CONF_DIR/zz-php-fpm.conf
@@ -106,7 +124,7 @@ CMD ["php-fpm"]
 
 ###
 #
-# NOTE!
+# NOTE
 #
 # This file has been automatically generated
 #

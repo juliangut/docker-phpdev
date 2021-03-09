@@ -13,3 +13,5 @@ docker build \
     --build-arg VCS_REF=`git rev-parse --short HEAD`{% if use_xdebug %} \
     --build-arg XDEBUG_VERSION={{ xdebug_version | raw }}{% endif %} \
     -t $IMAGE_NAME .
+
+{{ note_comment }}

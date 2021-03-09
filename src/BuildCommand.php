@@ -55,17 +55,17 @@ class BuildCommand extends Command
         $this->twig = $twig;
         $this->versions = $versions;
 
-        $noteComment = <<<EOL
+        $noteComment = <<<NOTE
 ###
 #
-# NOTE!
+# NOTE
 #
 # This file has been automatically generated
 #
 # Do not edit it directly
 #
 ###
-EOL;
+NOTE;
         $xdebugCommand = '`curl -s https://github.com/xdebug/xdebug/releases.atom'
             . ' | grep "<title>[0-9]*\.[0-9]*\.[0-9]*</title>"'
             . ' | awk -F \'[<>]\' \'{ print $3; exit }\'`';

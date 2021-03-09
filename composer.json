@@ -53,71 +53,46 @@
       "cli": {
         "8.0": {
           "php_version": "8.0",
-          "php_image": "php:8.0-rc-cli-alpine",
-          "root_allowed": false,
-          "use_xdebug": false
+          "php_image": "php:8.0-cli-alpine",
+          "root_allowed": false
         },
         "7.4": {
           "php_version": "7.4",
-          "php_image": "php:7.4-alpine",
-          "xdebug_version": "2.9.8",
+          "php_image": "php:7.4-cli-alpine",
           "root_allowed": false
         },
         "7.3": {
           "php_version": "7.3",
-          "php_image": "php:7.3-alpine",
-          "xdebug_version": "2.9.8",
-          "root_allowed": false
-        },
-        "7.2": {
-          "php_version": "7.2",
-          "php_image": "php:7.2-alpine",
-          "xdebug_version": "2.9.8",
+          "php_image": "php:7.3-cli-alpine",
           "root_allowed": false
         }
       },
       "fpm": {
         "8.0": {
           "php_version": "8.0",
-          "php_image": "php:8.0-rc-fpm-alpine",
-          "use_xdebug": false
+          "php_image": "php:8.0-fpm-alpine"
         },
         "7.4": {
           "php_version": "7.4",
-          "php_image": "php:7.4-fpm-alpine",
-          "xdebug_version": "2.9.8"
+          "php_image": "php:7.4-fpm-alpine"
         },
         "7.3": {
           "php_version": "7.3",
-          "php_image": "php:7.3-fpm-alpine",
-          "xdebug_version": "2.9.8"
-        },
-        "7.2": {
-          "php_version": "7.2",
-          "php_image": "php:7.2-fpm-alpine",
-          "xdebug_version": "2.9.8"
+          "php_image": "php:7.3-fpm-alpine"
         }
       },
       "jenkins": {
         "8.0": {
           "php_version": "8.0",
-          "php_image": "php:8.0-rc-cli-alpine",
-          "use_xdebug": false
+          "php_image": "php:8.0-cli-alpine"
         },
         "7.4": {
           "php_version": "7.4",
-          "php_image": "php:7.4-alpine",
-          "xdebug_version": "2.9.8"
+          "php_image": "php:7.4-cli-alpine"
         },
         "7.3": {
           "php_version": "7.3",
-          "php_image": "php:7.3-alpine",
-          "xdebug_version": "2.9.8"
-        },
-        "7.2": {
-          "php_version": "7.2",
-          "php_image": "php:7.2-alpine",
-          "xdebug_version": "2.9.8"
+          "php_image": "php:7.3-cli-alpine"
         }
       }
     }

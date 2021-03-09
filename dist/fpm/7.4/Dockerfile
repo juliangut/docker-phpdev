@@ -1,6 +1,6 @@
 ###
 #
-# NOTE!
+# NOTE
 #
 # This file has been automatically generated
 #
@@ -76,6 +76,7 @@ RUN set -xe \
     && php -r "copy('https://composer.github.io/installer.sig', '/tmp/composer-setup.sig');"  \
     && php -r "if (hash('SHA384', file_get_contents('/tmp/composer-setup.php')) !== trim(file_get_contents('/tmp/composer-setup.sig'))) { echo 'Invalid Composer installer' . PHP_EOL; exit(1); }" \
     && php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer \
+    && chmod o+w /usr/local/bin/composer \
     && rm -f /tmp/composer-setup.php /tmp/composer-setup.sig \
   \
   && mv /root/.composer /home/docker/.composer \
@@ -98,10 +99,8 @@ ENV STDOUT_LOG=0 \
   COMPOSER_ALLOW_SUPERUSER=1 \
   \
   XDEBUG_DISABLE=0 \
-  XDEBUG_REMOTE_AUTOSTART=0 \
-  XDEBUG_REMOTE_PORT=9000 \
-  XDEBUG_PROFILER_ENABLE=0 \
-  XDEBUG_AUTO_TRACE=0 \
+  XDEBUG_MODE=develop,coverage,debug \
+  XDEBUG_CLIENT_PORT=9003 \
   \
   COMPOSER_DISABLE_XDEBUG_WARN=1 \
   \
@@ -125,7 +124,7 @@ CMD ["php-fpm"]
 
 ###
 #
-# NOTE!
+# NOTE
 #
 # This file has been automatically generated
 #

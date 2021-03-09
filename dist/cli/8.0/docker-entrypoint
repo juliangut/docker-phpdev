@@ -2,7 +2,7 @@
 
 ###
 #
-# NOTE!
+# NOTE
 #
 # This file has been automatically generated
 #
@@ -33,6 +33,70 @@ fi
 
 if [[ "${STDOUT_LOG}" -ne "0" ]]; then
   sed -i "s/error_log\s*=.*/error_log = \/proc\/self\/fd\/2/" $PHP_INI_DIR/conf.d/zz-php.ini
+  sed -i "s/xdebug.log\s*=.*/xdebug.log = \/proc\/self\/fd\/2/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
+fi
+
+if [[ "${XDEBUG_DISABLE}" -ne "0" ]]; then
+  if [[ -f $PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini ]]; then
+    rm $PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini
+  fi
+else
+  if [[ ! -z "${XDEBUG_CLIENT_HOST}" ]]; then
+    sed -i "s/xdebug.client_host\s*=.*/xdebug.client_host = ${XDEBUG_CLIENT_HOST}/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
+  else
+    HOST_IP=`ip route | awk '/default/ { print $3 }'`
+    sed -i "s/xdebug.client_host\s*=.*/xdebug.client_host = ${HOST_IP}/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
+  fi
+
+  if [[ ! -z "${XDEBUG_FILE_LINK_FORMAT}" ]]; then
+    case "${XDEBUG_FILE_LINK_FORMAT}" in
+      "phpstorm")
+        FORMAT="phpstorm:\/\/open?file=%f\&line=%l"
+      ;;
+      "idea")
+        FORMAT="idea:\/\/open?file=%f\&line=%l"
+      ;;
+      "vscode")
+        FORMAT="vscode:\/\/file\/%f:%l"
+      ;;
+      "sublime")
+        FORMAT="subl:\/\/open?url=file:\/\/%f\&line=%l"
+      ;;
+      "netbeans")
+        FORMAT="netbeans:\/\/open\/?f=%f:%l"
+      ;;
+      "vim")
+        FORMAT="vim:\/\/%f@%l"
+      ;;
+      "emacs")
+        FORMAT="emacs:\/\/open?url=file:\/\/%f\&line=%l"
+      ;;
+      "gvim")
+        FORMAT="gvim:\/\/%f@%l"
+      ;;
+      "textmate")
+        FORMAT="txmt:\/\/open?url=file:\/\/%f\&line=%l"
+      ;;
+      "macvim")
+        FORMAT="mvim:\/\/open/?url=file:\/\/%f\&line=%l"
+      ;;
+      *)
+        FORMAT="${XDEBUG_FILE_LINK_FORMAT}"
+      ;;
+    esac
+
+    sed -i "s/;\?xdebug.file_link_format\s*=.*/xdebug.file_link_format = \"${FORMAT}\"/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
+  fi
 fi
 
 exec "sudo" "-E" "-H" "-u" docker "$@"
+
+###
+#
+# NOTE
+#
+# This file has been automatically generated
+#
+# Do not edit it directly
+#
+###
