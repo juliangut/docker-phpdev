@@ -24,30 +24,19 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
-    "php": "^7.0",
+    "php": "^7.3",
     "ext-json": "*",
-    "symfony/console": "^3.0",
-    "twig/twig": "^2.0"
-  },
-  "require-dev": {
-  },
-  "suggest": {
+    "symfony/console": "^5.0",
+    "twig/twig": "^3.0"
   },
   "autoload": {
     "psr-4": {
       "Jgut\\Docker\\PhpDev\\": "src/"
     }
   },
-  "autoload-dev": {
-  },
   "bin": [
     "bin/phpdev"
   ],
-  "config": {
-  },
-  "scripts": {
-    "build": "phpdev"
-  },
   "extra": {
     "versions": {
       "cli": {

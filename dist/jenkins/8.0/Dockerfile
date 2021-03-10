@@ -38,6 +38,7 @@ RUN set -xe \
     shadow \
     sudo \
     bash \
+    make \
     freetype-dev \
     libpng-dev \
     libjpeg-turbo-dev \

@@ -6,18 +6,18 @@
 
 use Jgut\Docker\PhpDev\BuildCommand;
 use Symfony\Component\Console\Application;
-use Twig_Environment as Twig;
-use Twig_Loader_Filesystem as TwigLoader;
+use Twig\Environment as Twig;
+use Twig\Loader\FilesystemLoader;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$versions = \json_decode(\file_get_contents(\dirname(__DIR__) . '/composer.json'), true)['extra']['versions'];
+$composer = \json_decode(\file_get_contents(\dirname(__DIR__) . '/composer.json'), true, 512, JSON_THROW_ON_ERROR);
 
 $application = new Application('docker-phpdev');
 
 $buildCommand = new BuildCommand(
-  new Twig(new TwigLoader(__DIR__ . '/../templates')),
-  $versions
+  new Twig(new FilesystemLoader(__DIR__ . '/../templates')),
+  $composer['extra']['versions']
 );
 
 $application->add($buildCommand);

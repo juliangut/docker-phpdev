@@ -7,6 +7,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Twig\Environment as Twig;
 
 /**
  * Build command.
@@ -14,9 +15,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class BuildCommand extends Command
 {
     /**
-     * Command name.
+     * @var string
      */
-    const NAME = 'build';
+    protected static $defaultName = 'build';
 
     /**
      * Build versions.
@@ -28,7 +29,7 @@ class BuildCommand extends Command
     /**
      * Twig renderer.
      *
-     * @var \Twig_Environment
+     * @var Twig
      */
     private $twig;
 
@@ -42,15 +43,15 @@ class BuildCommand extends Command
     /**
      * BuildCommand constructor.
      *
-     * @param \Twig_Environment $twig
-     * @param array             $versions
+     * @param Twig  $twig
+     * @param array $versions
      *
      * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
      * @throws \Symfony\Component\Console\Exception\LogicException
      */
-    public function __construct(\Twig_Environment $twig, array $versions)
+    public function __construct(Twig $twig, array $versions)
     {
-        parent::__construct(static::NAME);
+        parent::__construct();
 
         $this->twig = $twig;
         $this->versions = $versions;
@@ -83,9 +84,9 @@ NOTE;
      *
      * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
      */
-    protected function configure()
+    protected function configure(): void
     {
-        $this->setName(static::NAME)
+        $this
             ->setDescription('Docker images scaffold')
             ->addOption('dir', 'd', InputArgument::OPTIONAL, 'Distribution directory', 'dist');
     }
@@ -97,12 +98,14 @@ NOTE;
      * @param OutputInterface $output
      *
      * @throws \RuntimeException
+     *
+     * @return int
      */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $destinationDir = \getcwd() . '/' . \rtrim($input->getOption('dir'), \DIRECTORY_SEPARATOR);
 
-        if (\is_dir($destinationDir) && \count(\scandir($destinationDir, SCANDIR_SORT_ASCENDING)) !== 0) {
+        if (\is_dir($destinationDir) && \count(\scandir($destinationDir, \SCANDIR_SORT_ASCENDING)) !== 0) {
             $this->recursiveRemove($destinationDir);
         }
 
@@ -117,6 +120,8 @@ NOTE;
         $ioStyle = new SymfonyStyle($input, $output);
         $ioStyle->success(\sprintf('%s Docker images scaffolded', $imagesCount));
         $ioStyle->newLine();
+
+        return self::SUCCESS;
     }
 
     /**
@@ -125,7 +130,7 @@ NOTE;
      * @param string $directory
      * @param array  $versions
      */
-    private function scaffoldCliImages(string $directory, array $versions)
+    private function scaffoldCliImages(string $directory, array $versions): void
     {
         $this->scaffoldImages(
             $directory,
@@ -149,7 +154,7 @@ NOTE;
      * @param string $directory
      * @param array  $versions
      */
-    private function scaffoldFpmImages(string $directory, array $versions)
+    private function scaffoldFpmImages(string $directory, array $versions): void
     {
         $this->scaffoldImages(
             $directory,
@@ -174,7 +179,7 @@ NOTE;
      * @param string $directory
      * @param array  $versions
      */
-    private function scaffoldJenkinsImages(string $directory, array $versions)
+    private function scaffoldJenkinsImages(string $directory, array $versions): void
     {
         $this->scaffoldImages(
             $directory,
@@ -205,7 +210,7 @@ NOTE;
         array $versions,
         array $templateFiles,
         array $hookFiles
-    ) {
+    ): void {
         foreach ($versions as $version => $data) {
             $versionDir = $directory . '/' . $version;
             if (!\mkdir($versionDir, 0755, true) && !\is_dir($versionDir)) {
@@ -235,13 +240,11 @@ NOTE;
      * @param array  $files
      * @param string $directory
      * @param array  $data
-     *
-     * @return void
      */
-    private function scaffoldTemplateFiles(array $files, string $directory, array $data)
+    private function scaffoldTemplateFiles(array $files, string $directory, array $data): void
     {
         foreach ($files as $sourceFile) {
-            if (\basename($sourceFile) === 'xdebug.ini.twig' && $data['use_xdebug'] === false) {
+            if ($data['use_xdebug'] === false && \basename($sourceFile) === 'xdebug.ini.twig') {
                 continue;
             }
 
@@ -260,10 +263,8 @@ NOTE;
      * @param array  $files
      * @param string $directory
      * @param array  $data
-     *
-     * @return void
      */
-    private function scaffoldHookFiles(array $files, string $directory, array $data)
+    private function scaffoldHookFiles(array $files, string $directory, array $data): void
     {
         foreach ($files as $sourceFile) {
             $destinationFile = $directory . '/' . \basename($sourceFile);
@@ -280,7 +281,7 @@ NOTE;
      *
      * @param string $path
      */
-    private function recursiveRemove(string $path) {
+    private function recursiveRemove(string $path): void {
         foreach (\glob($path . '/*') as $file) {
             \is_dir($file) ? $this->recursiveRemove($file) : \unlink($file);
         }
