@@ -8,6 +8,8 @@
 #
 ###
 
+FROM composer:2 as composer
+
 FROM php:7.3-cli-alpine
 
 ARG BUILD_DATE
@@ -76,23 +78,18 @@ RUN set -xe \
   \
   && sed -i "s/bin\/ash/bin\/bash/" /etc/passwd \
   \
-  && php -r "copy('https://getcomposer.org/installer', '/tmp/composer-setup.php');" \
-    && php -r "copy('https://composer.github.io/installer.sig', '/tmp/composer-setup.sig');"  \
-    && php -r "if (hash('SHA384', file_get_contents('/tmp/composer-setup.php')) !== trim(file_get_contents('/tmp/composer-setup.sig'))) { echo 'Invalid Composer installer' . PHP_EOL; exit(1); }" \
-    && php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer \
-    && chmod o+w /usr/local/bin/composer \
-    && rm -f /tmp/composer-setup.php /tmp/composer-setup.sig \
-  \
-  && mv /root/.composer /home/docker/.composer \
-  && chown docker:docker -R /home/docker/.composer \
-  \
   && mkdir /app \
   && chown docker:docker /app \
   \
   && mkdir -p /var/log/php \
   && touch /var/log/php/xdebug.log \
   && chown docker:docker -R /var/log/php \
-  && chmod 774 -R /var/log/php
+  && chmod 774 -R /var/log/php \
+  \
+  && mkdir /home/docker/.composer \
+  && chown docker:docker -R /home/docker/.composer
+
+COPY --from=composer /usr/bin/composer /usr/local/bin/composer
 
 ENV STDOUT_LOG=0 \
   \
