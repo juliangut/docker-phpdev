@@ -20,7 +20,7 @@ LABEL org.opencontainers.image.title="juliangut/phpdev" \
   org.opencontainers.image.licenses="BSD-3-Clause" \
   com.juliangut.php.version="{{ php_version }}" \
   com.juliangut.php.extensions="bcmath, curl, gd, mbstring, opcache, openssl, {% if use_xdebug %}xdebug, {% endif %}zlib"{% if use_xdebug %} \
-  com.juliangut.pecl.extensions="apcu \
+  com.juliangut.pecl.extensions="apcu" \
   com.juliangut.xdebug.version="$XDEBUG_VERSION"{% endif %}
 
 
