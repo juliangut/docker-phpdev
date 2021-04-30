@@ -60,20 +60,24 @@ RUN set -xe \
       --with-webp \
 {% endif %}
   \
-  && docker-php-ext-install \
+  && docker-php-ext-install -j$(nproc) \
     gd \
     bcmath \
     opcache \
   \
-{% if use_xdebug %}
   && pecl update-channels \
   && pecl install \
+    apcu \
+{% if use_xdebug %}
     xdebug-$XDEBUG_VERSION \
+{% endif %}
   \
   && docker-php-ext-enable \
+    apcu \
+{% if use_xdebug %}
     xdebug \
-  \
 {% endif %}
+  \
   && apk del .build-deps \
   && rm -rf /tmp/* /var/cache/apk/* \
   \
@@ -119,6 +123,7 @@ ENV STDOUT_LOG=0 \
 
 COPY php.ini $PHP_INI_DIR/conf.d/zz-php.ini
 COPY opcache.ini $PHP_INI_DIR/conf.d/zz-opcache.ini
+COPY apc.ini $PHP_INI_DIR/conf.d/zz-apc.ini
 {% if use_xdebug %}
 COPY xdebug.ini $PHP_INI_DIR/conf.d/zz-xdebug.ini
 {% endif %}

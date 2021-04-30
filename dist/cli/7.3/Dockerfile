@@ -57,16 +57,18 @@ RUN set -xe \
       --with-jpeg-dir \
       --with-webp-dir \
   \
-  && docker-php-ext-install \
+  && docker-php-ext-install -j$(nproc) \
     gd \
     bcmath \
     opcache \
   \
   && pecl update-channels \
   && pecl install \
+    apcu \
     xdebug-$XDEBUG_VERSION \
   \
   && docker-php-ext-enable \
+    apcu \
     xdebug \
   \
   && apk del .build-deps \
@@ -110,6 +112,7 @@ ENV STDOUT_LOG=0 \
 
 COPY php.ini $PHP_INI_DIR/conf.d/zz-php.ini
 COPY opcache.ini $PHP_INI_DIR/conf.d/zz-opcache.ini
+COPY apc.ini $PHP_INI_DIR/conf.d/zz-apc.ini
 COPY xdebug.ini $PHP_INI_DIR/conf.d/zz-xdebug.ini
 
 VOLUME /app /var/log/php

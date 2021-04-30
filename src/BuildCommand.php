@@ -138,6 +138,7 @@ NOTE;
             [
                 'php.ini.twig',
                 'opcache.ini.twig',
+                'apc.ini.twig',
                 'xdebug.ini.twig',
                 'cli/Dockerfile.twig',
                 'cli/docker-entrypoint.twig',
@@ -162,6 +163,7 @@ NOTE;
             [
                 'php.ini.twig',
                 'opcache.ini.twig',
+                'apc.ini.twig',
                 'xdebug.ini.twig',
                 'fpm/Dockerfile.twig',
                 'fpm/docker-entrypoint.twig',
@@ -187,6 +189,7 @@ NOTE;
             [
                 'php.ini.twig',
                 'opcache.ini.twig',
+                'apc.ini.twig',
                 'xdebug.ini.twig',
                 'jenkins/Dockerfile.twig',
                 'jenkins/docker-entrypoint.twig',
