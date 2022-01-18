@@ -1,0 +1,125 @@
+name: Docker images build and push
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  prepare_env:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY_GITHUB }}
+          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS_GITHUB }}
+
+      - uses: shivammathur/setup-php@v2
+        env:
+          runner: self-hosted
+        with:
+          php-version: 7.4
+          coverage: none
+
+      - name: Composer install
+        uses: ramsey/composer-install@v1
+        with:
+          composer-options: "--prefer-dist"
+
+      - id: set_date
+        run: echo "::set-output name=build_date::$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+
+      - id: set_vcs
+        run: echo "::set-output name=vcs_ref::$(git rev-parse --short HEAD)"
+
+      - id: set_matrix
+        run: echo "::set-output name=matrix::$(bin/phpdev export-build `curl -s https://github.com/xdebug/xdebug/releases.atom | grep "<title>[0-9]*\.[0-9]*\.[0-9]*</title>" | awk -F '[<>]' '{ print $3; exit }'`)"
+
+    outputs:
+      build_date: ${{ steps.set_date.outputs.build_date }}
+      vcs_ref: ${{ steps.set_vcs.outputs.vcs_ref }}
+      builds: ${{ steps.set_matrix.outputs.matrix }}
+
+  build:
+    needs: prepare_env
+
+    strategy:
+      fail-fast: false
+      matrix:
+        builds:
+          - variant: cli
+            version: 8.1
+            xdebuf: 3.1.2
+#        builds: ${{ fromJson(needs.prepare_env.outputs.builds) }}
+
+    name: Build image ${{ matrix.builds.variant }} ${{ matrix.builds.version }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build locally
+        uses: docker/build-push-action@v2
+        with:
+          context: dist/${{ matrix.builds.variant }}/${{ matrix.builds.version }}
+          load: true
+          tags: juliangut/phpdev:test
+          build-args: |
+            BUILD_DATE=${{ needs.prepare_env.outputs.build_date }}
+            VCS_REF=${{ needs.prepare_env.outputs.vcs_ref }}
+            XDEBUG_VERSION=${{ matrix.builds.xdebug }}
+
+      - name: Test image
+        run: docker run --rm juliangut/phpdev:test
+
+      - name: Inspect image
+        run: docker image inspect juliangut/phpdev:test
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+        if: ${{ github.event_name != 'pull_request' }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: image
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ matrix.builds.tags }}
+          build-args: |
+            BUILD_DATE=${{ needs.prepare_env.outputs.build_date }}
+            VCS_REF=${{ needs.prepare_env.outputs.vcs_ref }}
+            XDEBUG_VERSION=${{ matrix.builds.xdebug }}
+        if: ${{ github.event_name != 'pull_request' }}
+
+  post_build:
+    if: ${{ github.event_name != 'pull_request' }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Update Dockerhub description
+        uses: peter-evans/dockerhub-description@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          repository: juliangut/phpdev

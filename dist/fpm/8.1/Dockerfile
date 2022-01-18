@@ -1,28 +1,33 @@
-{{ comment }}
+###
+#
+# NOTE
+#
+# This file has been automatically generated
+#
+# Do not edit it directly
+#
+###
 
 FROM composer:2 as composer
 
-FROM {{ image }}
+FROM php:8.1-fpm-alpine
 
 ARG BUILD_DATE
 ARG VCS_REF
-{% if xdebug != false %}
 ARG XDEBUG_VERSION
-{% endif %}
 
 LABEL org.opencontainers.image.title="juliangut/phpdev" \
   org.opencontainers.image.description="PHP/PHP-FPM/Jenkins Docker image for development/CI, based on Alpine Linux for minimal size" \
   org.opencontainers.image.url="https://github.com/juliangut/docker-phpdev" \
-  org.opencontainers.image.source="https://github.com/juliangut/docker-phpdev/tree/master/dist/{{ variant }}/{{ version }}" \
+  org.opencontainers.image.source="https://github.com/juliangut/docker-phpdev/tree/master/dist/fpm/8.1" \
   org.opencontainers.image.revision="$VCS_REF" \
   org.opencontainers.image.created="$BUILD_DATE" \
   org.opencontainers.image.authors="Julián Gutiérrez (juliangut@gmail.com)" \
   org.opencontainers.image.licenses="BSD-3-Clause" \
-  com.juliangut.php.version="{{ version }}" \
-  com.juliangut.php.extensions="bcmath, curl, gd, mbstring, opcache, openssl, {% if xdebug != false %}xdebug, {% endif %}zlib"{% if xdebug != false %} \
+  com.juliangut.php.version="8.1" \
+  com.juliangut.php.extensions="bcmath, curl, gd, mbstring, opcache, openssl, xdebug, zlib" \
   com.juliangut.pecl.extensions="apcu" \
-  com.juliangut.xdebug.version="$XDEBUG_VERSION"{% endif %}
-
+  com.juliangut.xdebug.version="$XDEBUG_VERSION"
 
 RUN set -xe \
   && apk add --no-cache --virtual .build-deps \
@@ -41,27 +46,18 @@ RUN set -xe \
     libpng-dev \
     libjpeg-turbo-dev \
     libwebp-dev \
-{% block install %}{% endblock %}
   \
   && groupmod -n docker www-data \
   && usermod -l docker -m -d /home/docker -s /sbin/bash -G wheel -a www-data \
   && sed -e 's;^# \(%wheel.*NOPASSWD.*\);\1;g' -i /etc/sudoers \
   \
-{% block user %}{% endblock %}
   && mv $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini \
   \
   && docker-php-ext-configure \
     gd \
-{% if version < 7.4 %}
-      --with-freetype-dir \
-      --with-png-dir \
-      --with-jpeg-dir \
-      --with-webp-dir \
-{% else %}
       --with-freetype \
       --with-jpeg \
       --with-webp \
-{% endif %}
   \
   && docker-php-ext-install -j$(nproc) \
     gd \
@@ -71,15 +67,11 @@ RUN set -xe \
   && pecl update-channels \
   && pecl install \
     apcu \
-{% if xdebug != false %}
     xdebug-$XDEBUG_VERSION \
-{% endif %}
   \
   && docker-php-ext-enable \
     apcu \
-{% if xdebug != false %}
     xdebug \
-{% endif %}
   \
   && apk del .build-deps \
   && rm -rf /tmp/* /var/cache/apk/* \
@@ -90,9 +82,7 @@ RUN set -xe \
   && chown docker:docker /app \
   \
   && mkdir -p /var/log/php \
-{% if xdebug != false %}
   && touch /var/log/php/xdebug.log \
-{% endif %}
   && chown docker:docker -R /var/log/php \
   && chmod 774 -R /var/log/php \
   \
@@ -109,23 +99,21 @@ ENV STDOUT_LOG=0 \
   \
   COMPOSER_ALLOW_SUPERUSER=1 \
   \
-{% if xdebug != false %}
   XDEBUG_DISABLE=0 \
   XDEBUG_MODE=develop,coverage,debug \
   XDEBUG_CLIENT_PORT=9003 \
   \
   COMPOSER_DISABLE_XDEBUG_WARN=1 \
   \
-{% endif %}
   PATH="/home/docker/.composer/vendor/bin:$PATH"
 
 COPY php.ini $PHP_INI_DIR/conf.d/zz-php.ini
 COPY opcache.ini $PHP_INI_DIR/conf.d/zz-opcache.ini
 COPY apc.ini $PHP_INI_DIR/conf.d/zz-apc.ini
-{% if xdebug != false %}
 COPY xdebug.ini $PHP_INI_DIR/conf.d/zz-xdebug.ini
-{% endif %}
-{% block files %}{% endblock %}
+
+ENV PHP_FPM_CONF_DIR /usr/local/etc/php-fpm.d
+COPY php-fpm.conf $PHP_FPM_CONF_DIR/zz-php-fpm.conf
 
 VOLUME /app /var/log/php
 WORKDIR /app
@@ -134,6 +122,14 @@ COPY docker-entrypoint /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
 ENTRYPOINT ["docker-entrypoint"]
 
-{% block command %}{% endblock %}
+CMD ["php-fpm"]
 
-{{ comment }}
+###
+#
+# NOTE
+#
+# This file has been automatically generated
+#
+# Do not edit it directly
+#
+###

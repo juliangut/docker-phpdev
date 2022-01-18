@@ -1,3 +1,5 @@
 !.gitignore
+image/
+act.secrets
 composer.lock
 vendor/
