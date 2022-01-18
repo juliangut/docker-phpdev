@@ -53,11 +53,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        builds:
-          - variant: cli
-            version: 8.1
-            xdebug: 3.1.2
-#        builds: ${{ fromJson(needs.prepare_env.outputs.builds) }}
+        builds: ${{ fromJson(needs.prepare_env.outputs.builds) }}
 
     name: Build image ${{ matrix.builds.variant }} ${{ matrix.builds.version }}
 
@@ -96,7 +92,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
         if: ${{ github.event_name != 'pull_request' }}
 
-      - name: Build and push
+      - name: Rebuild and push
         uses: docker/build-push-action@v2
         with:
           context: image
