@@ -56,7 +56,7 @@ jobs:
         builds:
           - variant: cli
             version: 8.1
-            xdebuf: 3.1.2
+            xdebug: 3.1.2
 #        builds: ${{ fromJson(needs.prepare_env.outputs.builds) }}
 
     name: Build image ${{ matrix.builds.variant }} ${{ matrix.builds.version }}
