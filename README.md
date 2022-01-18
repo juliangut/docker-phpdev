@@ -2,7 +2,7 @@
 [![Docker Stars](https://img.shields.io/docker/stars/juliangut/phpdev.svg?style=flat-square)](https://hub.docker.com/r/juliangut/phpdev/)
 
 [![Docker Automated build](https://img.shields.io/docker/automated/juliangut/phpdev.svg?style=flat-square)](https://hub.docker.com/r/juliangut/phpdev/builds/)
-[![Docker Build Status](https://img.shields.io/docker/build/juliangut/phpdev.svg?style=flat-square)](https://hub.docker.com/r/juliangut/phpdev/builds/)
+[![Docker Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fjuliangut%2Fdocker-phpdev%2Fbadge&label=build%20status&style=flat-square)](https://hub.docker.com/r/juliangut/phpdev/builds/)
 
 # PHP development Docker images
 

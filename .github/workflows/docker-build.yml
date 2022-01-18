@@ -78,9 +78,11 @@ jobs:
             BUILD_DATE=${{ needs.prepare_env.outputs.build_date }}
             VCS_REF=${{ needs.prepare_env.outputs.vcs_ref }}
             XDEBUG_VERSION=${{ matrix.builds.xdebug }}
+        if: ${{ github.event_name == 'pull_request' }}
 
       - name: Inspect image
         run: docker image inspect juliangut/phpdev:test
+        if: ${{ github.event_name == 'pull_request' }}
 
       - name: Login to DockerHub
         uses: docker/login-action@v1
@@ -89,7 +91,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
         if: ${{ github.event_name != 'pull_request' }}
 
-      - name: Rebuild and push
+      - name: Build and push
         uses: docker/build-push-action@v2
         with:
           context: dist/${{ matrix.builds.variant }}/${{ matrix.builds.version }}
@@ -102,8 +104,10 @@ jobs:
             XDEBUG_VERSION=${{ matrix.builds.xdebug }}
         if: ${{ github.event_name != 'pull_request' }}
 
-  updates:
+  post_build:
     if: ${{ github.event_name != 'pull_request' }}
+
+    needs: build
 
     runs-on: ubuntu-latest
 
