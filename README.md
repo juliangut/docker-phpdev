@@ -359,7 +359,7 @@ RUN composer self-update --1
 
 ## Contributing
 
-Found a bug or have a feature request? [Please open a new issue](https://github.com/phpgears/event-sourcing/issues). Have a look at existing issues before
+Found a bug or have a feature request? [Please open a new issue](https://github.com/juliangut/docker-phpdev/issues). Have a look at existing issues before
 
 ## License
 
