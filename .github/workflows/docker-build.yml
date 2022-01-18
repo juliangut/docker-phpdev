@@ -102,7 +102,7 @@ jobs:
             XDEBUG_VERSION=${{ matrix.builds.xdebug }}
         if: ${{ github.event_name != 'pull_request' }}
 
-  post_build:
+  updates:
     if: ${{ github.event_name != 'pull_request' }}
 
     runs-on: ubuntu-latest
