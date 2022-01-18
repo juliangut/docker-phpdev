@@ -1,3 +1,7 @@
 {% extends "docker-entrypoint.twig" %}
 
 {% block command %}php{% endblock %}
+
+{% block exec %}
+exec "sudo" "-E" "-H" "-u" docker "$@"
+{% endblock %}

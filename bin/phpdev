@@ -4,7 +4,9 @@
 \error_reporting(-1);
 \ini_set('display_errors', true);
 
-use Jgut\Docker\PhpDev\BuildCommand;
+use Jgut\Docker\PhpDev\Command\ExportCommand;
+use Jgut\Docker\PhpDev\Command\ScaffoldCommand;
+use Jgut\Docker\PhpDev\Command\ScaffoldAllCommand;
 use Symfony\Component\Console\Application;
 use Twig\Environment as Twig;
 use Twig\Loader\FilesystemLoader;
@@ -15,12 +17,15 @@ $composer = \json_decode(\file_get_contents(\dirname(__DIR__) . '/composer.json'
 
 $application = new Application('docker-phpdev');
 
-$buildCommand = new BuildCommand(
+$exportCommand = new ExportCommand($composer['extra']['versions']);
+$scaffoldCommand = new ScaffoldCommand(
   new Twig(new FilesystemLoader(__DIR__ . '/../templates')),
   $composer['extra']['versions']
 );
+$scaffoldAllCommand = new ScaffoldAllCommand($composer['extra']['versions']);
 
-$application->add($buildCommand);
-$application->setDefaultCommand($buildCommand->getName());
+$application->add($exportCommand);
+$application->add($scaffoldCommand);
+$application->add($scaffoldAllCommand);
 
 $application->run();
