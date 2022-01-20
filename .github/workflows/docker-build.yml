@@ -2,8 +2,8 @@ name: Docker images build and push
 
 on:
   push:
-    branches:
-      - master
+    tags:
+      - '*'
   pull_request:
     branches:
       - master
