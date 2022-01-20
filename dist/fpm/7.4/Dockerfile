@@ -25,8 +25,8 @@ LABEL org.opencontainers.image.title="juliangut/phpdev" \
   org.opencontainers.image.authors="Julián Gutiérrez (juliangut@gmail.com)" \
   org.opencontainers.image.licenses="BSD-3-Clause" \
   com.juliangut.php.version="7.4" \
-  com.juliangut.php.extensions="bcmath, curl, gd, mbstring, opcache, openssl, xdebug, zlib" \
-  com.juliangut.pecl.extensions="apcu" \
+  com.juliangut.php.extensions="bcmath, curl, gd, mbstring, opcache, openssl, zlib" \
+  com.juliangut.pecl.extensions="apcu, xdebug" \
   com.juliangut.xdebug.version="$XDEBUG_VERSION"
 
 RUN set -xe \
