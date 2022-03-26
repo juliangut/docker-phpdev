@@ -75,7 +75,8 @@ RUN set -xe \
 {% endif %}
   \
   && apk del .build-deps \
-  && rm -rf /tmp/* /var/cache/apk/* \
+  && pecl clear-cache \
+  && rm -rf /tmp/* /var/cache/apk/* /usr/share/php \
   \
   && sed -i "s/bin\/ash/bin\/bash/" /etc/passwd \
   \
