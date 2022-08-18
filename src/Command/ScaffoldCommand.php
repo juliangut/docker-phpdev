@@ -34,26 +34,28 @@ class ScaffoldCommand extends ScaffoldAllCommand
     private $templatesMap = [
         'cli' => [
             'php.ini.twig',
-            'opcache.ini.twig',
-            'apc.ini.twig',
-            'xdebug.ini.twig',
+            'php-opcache.ini.twig',
+            'php-apc.ini.twig',
+            'php-xdebug.ini.twig',
             'cli/Dockerfile.twig',
             'cli/docker-entrypoint.twig',
         ],
         'fpm' => [
             'php.ini.twig',
-            'opcache.ini.twig',
-            'apc.ini.twig',
-            'xdebug.ini.twig',
+            'php-opcache.ini.twig',
+            'php-apc.ini.twig',
+            'php-xdebug.ini.twig',
             'fpm/Dockerfile.twig',
             'fpm/docker-entrypoint.twig',
+            'fpm/docker-healthcheck.twig',
             'fpm/php-fpm.conf.twig',
+            'fpm/php-fpm-www.conf.twig',
         ],
         'jenkins' => [
             'php.ini.twig',
-            'opcache.ini.twig',
-            'apc.ini.twig',
-            'xdebug.ini.twig',
+            'php-opcache.ini.twig',
+            'php-apc.ini.twig',
+            'php-xdebug.ini.twig',
             'jenkins/Dockerfile.twig',
             'jenkins/docker-entrypoint.twig',
         ],
@@ -182,6 +184,13 @@ NOTE;
         foreach ($files as $sourceFile) {
             if ($context['xdebug'] === false && \basename($sourceFile) === 'xdebug.ini.twig') {
                 continue;
+            }
+
+            if (
+                preg_match('/\.conf\.twig$/', \basename($sourceFile)) === 1
+                && array_key_exists('comment', $context)
+            ) {
+                $context['comment'] = str_replace('#', ';', $context['comment']);
             }
 
             $destinationFile = $directory . '/' . \basename($sourceFile);

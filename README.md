@@ -4,7 +4,7 @@
 [![Build Status](https://github.com/juliangut/docker-phpdev/actions/workflows/docker-build.yml/badge.svg?branch=master&style=flat)](https://github.com/juliangut/docker-phpdev/actions)
 **![Automated build](https://img.shields.io/badge/build-automated-brightgreen?style=flat-square)**
 
-# PHP development Docker images
+# PHP Docker images for development
 
 PHP/PHP-FPM/Jenkins Docker images for development/CI, based on Alpine Linux for minimal size
 
@@ -16,6 +16,7 @@ Bundled with:
 * Installed PHP extensions: [Multibyte String](http://php.net/manual/en/book.mbstring.php), [cURL](http://php.net/manual/en/book.curl.php), [OpenSSL](http://php.net/manual/en/book.openssl.php), [Zlib](http://php.net/manual/en/book.zlib.php), [BCMath](http://php.net/manual/en/book.bc.php), [GD](http://php.net/manual/en/book.image.php), [OPcache](http://php.net/manual/en/book.opcache.php)
 * Installed PECL extension: [APCu](https://www.php.net/manual/en/book.apcu.php)
 * Includes [make](https://www.gnu.org/software/make/manual/make.html) utility
+* Automatic Healthcheck on PBP-FPM images
 
 ## Available tags
 

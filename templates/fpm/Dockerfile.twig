@@ -1,9 +1,19 @@
 {% extends "Dockerfile.twig" %}
 
+{% block install %}
+    fcgi \
+{% endblock %}
+
 {% block files %}
 
 ENV PHP_FPM_CONF_DIR /usr/local/etc/php-fpm.d
 COPY php-fpm.conf $PHP_FPM_CONF_DIR/zz-php-fpm.conf
+COPY php-fpm-www.conf $PHP_FPM_CONF_DIR/zz-www.conf
+
+COPY docker-healthcheck /usr/local/bin/docker-healthcheck
+RUN chmod +x /usr/local/bin/docker-healthcheck
+
+HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3 CMD ["docker-healthcheck"]
 {% endblock %}
 
 {% block command %}

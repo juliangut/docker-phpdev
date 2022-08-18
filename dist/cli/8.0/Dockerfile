@@ -8,8 +8,6 @@
 #
 ###
 
-FROM composer:2 as composer
-
 FROM php:8.0-cli-alpine
 
 ARG BUILD_DATE
@@ -74,7 +72,8 @@ RUN set -xe \
     xdebug \
   \
   && apk del .build-deps \
-  && rm -rf /tmp/* /var/cache/apk/* \
+  && pecl clear-cache \
+  && rm -rf /tmp/* /var/cache/apk/* /usr/share/php \
   \
   && sed -i "s/bin\/ash/bin\/bash/" /etc/passwd \
   \
@@ -89,7 +88,7 @@ RUN set -xe \
   && mkdir /home/docker/.composer \
   && chown docker:docker -R /home/docker/.composer
 
-COPY --from=composer /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 ENV STDOUT_LOG=0 \
   \
@@ -108,9 +107,9 @@ ENV STDOUT_LOG=0 \
   PATH="/home/docker/.composer/vendor/bin:$PATH"
 
 COPY php.ini $PHP_INI_DIR/conf.d/zz-php.ini
-COPY opcache.ini $PHP_INI_DIR/conf.d/zz-opcache.ini
-COPY apc.ini $PHP_INI_DIR/conf.d/zz-apc.ini
-COPY xdebug.ini $PHP_INI_DIR/conf.d/zz-xdebug.ini
+COPY php-opcache.ini $PHP_INI_DIR/conf.d/zz-opcache.ini
+COPY php-apc.ini $PHP_INI_DIR/conf.d/zz-apc.ini
+COPY php-xdebug.ini $PHP_INI_DIR/conf.d/zz-xdebug.ini
 
 VOLUME /app /var/log/php
 WORKDIR /app

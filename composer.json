@@ -29,10 +29,19 @@
     "symfony/console": "^5.0|^6.0",
     "twig/twig": "^3.0"
   },
+  "require-dev": {
+    "roave/security-advisories": "dev-master"
+  },
   "autoload": {
     "psr-4": {
       "Jgut\\Docker\\PhpDev\\": "src/"
     }
+  },
+  "autoload-dev": {
+  },
+  "config": {
+    "preferred-install": "dist",
+    "sort-packages": true
   },
   "bin": [
     "bin/phpdev"

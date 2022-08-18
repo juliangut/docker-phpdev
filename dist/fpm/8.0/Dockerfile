@@ -8,8 +8,6 @@
 #
 ###
 
-FROM composer:2 as composer
-
 FROM php:8.0-fpm-alpine
 
 ARG BUILD_DATE
@@ -46,6 +44,7 @@ RUN set -xe \
     libpng-dev \
     libjpeg-turbo-dev \
     libwebp-dev \
+    fcgi \
   \
   && groupmod -n docker www-data \
   && usermod -l docker -m -d /home/docker -s /sbin/bash -G wheel -a www-data \
@@ -74,7 +73,8 @@ RUN set -xe \
     xdebug \
   \
   && apk del .build-deps \
-  && rm -rf /tmp/* /var/cache/apk/* \
+  && pecl clear-cache \
+  && rm -rf /tmp/* /var/cache/apk/* /usr/share/php \
   \
   && sed -i "s/bin\/ash/bin\/bash/" /etc/passwd \
   \
@@ -89,7 +89,7 @@ RUN set -xe \
   && mkdir /home/docker/.composer \
   && chown docker:docker -R /home/docker/.composer
 
-COPY --from=composer /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 ENV STDOUT_LOG=0 \
   \
@@ -108,12 +108,18 @@ ENV STDOUT_LOG=0 \
   PATH="/home/docker/.composer/vendor/bin:$PATH"
 
 COPY php.ini $PHP_INI_DIR/conf.d/zz-php.ini
-COPY opcache.ini $PHP_INI_DIR/conf.d/zz-opcache.ini
-COPY apc.ini $PHP_INI_DIR/conf.d/zz-apc.ini
-COPY xdebug.ini $PHP_INI_DIR/conf.d/zz-xdebug.ini
+COPY php-opcache.ini $PHP_INI_DIR/conf.d/zz-opcache.ini
+COPY php-apc.ini $PHP_INI_DIR/conf.d/zz-apc.ini
+COPY php-xdebug.ini $PHP_INI_DIR/conf.d/zz-xdebug.ini
 
 ENV PHP_FPM_CONF_DIR /usr/local/etc/php-fpm.d
 COPY php-fpm.conf $PHP_FPM_CONF_DIR/zz-php-fpm.conf
+COPY php-fpm-www.conf $PHP_FPM_CONF_DIR/zz-www.conf
+
+COPY docker-healthcheck /usr/local/bin/docker-healthcheck
+RUN chmod +x /usr/local/bin/docker-healthcheck
+
+HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3 CMD ["docker-healthcheck"]
 
 VOLUME /app /var/log/php
 WORKDIR /app
