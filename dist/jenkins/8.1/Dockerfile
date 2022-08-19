@@ -31,6 +31,7 @@ RUN set -xe \
   && apk add --no-cache --virtual .build-deps \
     tzdata \
     $PHPIZE_DEPS \
+    icu-dev \
   \
   && cp /usr/share/zoneinfo/UTC /etc/localtime \
   && echo "UTC" > /etc/timezone \
@@ -40,6 +41,7 @@ RUN set -xe \
     sudo \
     bash \
     make \
+    icu \
     freetype-dev \
     libpng-dev \
     libjpeg-turbo-dev \
@@ -59,12 +61,15 @@ RUN set -xe \
   && mv $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini \
   \
   && docker-php-ext-configure \
+    intl \
+  && docker-php-ext-configure \
     gd \
       --with-freetype \
       --with-jpeg \
       --with-webp \
   \
   && docker-php-ext-install -j$(nproc) \
+    intl \
     gd \
     bcmath \
     opcache \

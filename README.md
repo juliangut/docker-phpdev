@@ -13,10 +13,10 @@ Bundled with:
 * UTC timezone
 * Latest [Xdebug](https://xdebug.org/) (3.x) configured and enabled for development and debugging
 * Latest [Composer](https://getcomposer.org/) (2.x) installed globally
-* Installed PHP extensions: [Multibyte String](http://php.net/manual/en/book.mbstring.php), [cURL](http://php.net/manual/en/book.curl.php), [OpenSSL](http://php.net/manual/en/book.openssl.php), [Zlib](http://php.net/manual/en/book.zlib.php), [BCMath](http://php.net/manual/en/book.bc.php), [GD](http://php.net/manual/en/book.image.php), [OPcache](http://php.net/manual/en/book.opcache.php)
+* Installed PHP extensions: [Multibyte String](http://php.net/manual/en/book.mbstring.php), [cURL](http://php.net/manual/en/book.curl.php), [Intl](https://www.php.net/manual/en/book.intl.php), [OpenSSL](http://php.net/manual/en/book.openssl.php), [Zlib](http://php.net/manual/en/book.zlib.php), [BCMath](http://php.net/manual/en/book.bc.php), [GD](http://php.net/manual/en/book.image.php), [OPcache](http://php.net/manual/en/book.opcache.php)
 * Installed PECL extension: [APCu](https://www.php.net/manual/en/book.apcu.php)
 * Includes [make](https://www.gnu.org/software/make/manual/make.html) utility
-* Automatic Healthcheck on PBP-FPM images
+* Automatic Healthcheck on PHP-FPM images
 
 ## Available tags
 
