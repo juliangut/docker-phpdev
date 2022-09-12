@@ -218,15 +218,19 @@ The way of starting a debug session is by dynamically setting a session identifi
 
 ##### CLI
 
-* Setting "XDEBUG_SESSION" environment variable
+This will enable XDebug for each and every request
+
+* Setting "XDEBUG_SESSION" environment variable on container start
 
 ##### Browser
+
+This allows to specify which requests will have XDebug enabled 
 
 * Setting "XDEBUG_SESSION" cookie with the session identifier as its value. eg: `curl -b "XDEBUG_SESSION=PHPSTORM" http://localhost:8080/`
 * On HTTP request by adding "XDEBUG_SESSION_START" query parameter to the URI.  eg: `curl http://localhost:8080?XDEBUG_SESSION_START=PHPSTORM`
 * On POST requests by adding a "XDEBUG_SESSION_START" parameter. eg: `curl -X POST -F "XDEBUG_SESSION_START=PHPSTORM" http://localhost:8080`
 
-#### Browser support
+##### Browser support
 
 There are [browser plugins/extensions](https://xdebug.org/docs/step_debug#browser-extensions) available to very easily toggle the required cookies
 
@@ -257,7 +261,7 @@ Start listening for incoming connections by toggling _Run > Start Listening for 
 Setting `PHP_IDE_CONFIG` environment variable to the server name you defined earlier, this will instruct PHPStorm which mapping to use
 
 ```bash
-docker run -d -p 8080:8080 -e PHP_IDE_CONFIG="serverName=Testing" -v `pwd`:/app juliangut/phpdev:latest php -S 0.0.0.0:8080 -t /app/public
+docker run -d -p 8080:8080 -e XDEBUG_SESSION="PHPSTORM" -e PHP_IDE_CONFIG="serverName=Testing" -v `pwd`:/app juliangut/phpdev:latest php -S 0.0.0.0:8080 -t /app/public
 ```
 
 #### Using Docker Compose
@@ -271,6 +275,7 @@ services:
     ports:
       - 8080:8080
     environment:
+      XDEBUG_SESSION: PHPSTORM
       PHP_IDE_CONFIG: serverName=Testing
     volumes:
       - .:/app
