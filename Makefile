@@ -15,17 +15,17 @@ export-build:
 .PHONY: build-cli74
 build-cli74:
 	cd dist/cli/7.4 && \
-	docker build -f Dockerfile --build-arg XDEBUG_VERSION=$(XDEBUG_VERSION) -t $(IMAGE_NAME):7.4 .
+	docker build --pull -f Dockerfile --build-arg XDEBUG_VERSION=$(XDEBUG_VERSION) -t $(IMAGE_NAME):7.4 .
 
 .PHONY: build-cli80
 build-cli80:
 	cd dist/cli/8.0 && \
-	docker build -f Dockerfile --build-arg XDEBUG_VERSION=$(XDEBUG_VERSION) -t $(IMAGE_NAME):8.0 .
+	docker build --pull -f Dockerfile --build-arg XDEBUG_VERSION=$(XDEBUG_VERSION) -t $(IMAGE_NAME):8.0 .
 
 .PHONY: build-cli81
 build-cli81:
 	cd dist/cli/8.1 && \
-	docker build -f Dockerfile --build-arg XDEBUG_VERSION=$(XDEBUG_VERSION) -t $(IMAGE_NAME):8.1 .
+	docker build --pull -f Dockerfile --build-arg XDEBUG_VERSION=$(XDEBUG_VERSION) -t $(IMAGE_NAME):8.1 .
 
 .PHONY: build-cli
 build-cli:
@@ -37,17 +37,17 @@ build-cli:
 .PHONY: build-fpm74
 build-fpm74:
 	cd dist/fpm/7.4 && \
-	docker build -f Dockerfile --build-arg XDEBUG_VERSION=$(XDEBUG_VERSION) -t $(IMAGE_NAME):7.4-fpm .
+	docker build --pull -f Dockerfile --build-arg XDEBUG_VERSION=$(XDEBUG_VERSION) -t $(IMAGE_NAME):7.4-fpm .
 
 .PHONY: build-fpm80
 build-fpm80:
 	cd dist/fpm/8.0 && \
-	docker build -f Dockerfile --build-arg XDEBUG_VERSION=$(XDEBUG_VERSION) -t $(IMAGE_NAME):8.0-fpm .
+	docker build --pull -f Dockerfile --build-arg XDEBUG_VERSION=$(XDEBUG_VERSION) -t $(IMAGE_NAME):8.0-fpm .
 
 .PHONY: build-fpm81
 build-fpm81:
 	cd dist/fpm/8.1 && \
-	docker build -f Dockerfile --build-arg XDEBUG_VERSION=$(XDEBUG_VERSION) -t $(IMAGE_NAME):8.1-fpm .
+	docker build --pull -f Dockerfile --build-arg XDEBUG_VERSION=$(XDEBUG_VERSION) -t $(IMAGE_NAME):8.1-fpm .
 
 .PHONY: build-fpm
 build-fpm:
@@ -59,17 +59,17 @@ build-fpm:
 .PHONY: build-jenkins74
 build-jenkins74:
 	cd dist/jenkins/7.4 && \
-	docker build -f Dockerfile --build-arg XDEBUG_VERSION=$(XDEBUG_VERSION) -t $(IMAGE_NAME):7.4-jenkins .
+	docker build --pull -f Dockerfile --build-arg XDEBUG_VERSION=$(XDEBUG_VERSION) -t $(IMAGE_NAME):7.4-jenkins .
 
 .PHONY: build-jenkins80
 build-jenkins80:
 	cd dist/jenkins/8.0 && \
-	docker build -f Dockerfile --build-arg XDEBUG_VERSION=$(XDEBUG_VERSION) -t $(IMAGE_NAME):8.0-jenkins .
+	docker build --pull -f Dockerfile --build-arg XDEBUG_VERSION=$(XDEBUG_VERSION) -t $(IMAGE_NAME):8.0-jenkins .
 
 .PHONY: build-jenkins81
 build-jenkins81:
 	cd dist/jenkins/8.1 && \
-	docker build -f Dockerfile --build-arg XDEBUG_VERSION=$(XDEBUG_VERSION) -t $(IMAGE_NAME):8.1-jenkins .
+	docker build --pull -f Dockerfile --build-arg XDEBUG_VERSION=$(XDEBUG_VERSION) -t $(IMAGE_NAME):8.1-jenkins .
 
 .PHONY: build-jenkins
 build-jenkins:
