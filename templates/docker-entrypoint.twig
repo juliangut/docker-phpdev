@@ -4,6 +4,49 @@
 
 set -e
 
+__get_link_format() {
+  case "$(echo $1 | sed -e 's/^[[:space:]]*//')" in
+    "phpstorm")
+      format="phpstorm:\/\/open?file=%f\&line=%l"
+    ;;
+    "idea")
+      format="idea:\/\/open?file=%f\&line=%l"
+    ;;
+    "vscode")
+      format="vscode:\/\/file\/%f:%l"
+    ;;
+    "sublime")
+      format="subl:\/\/open?url=file:\/\/%f\&line=%l"
+    ;;
+    "netbeans")
+      format="netbeans:\/\/open\/?f=%f:%l"
+    ;;
+    "atom")
+      format="atom:\/\/core\/open\/file?filename=%f\&line=%l"
+    ;;
+    "vim")
+      format="vim:\/\/%f@%l"
+    ;;
+    "emacs")
+      format="emacs:\/\/open?url=file:\/\/%f\&line=%l"
+    ;;
+    "gvim")
+      format="gvim:\/\/%f@%l"
+    ;;
+    "textmate")
+      format="txmt:\/\/open?url=file:\/\/%f\&line=%l"
+    ;;
+    "macvim")
+      format="mvim:\/\/open\/?url=file:\/\/%f\&line=%l"
+    ;;
+    *)
+      format="$1"
+    ;;
+  esac
+
+  echo $format
+}
+
 CMD="{% block command %}{% endblock %}"
 
 # if command starts with an option, prepend it to command
@@ -45,42 +88,7 @@ else
   fi
 
   if [[ ! -z "${XDEBUG_FILE_LINK_FORMAT}" ]]; then
-    case "${XDEBUG_FILE_LINK_FORMAT}" in
-      "phpstorm")
-        FORMAT="phpstorm:\/\/open?file=%f\&line=%l"
-      ;;
-      "idea")
-        FORMAT="idea:\/\/open?file=%f\&line=%l"
-      ;;
-      "vscode")
-        FORMAT="vscode:\/\/file\/%f:%l"
-      ;;
-      "sublime")
-        FORMAT="subl:\/\/open?url=file:\/\/%f\&line=%l"
-      ;;
-      "netbeans")
-        FORMAT="netbeans:\/\/open\/?f=%f:%l"
-      ;;
-      "vim")
-        FORMAT="vim:\/\/%f@%l"
-      ;;
-      "emacs")
-        FORMAT="emacs:\/\/open?url=file:\/\/%f\&line=%l"
-      ;;
-      "gvim")
-        FORMAT="gvim:\/\/%f@%l"
-      ;;
-      "textmate")
-        FORMAT="txmt:\/\/open?url=file:\/\/%f\&line=%l"
-      ;;
-      "macvim")
-        FORMAT="mvim:\/\/open/?url=file:\/\/%f\&line=%l"
-      ;;
-      *)
-        FORMAT="${XDEBUG_FILE_LINK_FORMAT}"
-      ;;
-    esac
-
+    FORMAT=$(__get_link_format "${XDEBUG_FILE_LINK_FORMAT}")
     sed -i "s/;\?xdebug.file_link_format\s*=.*/xdebug.file_link_format = \"${FORMAT}\"/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
   fi
 fi

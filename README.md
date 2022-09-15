@@ -108,7 +108,7 @@ The remote server port to connect to
 * Type: string
 * Default: _not set_
 
-Protocol format to integrate IDEs with stack trace file links. You can provide your custom format or use one of the following: _phpstorm_, _idea_, _vscode_, _sublime_, _netbeans_, _vim_, _emacs_, _gvim_, _textmate_ or _macvim_.
+Protocol format to integrate IDEs with stack trace file links. You can provide your custom format or use one of the following: _phpstorm_, _idea_, _vscode_, _sublime_, _netbeans_, _atom_, _vim_, _emacs_, _gvim_, _textmate_ or _macvim_.
 
 If you use your custom format remember to escape the string for use in "sed". Review [xdebug.file_link_format documentation](https://xdebug.org/docs/all_settings#file_link_format)
 
