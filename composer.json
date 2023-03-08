@@ -51,7 +51,7 @@
       "cli": {
         "8.2": {
           "image": "php:8.2-cli-alpine",
-          "tags": ["latest", "cli-latest", "cli", "8", "8.1"]
+          "tags": ["latest", "cli-latest", "cli", "8", "8.2"]
         },
         "8.1": {
           "image": "php:8.1-cli-alpine",
@@ -70,7 +70,7 @@
       "fpm": {
         "8.2": {
           "image": "php:8.2-fpm-alpine",
-          "tags": ["fpm-latest", "fpm", "8-fpm", "8.1-fpm"]
+          "tags": ["fpm-latest", "fpm", "8-fpm", "8.2-fpm"]
         },
         "8.1": {
           "image": "php:8.1-fpm-alpine",
@@ -89,7 +89,7 @@
       "jenkins": {
         "8.2": {
           "image": "php:8.2-cli-alpine",
-          "tags": ["jenkins-latest", "jenkins", "8-jenkins", "8.1-jenkins"]
+          "tags": ["jenkins-latest", "jenkins", "8-jenkins", "8.2-jenkins"]
         },
         "8.1": {
           "image": "php:8.1-cli-alpine",
