@@ -63,6 +63,7 @@
         },
         "7.4": {
           "image": "php:7.4-cli-alpine",
+          "xdebug": "3.1.6",
           "tags": ["7", "7.4"]
         }
       },
@@ -81,6 +82,7 @@
         },
         "7.4": {
           "image": "php:7.4-fpm-alpine",
+          "xdebug": "3.1.6",
           "tags": ["7-fpm", "7.4-fpm"]
         }
       },
@@ -99,6 +101,7 @@
         },
         "7.4": {
           "image": "php:7.4-cli-alpine",
+          "xdebug": "3.1.6",
           "tags": ["7-jenkins", "7.4-jenkins"]
         }
       }
