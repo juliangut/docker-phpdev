@@ -209,6 +209,14 @@ docker run --rm -v `pwd`:/app juliangut/phpdev:latest composer [command]
 docker run --rm -v `pwd`:/app juliangut/phpdev:fpm-latest composer [command]
 ```
 
+##### Composer authentication
+
+If you work with privately hosted packages and repositories and your local composer is already configured you can share that configuration with your containers
+
+```bash
+docker run --rm -v `pwd`:/app -v ~/.composer/auth.json:/home/docker/.composer/auth.json juliangut/phpdev:latest composer [command]
+```
+
 #### Accessing a running container
 
 ```bash
@@ -354,7 +362,7 @@ USER root
 
 ### Requiring Composer V1
 
-If, for whatever reason, you need Composer downgraded to version 1
+If for whatever reason you need Composer downgraded to version 1
 
 ```
 FROM juliangut/phpdev:latest
