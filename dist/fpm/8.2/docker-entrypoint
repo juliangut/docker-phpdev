@@ -1,0 +1,117 @@
+#!/bin/bash
+
+###
+#
+# NOTE
+#
+# This file has been automatically generated
+#
+# Do not edit it directly
+#
+###
+
+set -e
+
+__get_link_format() {
+  case "$(echo $1 | sed -e 's/^[[:space:]]*//')" in
+    "phpstorm")
+      format="phpstorm:\/\/open?file=%f\&line=%l"
+    ;;
+    "idea")
+      format="idea:\/\/open?file=%f\&line=%l"
+    ;;
+    "vscode")
+      format="vscode:\/\/file\/%f:%l"
+    ;;
+    "sublime")
+      format="subl:\/\/open?url=file:\/\/%f\&line=%l"
+    ;;
+    "netbeans")
+      format="netbeans:\/\/open\/?f=%f:%l"
+    ;;
+    "atom")
+      format="atom:\/\/core\/open\/file?filename=%f\&line=%l"
+    ;;
+    "vim")
+      format="vim:\/\/%f@%l"
+    ;;
+    "emacs")
+      format="emacs:\/\/open?url=file:\/\/%f\&line=%l"
+    ;;
+    "gvim")
+      format="gvim:\/\/%f@%l"
+    ;;
+    "textmate")
+      format="txmt:\/\/open?url=file:\/\/%f\&line=%l"
+    ;;
+    "macvim")
+      format="mvim:\/\/open\/?url=file:\/\/%f\&line=%l"
+    ;;
+    *)
+      format="$1"
+    ;;
+  esac
+
+  echo $format
+}
+
+CMD="php-fpm"
+
+# if command starts with an option, prepend it to command
+if [[ "${1:0:1}" = '-' ]]; then
+  set -- $CMD "$@"
+fi
+
+# alter docker user and group based on mounted volume
+USER_UID=`ls -l / | grep app | awk '/ +/{ printf "%s",$3 }'`
+if [[ "${USER_UID}" != "docker" ]]; then
+  USER_GID=`ls -l / | grep app | awk '/ +/{ printf "%s",$4 }'`
+
+  groupmod -g $USER_GID docker
+  usermod -u $USER_UID docker
+
+  chown docker:docker -R /home/docker
+  chown docker:docker -R /var/log/php
+fi
+
+if [[ "${STDOUT_LOG}" -ne "0" ]]; then
+  sed -i "s/error_log\s*=.*/error_log = \/proc\/self\/fd\/2/" $PHP_INI_DIR/conf.d/zz-php.ini
+  sed -i "s/xdebug.log\s*=.*/xdebug.log = \/proc\/self\/fd\/2/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
+fi
+if [[ "${STDOUT_LOG}" -ne "0" ]]; then
+  sed -i "s/error_log\s*=.*/error_log = \/proc\/self\/fd\/2/" $PHP_FPM_CONF_DIR/zz-php-fpm.conf
+fi
+
+if [[ "${XDEBUG_DISABLE}" -ne "0" ]]; then
+  if [[ -f $PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini ]]; then
+    rm $PHP_INI_DIR/conf.d/docker-php-ext-xdebug.ini
+  fi
+else
+  if [[ ! -z "${XDEBUG_CLIENT_HOST}" ]]; then
+    sed -i "s/xdebug.client_host\s*=.*/xdebug.client_host = ${XDEBUG_CLIENT_HOST}/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
+  else
+    HOST_IP=`ip route | awk '/default/ { print $3 }'`
+    sed -i "s/xdebug.client_host\s*=.*/xdebug.client_host = ${HOST_IP}/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
+  fi
+
+  if [[ ! -z "${XDEBUG_FILE_LINK_FORMAT}" ]]; then
+    FORMAT=$(__get_link_format "${XDEBUG_FILE_LINK_FORMAT}")
+    sed -i "s/;\?xdebug.file_link_format\s*=.*/xdebug.file_link_format = \"${FORMAT}\"/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
+  fi
+fi
+
+if [[ "$@" = "${CMD}" ]] || [[ "`echo "$@" | awk '/ +/{ printf "%s",$1 }'`" = "${CMD}" ]]; then
+  exec "$@"
+else
+  exec "sudo" "-E" "-H" "-u" docker "$@"
+fi
+
+###
+#
+# NOTE
+#
+# This file has been automatically generated
+#
+# Do not edit it directly
+#
+###

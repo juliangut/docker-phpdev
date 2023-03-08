@@ -8,7 +8,7 @@
 #
 ###
 
-FROM php:8.0-cli-alpine
+FROM php:8.2-fpm-alpine
 
 ARG BUILD_DATE
 ARG VCS_REF
@@ -17,12 +17,12 @@ ARG XDEBUG_VERSION
 LABEL org.opencontainers.image.title="juliangut/phpdev" \
   org.opencontainers.image.description="PHP/PHP-FPM/Jenkins Docker image for development/CI, based on Alpine Linux for minimal size" \
   org.opencontainers.image.url="https://github.com/juliangut/docker-phpdev" \
-  org.opencontainers.image.source="https://github.com/juliangut/docker-phpdev/tree/master/dist/jenkins/8.0" \
+  org.opencontainers.image.source="https://github.com/juliangut/docker-phpdev/tree/master/dist/fpm/8.2" \
   org.opencontainers.image.revision="$VCS_REF" \
   org.opencontainers.image.created="$BUILD_DATE" \
   org.opencontainers.image.authors="Julián Gutiérrez (juliangut@gmail.com)" \
   org.opencontainers.image.licenses="BSD-3-Clause" \
-  com.juliangut.php.version="8.0" \
+  com.juliangut.php.version="8.2" \
   com.juliangut.php.extensions="bcmath, curl, gd, mbstring, opcache, openssl, zlib" \
   com.juliangut.pecl.extensions="apcu, xdebug" \
   com.juliangut.xdebug.version="$XDEBUG_VERSION"
@@ -47,17 +47,11 @@ RUN set -xe \
     libpng-dev \
     libjpeg-turbo-dev \
     libwebp-dev \
-    openjdk8-jre \
-    openssh \
-    git \
+    fcgi \
   \
   && groupmod -n docker www-data \
   && usermod -l docker -m -d /home/docker -s /sbin/bash -G wheel -a www-data \
   && sed -e 's;^# \(%wheel.*NOPASSWD.*\);\1;g' -i /etc/sudoers \
-  \
-  && addgroup -g 1551 jenkins \
-  && adduser -u 1551 -G jenkins -h /home/jenkins -s /sbin/bash -D jenkins \
-  && echo "jenkins:jenkins" | chpasswd \
   \
   && mv $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini \
   \
@@ -124,6 +118,15 @@ COPY php-opcache.ini $PHP_INI_DIR/conf.d/zz-opcache.ini
 COPY php-apc.ini $PHP_INI_DIR/conf.d/zz-apc.ini
 COPY php-xdebug.ini $PHP_INI_DIR/conf.d/zz-xdebug.ini
 
+ENV PHP_FPM_CONF_DIR /usr/local/etc/php-fpm.d
+COPY php-fpm.conf $PHP_FPM_CONF_DIR/zz-php-fpm.conf
+COPY php-fpm-www.conf $PHP_FPM_CONF_DIR/zz-www.conf
+
+COPY docker-healthcheck /usr/local/bin/docker-healthcheck
+RUN chmod +x /usr/local/bin/docker-healthcheck
+
+HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3 CMD ["docker-healthcheck"]
+
 VOLUME /app /var/log/php
 WORKDIR /app
 
@@ -131,9 +134,7 @@ COPY docker-entrypoint /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
 ENTRYPOINT ["docker-entrypoint"]
 
-EXPOSE 22
-
-CMD ["/usr/sbin/sshd", "-D"]
+CMD ["php-fpm"]
 
 ###
 #

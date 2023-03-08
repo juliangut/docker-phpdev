@@ -24,6 +24,7 @@ LABEL org.opencontainers.image.title="juliangut/phpdev" \
 
 RUN set -xe \
   && apk add --no-cache --virtual .build-deps \
+    linux-headers \
     tzdata \
     $PHPIZE_DEPS \
     icu-dev \

@@ -27,11 +27,17 @@ build-cli81:
 	cd dist/cli/8.1 && \
 	docker build --pull -f Dockerfile --build-arg XDEBUG_VERSION=$(XDEBUG_VERSION) -t $(IMAGE_NAME):8.1 .
 
+.PHONY: build-cli82
+build-cli82:
+	cd dist/cli/8.2 && \
+	docker build --pull -f Dockerfile --build-arg XDEBUG_VERSION=$(XDEBUG_VERSION) -t $(IMAGE_NAME):8.2 .
+
 .PHONY: build-cli
 build-cli:
 	make --no-print-directory build-cli74 && \
 	make --no-print-directory build-cli80 && \
-	make --no-print-directory build-cli81
+	make --no-print-directory build-cli81 && \
+	make --no-print-directory build-cli82
 
 
 .PHONY: build-fpm74
@@ -49,11 +55,17 @@ build-fpm81:
 	cd dist/fpm/8.1 && \
 	docker build --pull -f Dockerfile --build-arg XDEBUG_VERSION=$(XDEBUG_VERSION) -t $(IMAGE_NAME):8.1-fpm .
 
+.PHONY: build-fpm82
+build-fpm82:
+	cd dist/fpm/8.2 && \
+	docker build --pull -f Dockerfile --build-arg XDEBUG_VERSION=$(XDEBUG_VERSION) -t $(IMAGE_NAME):8.2-fpm .
+
 .PHONY: build-fpm
 build-fpm:
 	make --no-print-directory build-fpm74 && \
 	make --no-print-directory build-fpm80 && \
-	make --no-print-directory build-fpm81
+	make --no-print-directory build-fpm81 && \
+	make --no-print-directory build-fpm82
 
 
 .PHONY: build-jenkins74
@@ -71,8 +83,14 @@ build-jenkins81:
 	cd dist/jenkins/8.1 && \
 	docker build --pull -f Dockerfile --build-arg XDEBUG_VERSION=$(XDEBUG_VERSION) -t $(IMAGE_NAME):8.1-jenkins .
 
+.PHONY: build-jenkins81
+build-jenkins82:
+	cd dist/jenkins/8.2 && \
+	docker build --pull -f Dockerfile --build-arg XDEBUG_VERSION=$(XDEBUG_VERSION) -t $(IMAGE_NAME):8.2-jenkins .
+
 .PHONY: build-jenkins
 build-jenkins:
 	make --no-print-directory build-jenkins74 && \
 	make --no-print-directory build-jenkins80 && \
-	make --no-print-directory build-jenkins81
+	make --no-print-directory build-jenkins81 && \
+	make --no-print-directory build-jenkins82
