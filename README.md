@@ -14,7 +14,7 @@ Bundled with:
 * Latest [Xdebug](https://xdebug.org/) (3.x) configured and enabled for development and debugging
 * Latest [Composer](https://getcomposer.org/) (2.x) installed globally
 * Installed PHP extensions: [Multibyte String](http://php.net/manual/en/book.mbstring.php), [cURL](http://php.net/manual/en/book.curl.php), [Intl](https://www.php.net/manual/en/book.intl.php), [OpenSSL](http://php.net/manual/en/book.openssl.php), [Zlib](http://php.net/manual/en/book.zlib.php), [BCMath](http://php.net/manual/en/book.bc.php), [GD](http://php.net/manual/en/book.image.php), [OPcache](http://php.net/manual/en/book.opcache.php)
-* Installed PECL extension: [APCu](https://www.php.net/manual/en/book.apcu.php)
+* Installed PECL extensions: [APCu](https://www.php.net/manual/en/book.apcu.php)
 * Includes [make](https://www.gnu.org/software/make/manual/make.html) utility
 * Automatic Healthcheck on PHP-FPM images
 
@@ -23,10 +23,11 @@ Bundled with:
 #### CLI
 |            |         |                                                                                              |                                                                                                        |
 |------------|---------|----------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|
-| latest     | PHP 8.1 | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/cli/8.1/Dockerfile) | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/latest?style=flat-square)     |
-| cli-latest | PHP 8.1 | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/cli/8.1/Dockerfile) | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/cli-latest?style=flat-square) |
-| cli        | PHP 8.1 | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/cli/8.1/Dockerfile) | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/cli?style=flat-square)        |
-| 8          | PHP 8.1 | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/cli/8.1/Dockerfile) | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/8?style=flat-square)          |
+| latest     | PHP 8.2 | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/cli/8.2/Dockerfile) | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/latest?style=flat-square)     |
+| cli-latest | PHP 8.2 | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/cli/8.2/Dockerfile) | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/cli-latest?style=flat-square) |
+| cli        | PHP 8.2 | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/cli/8.2/Dockerfile) | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/cli?style=flat-square)        |
+| 8          | PHP 8.2 | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/cli/8.2/Dockerfile) | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/8?style=flat-square)          |
+| 8.2        | PHP 8.2 | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/cli/8.2/Dockerfile) | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/8.2?style=flat-square)        |
 | 8.1        | PHP 8.1 | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/cli/8.1/Dockerfile) | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/8.1?style=flat-square)        |
 | 8.0        | PHP 8.0 | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/cli/8.0/Dockerfile) | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/8.0?style=flat-square)        |
 | 7          | PHP 7.4 | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/cli/7.4/Dockerfile) | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/7?style=flat-square)          |
@@ -36,9 +37,10 @@ Bundled with:
 
 |            |         |                                                                                              |                                                                                                        |
 |------------|---------|----------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|
-| fpm-latest | PHP 8.1 | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/8.1/Dockerfile) | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/fpm-latest?style=flat-square) |
-| fpm        | PHP 8.1 | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/8.1/Dockerfile) | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/fpm?style=flat-square)        |
-| 8-fpm      | PHP 8.1 | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/8.1/Dockerfile) | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/8-fpm?style=flat-square)      |
+| fpm-latest | PHP 8.2 | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/8.2/Dockerfile) | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/fpm-latest?style=flat-square) |
+| fpm        | PHP 8.2 | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/8.2/Dockerfile) | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/fpm?style=flat-square)        |
+| 8-fpm      | PHP 8.2 | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/8.2/Dockerfile) | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/8-fpm?style=flat-square)      |
+| 8.2-fpm    | PHP 8.2 | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/8.2/Dockerfile) | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/8.2-fpm?style=flat-square)    |
 | 8.1-fpm    | PHP 8.1 | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/8.1/Dockerfile) | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/8.1-fpm?style=flat-square)    |
 | 8.0-fpm    | PHP 8.0 | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/8.0/Dockerfile) | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/8.0-fpm?style=flat-square)    |
 | 7-fpm      | PHP 7.4 | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/fpm/7.4/Dockerfile) | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/7-fpm?style=flat-square)      |
@@ -48,9 +50,10 @@ Bundled with:
 
 |                |         |                                                                                                  |                                                                                                            |
 |----------------|---------|--------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
-| jenkins-latest | PHP 8.1 | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/jenkins/8.1/Dockerfile) | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/jenkins-latest?style=flat-square) |
-| jenkins        | PHP 8.1 | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/jenkins/8.1/Dockerfile) | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/jenkins?style=flat-square)        |
-| 8-jenkins      | PHP 8.1 | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/jenkins/8.1/Dockerfile) | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/8-jenkins?style=flat-square)      |
+| jenkins-latest | PHP 8.2 | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/jenkins/8.2/Dockerfile) | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/jenkins-latest?style=flat-square) |
+| jenkins        | PHP 8.2 | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/jenkins/8.2/Dockerfile) | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/jenkins?style=flat-square)        |
+| 8-jenkins      | PHP 8.2 | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/jenkins/8.2/Dockerfile) | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/8-jenkins?style=flat-square)      |
+| 8.2-jenkins    | PHP 8.2 | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/jenkins/8.2/Dockerfile) | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/8.2-jenkins?style=flat-square)    |
 | 8.1-jenkins    | PHP 8.1 | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/jenkins/8.1/Dockerfile) | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/8.1-jenkins?style=flat-square)    |
 | 8.0-jenkins    | PHP 8.0 | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/jenkins/8.0/Dockerfile) | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/8.0-jenkins?style=flat-square)    |
 | 7-jenkins      | PHP 7.4 | [Dockerfile](https://github.com/juliangut/docker-phpdev/blob/master/dist/jenkins/7.4/Dockerfile) | ![Docker size](https://img.shields.io/docker/image-size/juliangut/phpdev/7-jenkins?style=flat-square)      |
