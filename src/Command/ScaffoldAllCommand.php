@@ -1,7 +1,17 @@
 <?php
 
+/*
+ * (c) 2023 Julián Gutiérrez <juliangut@gmail.com>
+ *
+ * @license BSD-3-Clause
+ * @link https://github.com/juliangut/docker-phpdev
+ */
+
+declare(strict_types=1);
+
 namespace Jgut\Docker\PhpDev\Command;
 
+use RuntimeException;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -16,33 +26,17 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 class ScaffoldAllCommand extends Command
 {
-    /**
-     * @var string
-     */
     protected static $defaultName = 'scaffold-all|s:a';
 
     /**
-     * Build versions.
-     *
-     * @var array<string, array<string, string>>
+     * @param scaffoldVersions $versions
      */
-    protected $versions;
-
-    /**
-     * @param array<string, array<string, string>> $versions
-     */
-    public function __construct(array $versions)
-    {
+    public function __construct(
+        private readonly array $versions,
+    ) {
         parent::__construct();
-
-        $this->versions = $versions;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
-     */
     protected function configure(): void
     {
         $this
@@ -51,26 +45,19 @@ class ScaffoldAllCommand extends Command
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @throws \RuntimeException
-     *
-     * @return int
+     * @throws RuntimeException
      */
     public function execute(InputInterface $input, OutputInterface $output): int
     {
         $ioStyle = new SymfonyStyle($input, $output);
 
-        $directory = \rtrim($input->getOption('directory'), \DIRECTORY_SEPARATOR);
-        $destinationDir = \getcwd() . '/' . $directory;
-        if (\is_dir($destinationDir) && \count(\scandir($destinationDir, \SCANDIR_SORT_ASCENDING)) !== 0) {
-            $this->recursiveRemove($destinationDir);
-        }
-        if (!\mkdir($destinationDir, 0755, true) && !\is_dir($destinationDir)) {
-            $ioStyle->error(\sprintf('Not possible to create "%s" directory', $destinationDir));
+        $directory = $input->getOption('directory');
+        $this->assertStringType($directory);
+        $directory = rtrim($directory, \DIRECTORY_SEPARATOR);
+        $destinationDir = getcwd() . '/' . $directory;
+        $this->removeDirectory($destinationDir);
+        if (!mkdir($destinationDir, 0o755, true) && !is_dir($destinationDir)) {
+            $ioStyle->error(sprintf('Not possible to create "%s" directory', $destinationDir));
             $ioStyle->newLine();
 
             return self::FAILURE;
@@ -81,7 +68,7 @@ class ScaffoldAllCommand extends Command
         $scaffoldCommand = $application->find('scaffold-image');
 
         foreach ($this->versions as $variant => $variantConfig) {
-            foreach (\array_keys($variantConfig) as $version) {
+            foreach (array_keys($variantConfig) as $version) {
                 $scaffoldCommand->run(
                     new ArrayInput([
                         'command' => 'scaffold-image',
@@ -89,7 +76,7 @@ class ScaffoldAllCommand extends Command
                         'version' => $version,
                         '--directory' => $directory . '/' . $variant . '/' . $version,
                     ]),
-                    new NullOutput()
+                    new NullOutput(),
                 );
             }
         }
@@ -101,23 +88,47 @@ class ScaffoldAllCommand extends Command
     }
 
     /**
-     * @return array<string, array<string, string>>
+     * @return scaffoldVersions
      */
     protected function getVersions(): array
     {
         return $this->versions;
     }
 
-    /**
-     * Remove recursively.
-     *
-     * @param string $path
-     */
-    final protected function recursiveRemove(string $path): void {
-        foreach (\glob($path . '/*') as $file) {
-            \is_dir($file) ? $this->recursiveRemove($file) : \unlink($file);
+    final protected function removeDirectory(string $directory): void
+    {
+        if (!file_exists($directory)) {
+            return;
         }
 
-        \rmdir($path);
+        if (!is_dir($directory)) {
+            throw new RuntimeException(sprintf('"%s" is not a directory.', $directory));
+        }
+
+        $this->recursiveRemove($directory);
+    }
+
+    private function recursiveRemove(string $path): void
+    {
+        $files = glob($path . '/*');
+        if ($files !== false) {
+            foreach ($files as $file) {
+                is_dir($file) ? $this->recursiveRemove($file) : unlink($file);
+            }
+        }
+
+        rmdir($path);
+    }
+
+    /**
+     * @phpstan-assert string $value
+     *
+     * @throws RuntimeException
+     */
+    final protected function assertStringType(mixed $value): void
+    {
+        if (!\is_string($value)) {
+            throw new RuntimeException('Not a string.');
+        }
     }
 }

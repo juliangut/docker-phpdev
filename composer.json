@@ -24,13 +24,24 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
-    "php": "^7.4",
+    "php": "^8.2",
     "ext-json": "*",
     "symfony/console": "^5.0|^6.0",
     "twig/twig": "^3.0"
   },
   "require-dev": {
-    "roave/security-advisories": "dev-master"
+    "grifart/phpstan-oneline": "~0.4",
+    "juliangut/easy-coding-standard-config": "^1.7",
+    "overtrue/phplint": "^6.0",
+    "phpmd/phpmd": "^2.13",
+    "phpstan/extension-installer": "^1.1",
+    "phpstan/phpstan": "^1.7",
+    "phpstan/phpstan-deprecation-rules": "^1.0",
+    "phpstan/phpstan-strict-rules": "^1.0",
+    "povils/phpmnd": "^3.0",
+    "roave/security-advisories": "dev-master",
+    "sebastian/phpcpd": "^6.0",
+    "thecodingmachine/phpstan-strict-rules": "^1.0"
   },
   "autoload": {
     "psr-4": {
@@ -41,7 +52,11 @@
   },
   "config": {
     "preferred-install": "dist",
-    "sort-packages": true
+    "sort-packages": true,
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true,
+      "phpstan/extension-installer": true
+    }
   },
   "bin": [
     "bin/phpdev"

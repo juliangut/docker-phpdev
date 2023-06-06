@@ -1,0 +1,14 @@
+includes:
+  - vendor/phpstan/phpstan/conf/bleedingEdge.neon
+
+parameters:
+  level: max
+  tipsOfTheDay: false
+  errorFormat: compact
+  parallel:
+    maximumNumberOfProcesses: 7
+  typeAliases:
+      scaffoldVersions: 'array<string, array<string, array{image: string, tags: list<string>, xdebug?: bool|string}>>'
+      scaffoldContext: 'array{comment: string, xdebug: bool|string, image: string, tags: list<string>, variant: string, version: string}'
+  paths:
+    - src

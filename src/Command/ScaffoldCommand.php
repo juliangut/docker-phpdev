@@ -1,7 +1,17 @@
 <?php
 
+/*
+ * (c) 2023 Julián Gutiérrez <juliangut@gmail.com>
+ *
+ * @license BSD-3-Clause
+ * @link https://github.com/juliangut/docker-phpdev
+ */
+
+declare(strict_types=1);
+
 namespace Jgut\Docker\PhpDev\Command;
 
+use RuntimeException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -14,24 +24,14 @@ use Twig\Environment as Twig;
  */
 class ScaffoldCommand extends ScaffoldAllCommand
 {
-    /**
-     * @var string
-     */
     protected static $defaultName = 'scaffold-image|s:i';
-
-    /**
-     * Twig renderer.
-     *
-     * @var Twig
-     */
-    private $twig;
 
     /**
      * Map of files to be scaffolded.
      *
      * @var array<string, array<string>>
      */
-    private $templatesMap = [
+    private array $templatesMap = [
         'cli' => [
             'php.ini.twig',
             'php-opcache.ini.twig',
@@ -62,45 +62,41 @@ class ScaffoldCommand extends ScaffoldAllCommand
     ];
 
     /**
-     * Default images data.
-     *
-     * @var array<string, mixed>
+     * @var scaffoldContext
      */
-    private $defaultContext;
+    private array $defaultContext;
 
     /**
-     * @param Twig                                 $twig
-     * @param array<string, array<string, string>> $versions
+     * @param scaffoldVersions $versions
      */
-    public function __construct(Twig $twig, array $versions)
-    {
+    public function __construct(
+        private readonly Twig $twig,
+        array $versions,
+    ) {
         parent::__construct($versions);
 
-        $this->twig = $twig;
-
-        $noteComment = <<<NOTE
-###
-#
-# NOTE
-#
-# This file has been automatically generated
-#
-# Do not edit it directly
-#
-###
-NOTE;
+        $noteComment = <<<'NOTE'
+        ###
+        #
+        # NOTE
+        #
+        # This file has been automatically generated
+        #
+        # Do not edit it directly
+        #
+        ###
+        NOTE;
 
         $this->defaultContext = [
             'comment' => $noteComment,
             'xdebug' => true,
+            'image' => '',
+            'tags' => [],
+            'variant' => '',
+            'version' => '',
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
-     */
     protected function configure(): void
     {
         $this
@@ -111,14 +107,7 @@ NOTE;
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @throws \RuntimeException
-     *
-     * @return int
+     * @throws RuntimeException
      */
     public function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -127,43 +116,48 @@ NOTE;
         $versions = $this->getVersions();
 
         $variant = $input->getArgument('variant');
-        if (!isset($versions[$variant])) {
-            $ioStyle->error(\sprintf('Variant "%s" does not exist', $variant));
+        $this->assertStringType($variant);
+        if (!\array_key_exists($variant, $versions)) {
+            $ioStyle->error(sprintf('Variant "%s" does not exist', $variant));
             $ioStyle->newLine();
 
             return self::FAILURE;
         }
 
         $version = $input->getArgument('version');
-        if (!isset($versions[$variant][$version])) {
-            $ioStyle->error(\sprintf('Version "%s" does not exist', $version));
+        $this->assertStringType($version);
+        if (!\array_key_exists($version, $versions[$variant])) {
+            $ioStyle->error(sprintf('Version "%s" does not exist', $version));
             $ioStyle->newLine();
 
             return self::FAILURE;
         }
 
-        $destinationDir = \getcwd() . '/' . \rtrim($input->getOption('directory'), \DIRECTORY_SEPARATOR);
-        if (\is_dir($destinationDir) && \count(\scandir($destinationDir, \SCANDIR_SORT_ASCENDING)) !== 0) {
-            $this->recursiveRemove($destinationDir);
-        }
-        if (!\mkdir($destinationDir, 0755, true) && !\is_dir($destinationDir)) {
-            $ioStyle->error(\sprintf('Not possible to create "%s" directory', $destinationDir));
+        $directory = $input->getOption('directory');
+        $this->assertStringType($directory);
+        $destinationDir = getcwd() . '/' . rtrim($directory, \DIRECTORY_SEPARATOR);
+        $this->removeDirectory($destinationDir);
+        if (!mkdir($destinationDir, 0o755, true) && !is_dir($destinationDir)) {
+            $ioStyle->error(sprintf('Not possible to create "%s" directory', $destinationDir));
             $ioStyle->newLine();
 
             return self::FAILURE;
         }
+
+        /** @var scaffoldContext $context */
+        $context = array_merge(
+            $this->defaultContext,
+            $versions[$variant][$version],
+            [
+                'variant' => $variant,
+                'version' => $version,
+            ],
+        );
 
         $this->scaffoldTemplateFiles(
             $this->templatesMap[$variant],
             $destinationDir,
-            \array_merge(
-                $this->defaultContext,
-                $versions[$variant][$version],
-                [
-                    'variant' => $variant,
-                    'version' => $version,
-                ]
-            )
+            $context,
         );
 
         $ioStyle->success('Image scaffolded');
@@ -173,32 +167,26 @@ NOTE;
     }
 
     /**
-     * Scaffold templates files.
-     *
-     * @param array<string>       $files
-     * @param string              $directory
-     * @param array<string, mixed $context
+     * @param array<string>   $files
+     * @param scaffoldContext $context
      */
     private function scaffoldTemplateFiles(array $files, string $directory, array $context): void
     {
         foreach ($files as $sourceFile) {
-            if ($context['xdebug'] === false && \basename($sourceFile) === 'xdebug.ini.twig') {
+            if ($context['xdebug'] === false && basename($sourceFile) === 'xdebug.ini.twig') {
                 continue;
             }
 
-            if (
-                preg_match('/\.conf\.twig$/', \basename($sourceFile)) === 1
-                && array_key_exists('comment', $context)
-            ) {
+            if (preg_match('/\.conf\.twig$/', basename($sourceFile)) === 1) {
                 $context['comment'] = str_replace('#', ';', $context['comment']);
             }
 
-            $destinationFile = $directory . '/' . \basename($sourceFile);
-            if (\substr($destinationFile, -5) === '.twig') {
-                $destinationFile = \substr($destinationFile, 0, -5);
+            $destinationFile = $directory . '/' . basename($sourceFile);
+            if (mb_substr($destinationFile, -5) === '.twig') {
+                $destinationFile = mb_substr($destinationFile, 0, -5);
             }
 
-            \file_put_contents($destinationFile, $this->twig->render($sourceFile, $context));
+            file_put_contents($destinationFile, $this->twig->render($sourceFile, $context));
         }
     }
 }

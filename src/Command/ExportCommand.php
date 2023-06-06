@@ -1,7 +1,17 @@
 <?php
 
+/*
+ * (c) 2023 Julián Gutiérrez <juliangut@gmail.com>
+ *
+ * @license BSD-3-Clause
+ * @link https://github.com/juliangut/docker-phpdev
+ */
+
+declare(strict_types=1);
+
 namespace Jgut\Docker\PhpDev\Command;
 
+use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,33 +24,17 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 class ExportCommand extends Command
 {
-    /**
-     * @var string
-     */
     protected static $defaultName = 'export-build|e:b';
 
     /**
-     * Build versions.
-     *
-     * @var array<string, array<string, string>>
+     * @param scaffoldVersions $versions
      */
-    private $versions;
-
-    /**
-     * @param array<string, array<string, string>> $versions
-     */
-    public function __construct(array $versions)
-    {
+    public function __construct(
+        private readonly array $versions,
+    ) {
         parent::__construct();
-
-        $this->versions = $versions;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @throws \Symfony\Component\Console\Exception\InvalidArgumentException
-     */
     protected function configure(): void
     {
         $this
@@ -50,14 +44,7 @@ class ExportCommand extends Command
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @throws \RuntimeException
-     *
-     * @return int
+     * @throws RuntimeException
      */
     public function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -67,24 +54,22 @@ class ExportCommand extends Command
         foreach ($this->versions as $variant => $variantConfig) {
             foreach ($variantConfig as $version => $config) {
                 $tags = array_map(
-                    static function (string $tag): string {
-                        return 'juliangut/phpdev:' . $tag;
-                    },
-                    $config['tags']
+                    static fn(string $tag): string => 'juliangut/phpdev:' . trim($tag),
+                    $config['tags'],
                 );
 
                 $builds[] = [
                     'variant' => $variant,
                     'version' => $version,
                     'xdebug' => $config['xdebug'] ?? $xdebugDefault,
-                    'tags' => implode(',', array_map('trim', $tags))
+                    'tags' => implode(',', $tags),
                 ];
             }
         }
 
         $ioStyle = new SymfonyStyle($input, $output);
 
-        $encodeOptions = \JSON_THROW_ON_ERROR | ($input->getOption('pretty') === true ? JSON_PRETTY_PRINT : 0);
+        $encodeOptions = \JSON_THROW_ON_ERROR | ($input->getOption('pretty') === true ? \JSON_PRETTY_PRINT : 0);
         $ioStyle->writeln(json_encode($builds, $encodeOptions));
 
         return self::SUCCESS;

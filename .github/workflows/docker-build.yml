@@ -27,12 +27,13 @@ jobs:
         env:
           runner: self-hosted
         with:
-          php-version: 7.4
+          php-version: 8.2
           coverage: none
 
       - name: Composer install
         uses: ramsey/composer-install@v2
         with:
+          dependency-versions: highest
           composer-options: "--prefer-dist"
 
       - id: set_date
@@ -123,4 +124,5 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          short-description: ${{ github.event.repository.description }}
           repository: juliangut/phpdev
