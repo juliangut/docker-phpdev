@@ -41,6 +41,7 @@ RUN set -xe \
     shadow \
     sudo \
     bash \
+    ncurses \
     make \
     icu \
     freetype-dev \

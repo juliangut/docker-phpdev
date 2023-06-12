@@ -36,6 +36,7 @@ RUN set -xe \
     shadow \
     sudo \
     bash \
+    ncurses \
     make \
     icu \
     freetype-dev \
@@ -68,8 +69,10 @@ RUN set -xe \
   && pecl update-channels \
   && pecl install \
     apcu \
-{% if xdebug != false %}
+{% if xdebug == 'latest' %}
     xdebug-$XDEBUG_VERSION \
+{% elseif xdebug != false %}
+    xdebug-{{ xdebug }} \
 {% endif %}
   \
   && docker-php-ext-enable \

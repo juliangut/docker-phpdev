@@ -89,7 +89,7 @@ class ScaffoldCommand extends ScaffoldAllCommand
 
         $this->defaultContext = [
             'comment' => $noteComment,
-            'xdebug' => true,
+            'xdebug' => 'latest',
             'image' => '',
             'tags' => [],
             'variant' => '',
