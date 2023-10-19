@@ -88,6 +88,8 @@ if [[ "${XDEBUG_DISABLE}" -ne "0" ]]; then
 else
   if [[ ! -z "${XDEBUG_CLIENT_HOST}" ]]; then
     sed -i "s/xdebug.client_host\s*=.*/xdebug.client_host = ${XDEBUG_CLIENT_HOST}/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
+  elif grep -qwi "host.docker.internal" /etc/hosts; then
+    sed -i "s/xdebug.client_host\s*=.*/xdebug.client_host = host.docker.internal/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
   else
     HOST_IP=`ip route | awk '/default/ { print $3 }'`
     sed -i "s/xdebug.client_host\s*=.*/xdebug.client_host = ${HOST_IP}/" $PHP_INI_DIR/conf.d/zz-xdebug.ini

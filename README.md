@@ -95,9 +95,11 @@ Running Xdebug mode. Review [xdebug.mode documentation](https://xdebug.org/docs/
 ###### XDEBUG_CLIENT_HOST
 
 * Type: string
-* Default: _auto-discovered host's ip_
+* Default: _auto-discovered host_
 
-The remote server IP (host IP) to connect to
+The remote server host to connect to
+
+Auto discovery tries to use `host.docker.internal` host if defined or automatically detects remote host IP
 
 ###### XDEBUG_CLIENT_PORT
 
@@ -249,9 +251,9 @@ There are [browser plugins/extensions](https://xdebug.org/docs/step_debug#browse
 
 #### Review Xdebug configuration
 
-* Debug port must be the same previously defined in `XDEBUG_CLIENT_PORT` environment variable
+* Debug port must be the same previously defined in `XDEBUG_CLIENT_PORT` environment variable (9003 by default)
 
-![Xdebug configuration](https://raw.githubusercontent.com/juliangut/docker-phpdev/master/img_xdebug_config.jpg)
+![PHPStorm XDebug configuration](https://raw.githubusercontent.com/juliangut/docker-phpdev/master/img_xdebug_config.jpg)
 
 #### Create a server
 
@@ -259,23 +261,23 @@ There are [browser plugins/extensions](https://xdebug.org/docs/step_debug#browse
 * Set `0.0.0.0` as Host to allow any
 * Map your project root to `/app`
 
-![server configuration](https://raw.githubusercontent.com/juliangut/docker-phpdev/master/img_server_config.jpg)
+![PHPStorm server configuration](https://raw.githubusercontent.com/juliangut/docker-phpdev/master/img_server_config.jpg)
 
-#### Start listening for Xdebug connections
+#### Start debugging
 
 Start listening for incoming connections by toggling _Run > Start Listening for PHP Debug Connections_, or by clicking the phone icon
 
-![start listening](https://raw.githubusercontent.com/juliangut/docker-phpdev/master/img_debug_listen.jpg)
+![PHPstorm start debug](https://raw.githubusercontent.com/juliangut/docker-phpdev/master/img_debug_listen.jpg)
 
 #### Start the container
 
 Setting `PHP_IDE_CONFIG` environment variable to the server name you defined earlier, this will instruct PHPStorm which mapping to use
 
 ```bash
-docker run -d -p 8080:8080 -e XDEBUG_SESSION="PHPSTORM" -e PHP_IDE_CONFIG="serverName=Testing" -v `pwd`:/app juliangut/phpdev:latest php -S 0.0.0.0:8080 -t /app/public
+docker run -d -p 8080:8080 -e XDEBUG_SESSION="PHPSTORM" -e PHP_IDE_CONFIG="serverName=Testing" -v `pwd`:/app --add-host host.docker.internal:host-gateway juliangut/phpdev:latest php -S 0.0.0.0:8080 -t /app/public
 ```
 
-#### Using Docker Compose
+##### Using Docker Compose
 
 ```yaml
 version: "3"
@@ -290,6 +292,8 @@ services:
       PHP_IDE_CONFIG: serverName=Testing
     volumes:
       - .:/app
+    extra_hosts:
+      - host.docker.internal:host-gateway
     command: "php -S 0.0.0.0:8080 -t /app/public"
 ```
 

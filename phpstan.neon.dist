@@ -1,9 +1,8 @@
 includes:
-  - vendor/phpstan/phpstan/conf/bleedingEdge.neon
+  - %rootDir%/../../juliangut/phpstan-config/phpstan-phpunit.neon
 
 parameters:
   level: max
-  tipsOfTheDay: false
   errorFormat: compact
   parallel:
     maximumNumberOfProcesses: 7
