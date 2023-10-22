@@ -3,7 +3,6 @@ includes:
 
 parameters:
   level: max
-  errorFormat: compact
   parallel:
     maximumNumberOfProcesses: 7
   typeAliases:
