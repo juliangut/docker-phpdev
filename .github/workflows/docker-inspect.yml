@@ -1,11 +1,12 @@
-name: Docker images build and push
+name: Docker images inspect
 
 on:
   push:
-    tags:
-      - '*'
-  schedule:
-    - cron: "0 0 * * 1" # Every Monday at 00:00
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
   prepare_env:
@@ -90,42 +91,3 @@ jobs:
       - name: Inspect image
         run: docker image inspect juliangut/phpdev:test
         if: ${{ github.ref_type == 'branch' }}
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-        if: ${{ github.ref_type == 'tag' }}
-
-      - name: Build and push
-        uses: docker/build-push-action@v3
-        with:
-          context: dist/${{ matrix.builds.variant }}/${{ matrix.builds.version }}
-          platforms: linux/amd64,linux/arm64
-          pull: true
-          push: true
-          tags: ${{ matrix.builds.tags }}
-          build-args: |
-            BUILD_DATE=${{ needs.prepare_env.outputs.build_date }}
-            VCS_REF=${{ needs.prepare_env.outputs.vcs_ref }}
-            XDEBUG_VERSION=${{ matrix.builds.xdebug }}
-        if: ${{ github.ref_type == 'tag' }}
-
-  post_build:
-    if: ${{ github.ref_type == 'tag' }}
-
-    needs: build
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Update Dockerhub description
-        uses: peter-evans/dockerhub-description@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
-          short-description: ${{ github.event.repository.description }}
-          repository: juliangut/phpdev
