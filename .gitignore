@@ -1,4 +1,5 @@
 !.gitignore
 composer.lock
 *.cache
+dist/
 vendor/
