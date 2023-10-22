@@ -67,7 +67,7 @@ jobs:
           composer-options: "--prefer-dist"
 
       - name: Scaffold image
-        run: bin/phpdev scaffold-image ${{ matrix.builds.variant }} ${{ matrix.builds.version }} dist/${{ matrix.builds.variant }}/${{ matrix.builds.version }}
+        run: bin/phpdev scaffold-image ${{ matrix.builds.variant }} ${{ matrix.builds.version }} --directory dist/${{ matrix.builds.variant }}/${{ matrix.builds.version }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
