@@ -9,9 +9,8 @@ ARG XDEBUG_VERSION
 {% endif %}
 
 LABEL org.opencontainers.image.title="juliangut/phpdev" \
-  org.opencontainers.image.description="PHP/PHP-FPM/Jenkins Docker image for development/CI, based on Alpine Linux for minimal size" \
+  org.opencontainers.image.description="{% block description %}{% endblock %}" \
   org.opencontainers.image.url="https://github.com/juliangut/docker-phpdev" \
-  org.opencontainers.image.source="https://github.com/juliangut/docker-phpdev/tree/master/dist/{{ variant }}/{{ version }}" \
   org.opencontainers.image.revision="$VCS_REF" \
   org.opencontainers.image.created="$BUILD_DATE" \
   org.opencontainers.image.authors="Julián Gutiérrez (juliangut@gmail.com)" \

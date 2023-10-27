@@ -1,5 +1,7 @@
 {% extends "Dockerfile.twig" %}
 
+{% block description %}PHP Jenkins Docker image for CI, based on Alpine Linux for minimal size{% endblock %}
+
 {% block install %}
     openjdk8-jre \
     openssh \

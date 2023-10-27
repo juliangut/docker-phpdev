@@ -1,5 +1,7 @@
 {% extends "Dockerfile.twig" %}
 
+{% block description %}PHP Docker image for development, based on Alpine Linux for minimal size{% endblock %}
+
 {% block command %}
 CMD ["php", "-a"]
 {% endblock %}
