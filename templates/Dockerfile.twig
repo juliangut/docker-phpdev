@@ -36,6 +36,7 @@ RUN set -xe \
     shadow \
     sudo \
     bash \
+    bash-completion \
     ncurses \
     make \
     icu \
@@ -97,8 +98,13 @@ RUN set -xe \
   && chown docker:docker -R /var/log/php \
   && chmod 774 -R /var/log/php \
   \
+  && echo ". /usr/share/bash-completion/bash_completion" >> /home/docker/.bashrc \
+  \
   && mkdir /home/docker/.composer \
-  && chown docker:docker -R /home/docker/.composer
+  && wget -O /home/docker/composer-autocomplete https://raw.githubusercontent.com/bramus/composer-autocomplete/master/composer-autocomplete \
+  && echo ". ~/composer-autocomplete" >> /home/docker/.bashrc \
+  \
+  && chown docker:docker -R /home/docker
 
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
