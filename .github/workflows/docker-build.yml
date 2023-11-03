@@ -75,7 +75,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build locally
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v5
         with:
           context: dist/${{ matrix.builds.variant }}/${{ matrix.builds.version }}
           load: true
@@ -99,7 +99,7 @@ jobs:
         if: ${{ github.ref_type == 'tag' }}
 
       - name: Build and push
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v5
         with:
           context: dist/${{ matrix.builds.variant }}/${{ matrix.builds.version }}
           platforms: linux/amd64,linux/arm64
