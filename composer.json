@@ -33,7 +33,7 @@
     "grifart/phpstan-oneline": "~0.4",
     "juliangut/easy-coding-standard-config": "^1.12",
     "juliangut/phpstan-config": "^1.1",
-    "overtrue/phplint": "^6.0",
+    "overtrue/phplint": "^9.0",
     "phpcompatibility/php-compatibility": "^9.3",
     "phpmd/phpmd": "^2.13",
     "povils/phpmnd": "^3.2",
