@@ -26,7 +26,7 @@
   "require": {
     "php": "^8.2",
     "ext-json": "*",
-    "symfony/console": "^5.0|^6.0",
+    "symfony/console": "^6.3.4",
     "twig/twig": "^3.7"
   },
   "require-dev": {
