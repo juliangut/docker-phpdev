@@ -5,12 +5,12 @@ updates:
     directory: /
     schedule:
       interval: weekly
-      day: wednesday
 
   - package-ecosystem: composer
     directory: /
+    allow:
+      - dependency-type: all
     schedule:
       interval: weekly
-      day: wednesday
     open-pull-requests-limit: 10
     versioning-strategy: increase
