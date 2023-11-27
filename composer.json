@@ -27,7 +27,7 @@
     "php": "^8.2",
     "ext-json": "*",
     "symfony/console": "^6.3",
-    "twig/twig": "^3.7"
+    "twig/twig": "^3.8"
   },
   "require-dev": {
     "grifart/phpstan-oneline": "~0.4",
