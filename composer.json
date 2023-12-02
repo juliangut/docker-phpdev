@@ -37,7 +37,7 @@
     "phpcompatibility/php-compatibility": "^9.3",
     "pdepend/pdepend": "2.15.1",
     "phpmd/phpmd": "^2.14",
-    "povils/phpmnd": "^3.2",
+    "povils/phpmnd": "^3.3",
     "roave/security-advisories": "dev-master"
   },
   "autoload": {
