@@ -24,8 +24,6 @@ use Twig\Environment as Twig;
  */
 class ScaffoldCommand extends ScaffoldAllCommand
 {
-    protected static $defaultName = 'scaffold-image|s:i';
-
     /**
      * Map of files to be scaffolded.
      *
@@ -95,6 +93,11 @@ class ScaffoldCommand extends ScaffoldAllCommand
             'variant' => '',
             'version' => '',
         ];
+    }
+
+    public static function getDefaultName(): ?string
+    {
+        return 'scaffold-image|s:i';
     }
 
     protected function configure(): void
