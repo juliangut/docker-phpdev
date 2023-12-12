@@ -26,8 +26,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 class ScaffoldAllCommand extends Command
 {
-    protected static $defaultName = 'scaffold-all|s:a';
-
     /**
      * @param scaffoldVersions $versions
      */
@@ -35,6 +33,11 @@ class ScaffoldAllCommand extends Command
         private readonly array $versions,
     ) {
         parent::__construct();
+    }
+
+    public static function getDefaultName(): ?string
+    {
+        return 'scaffold-all|s:a';
     }
 
     protected function configure(): void

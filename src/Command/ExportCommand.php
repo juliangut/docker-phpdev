@@ -24,8 +24,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 class ExportCommand extends Command
 {
-    protected static $defaultName = 'export-build|e:b';
-
     /**
      * @param scaffoldVersions $versions
      */
@@ -33,6 +31,11 @@ class ExportCommand extends Command
         private readonly array $versions,
     ) {
         parent::__construct();
+    }
+
+    public static function getDefaultName(): ?string
+    {
+        return 'export-build|e:b';
     }
 
     protected function configure(): void
