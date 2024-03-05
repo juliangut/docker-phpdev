@@ -1,7 +1,7 @@
 <?php
 
 /*
- * (c) 2023 Julián Gutiérrez <juliangut@gmail.com>
+ * (c) 2016-2024 Julián Gutiérrez <juliangut@gmail.com>
  *
  * @license BSD-3-Clause
  * @link https://github.com/juliangut/docker-phpdev
@@ -27,7 +27,7 @@ class ScaffoldCommand extends ScaffoldAllCommand
     /**
      * Map of files to be scaffolded.
      *
-     * @var array<string, array<string>>
+     * @var array<string, list<string>>
      */
     private array $templatesMap = [
         'cli' => [
@@ -170,7 +170,7 @@ class ScaffoldCommand extends ScaffoldAllCommand
     }
 
     /**
-     * @param array<string>   $files
+     * @param list<string>    $files
      * @param scaffoldContext $context
      */
     private function scaffoldTemplateFiles(array $files, string $directory, array $context): void
