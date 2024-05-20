@@ -68,9 +68,6 @@ fi
 
 if [[ "${STDOUT_LOG}" -ne "0" ]]; then
   sed -i "s/error_log\s*=.*/error_log = \/proc\/self\/fd\/2/" $PHP_INI_DIR/conf.d/zz-php.ini
-{% if xdebug != false %}
-  sed -i "s/xdebug.log\s*=.*/xdebug.log = \/proc\/self\/fd\/2/" $PHP_INI_DIR/conf.d/zz-xdebug.ini
-{% endif %}
 fi
 {% block custom %}{% endblock %}
 
