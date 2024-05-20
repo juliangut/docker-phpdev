@@ -33,7 +33,7 @@ jobs:
         run: echo "vcs_ref=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - id: set_matrix
-        run: echo "matrix=$(bin/phpdev export-build `curl -s https://github.com/xdebug/xdebug/releases.atom | grep "<title>[0-9]*\.[0-9]*\.[0-9]*</title>" | awk -F '[<>]' '{ print $3; exit }'`)" >> $GITHUB_OUTPUT
+        run: echo "matrix=$(bin/phpdev export-build `curl -s https://github.com/xdebug/xdebug/releases.atom | grep "<id>.*/[0-9]*\.[0-9]*\.[0-9]*</id>" | sed -E "s/\s*<id>.*\/([0-9]*\.[0-9]*\.[0-9]*)<\/id>/<release>\1<\/release>/" | awk -F '[<>]' '{ print $3; exit }'`)" >> $GITHUB_OUTPUT
 
     outputs:
       build_date: ${{ steps.set_date.outputs.build_date }}
