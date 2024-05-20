@@ -1,5 +1,5 @@
 IMAGE_NAME = juliangut/phpdev-local
-XDEBUG_VERSION = `curl -s https://github.com/xdebug/xdebug/releases.atom | grep "<title>[0-9]*\.[0-9]*\.[0-9]*</title>" | awk -F '[<>]' '{ print $$3; exit }'`
+XDEBUG_VERSION = `curl -s https://github.com/xdebug/xdebug/releases.atom | grep "<id>.*/[0-9]*\.[0-9]*\.[0-9]*</id>" | sed -E "s/\s*<id>.*\/([0-9]*\.[0-9]*\.[0-9]*)<\/id>/<release>\1<\/release>/" | awk -F '[<>]' '{ print $$3; exit }'`
 
 
 .PHONY: scaffold
