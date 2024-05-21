@@ -24,6 +24,12 @@ group = docker
 ; Note: This value is mandatory.
 listen = [::]:9000
 
+; The number of requests each child process should execute before respawning.
+; This can be useful to work around memory leaks in 3rd party libraries. For
+; endless request processing specify '0'. Equivalent to PHP_FCGI_MAX_REQUESTS.
+; Default Value: 0
+pm.max_requests = 500
+
 ; Clear environment in FPM workers
 ; Prevents arbitrary environment variables from reaching FPM worker processes
 ; by clearing the environment in workers before env vars specified in this
