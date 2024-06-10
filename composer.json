@@ -31,7 +31,7 @@
   },
   "require-dev": {
     "grifart/phpstan-oneline": "~0.4",
-    "juliangut/easy-coding-standard-config": "^1.16",
+    "juliangut/easy-coding-standard-config": "^1.17",
     "juliangut/phpstan-config": "^1.2",
     "overtrue/phplint": "^9.3",
     "phpcompatibility/php-compatibility": "^9.3",
