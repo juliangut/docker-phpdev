@@ -121,7 +121,7 @@ class ScaffoldCommand extends ScaffoldAllCommand
         $variant = $input->getArgument('variant');
         $this->assertStringType($variant);
         if (!\array_key_exists($variant, $versions)) {
-            $ioStyle->error(sprintf('Variant "%s" does not exist', $variant));
+            $ioStyle->error(\sprintf('Variant "%s" does not exist', $variant));
             $ioStyle->newLine();
 
             return self::FAILURE;
@@ -130,7 +130,7 @@ class ScaffoldCommand extends ScaffoldAllCommand
         $version = $input->getArgument('version');
         $this->assertStringType($version);
         if (!\array_key_exists($version, $versions[$variant])) {
-            $ioStyle->error(sprintf('Version "%s" does not exist', $version));
+            $ioStyle->error(\sprintf('Version "%s" does not exist', $version));
             $ioStyle->newLine();
 
             return self::FAILURE;
@@ -141,7 +141,7 @@ class ScaffoldCommand extends ScaffoldAllCommand
         $destinationDir = getcwd() . '/' . rtrim($directory, \DIRECTORY_SEPARATOR);
         $this->removeDirectory($destinationDir);
         if (!mkdir($destinationDir, 0o755, true) && !is_dir($destinationDir)) {
-            $ioStyle->error(sprintf('Not possible to create "%s" directory', $destinationDir));
+            $ioStyle->error(\sprintf('Not possible to create "%s" directory', $destinationDir));
             $ioStyle->newLine();
 
             return self::FAILURE;

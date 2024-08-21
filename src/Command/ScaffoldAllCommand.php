@@ -60,7 +60,7 @@ class ScaffoldAllCommand extends Command
         $destinationDir = getcwd() . '/' . $directory;
         $this->removeDirectory($destinationDir);
         if (!mkdir($destinationDir, 0o755, true) && !is_dir($destinationDir)) {
-            $ioStyle->error(sprintf('Not possible to create "%s" directory', $destinationDir));
+            $ioStyle->error(\sprintf('Not possible to create "%s" directory', $destinationDir));
             $ioStyle->newLine();
 
             return self::FAILURE;
@@ -105,7 +105,7 @@ class ScaffoldAllCommand extends Command
         }
 
         if (!is_dir($directory)) {
-            throw new RuntimeException(sprintf('"%s" is not a directory.', $directory));
+            throw new RuntimeException(\sprintf('"%s" is not a directory.', $directory));
         }
 
         $this->recursiveRemove($directory);
