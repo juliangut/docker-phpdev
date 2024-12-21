@@ -37,13 +37,19 @@ build-cli83:
 	cd dist/cli/8.3 && \
 	docker build --pull -f Dockerfile --build-arg XDEBUG_VERSION=$(XDEBUG_VERSION) -t $(IMAGE_NAME):8.3 .
 
+.PHONY: build-cli84
+build-cli84:
+	cd dist/cli/8.4 && \
+	docker build --pull -f Dockerfile --build-arg XDEBUG_VERSION=$(XDEBUG_VERSION) -t $(IMAGE_NAME):8.4 .
+
 .PHONY: build-cli
 build-cli:
 	make --no-print-directory build-cli74 && \
 	make --no-print-directory build-cli80 && \
 	make --no-print-directory build-cli81 && \
 	make --no-print-directory build-cli82 && \
-	make --no-print-directory build-cli83
+	make --no-print-directory build-cli83 && \
+	make --no-print-directory build-cli84
 
 
 .PHONY: build-fpm74
@@ -71,13 +77,19 @@ build-fpm83:
 	cd dist/fpm/8.3 && \
 	docker build --pull -f Dockerfile --build-arg XDEBUG_VERSION=$(XDEBUG_VERSION) -t $(IMAGE_NAME):8.3-fpm .
 
+.PHONY: build-fpm84
+build-fpm84:
+	cd dist/fpm/8.4 && \
+	docker build --pull -f Dockerfile --build-arg XDEBUG_VERSION=$(XDEBUG_VERSION) -t $(IMAGE_NAME):8.4-fpm .
+
 .PHONY: build-fpm
 build-fpm:
 	make --no-print-directory build-fpm74 && \
 	make --no-print-directory build-fpm80 && \
 	make --no-print-directory build-fpm81 && \
 	make --no-print-directory build-fpm82 && \
-	make --no-print-directory build-fpm83
+	make --no-print-directory build-fpm83 && \
+	make --no-print-directory build-fpm84
 
 
 .PHONY: build-jenkins74
@@ -105,13 +117,19 @@ build-jenkins83:
 	cd dist/jenkins/8.3 && \
 	docker build --pull -f Dockerfile --build-arg XDEBUG_VERSION=$(XDEBUG_VERSION) -t $(IMAGE_NAME):8.3-jenkins .
 
+.PHONY: build-jenkins84
+build-jenkins84:
+	cd dist/jenkins/8.4 && \
+	docker build --pull -f Dockerfile --build-arg XDEBUG_VERSION=$(XDEBUG_VERSION) -t $(IMAGE_NAME):8.4-jenkins .
+
 .PHONY: build-jenkins
 build-jenkins:
 	make --no-print-directory build-jenkins74 && \
 	make --no-print-directory build-jenkins80 && \
 	make --no-print-directory build-jenkins81 && \
 	make --no-print-directory build-jenkins82 && \
-	make --no-print-directory build-jenkins83
+	make --no-print-directory build-jenkins83 && \
+	make --no-print-directory build-jenkins84
 
 
 .PHONY: lint-php

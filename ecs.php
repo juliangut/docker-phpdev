@@ -9,9 +9,9 @@
 
 declare(strict_types=1);
 
-use Jgut\ECS\Config\ConfigSet82;
+use Jgut\ECS\Config\ConfigSet83;
 
-return (new ConfigSet82())
+return (new ConfigSet83())
     ->setHeader(<<<'HEADER'
     (c) 2016-{{year}} Julián Gutiérrez <juliangut@gmail.com>
 

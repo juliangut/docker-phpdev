@@ -24,7 +24,7 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
-    "php": "^8.2",
+    "php": "^8.3",
     "ext-json": "*",
     "symfony/console": "^7.1",
     "twig/twig": "^3.11"
@@ -60,9 +60,13 @@
   "extra": {
     "versions": {
       "cli": {
+        "8.4": {
+          "image": "php:8.4-cli-alpine",
+          "tags": ["latest", "cli-latest", "cli", "8", "8.4"]
+        },
         "8.3": {
           "image": "php:8.3-cli-alpine",
-          "tags": ["latest", "cli-latest", "cli", "8", "8.3"]
+          "tags": ["8.3"]
         },
         "8.2": {
           "image": "php:8.2-cli-alpine",
@@ -83,9 +87,13 @@
         }
       },
       "fpm": {
+        "8.4": {
+          "image": "php:8.4-fpm-alpine",
+          "tags": ["fpm-latest", "fpm", "8-fpm", "8.4-fpm"]
+        },
         "8.3": {
           "image": "php:8.3-fpm-alpine",
-          "tags": ["fpm-latest", "fpm", "8-fpm", "8.3-fpm"]
+          "tags": ["8.3-fpm"]
         },
         "8.2": {
           "image": "php:8.2-fpm-alpine",
@@ -106,9 +114,13 @@
         }
       },
       "jenkins": {
+        "8.4": {
+          "image": "php:8.4-cli-alpine",
+          "tags": ["jenkins-latest", "jenkins", "8-jenkins", "8.4-jenkins"]
+        },
         "8.3": {
           "image": "php:8.3-cli-alpine",
-          "tags": ["jenkins-latest", "jenkins", "8-jenkins", "8.3-jenkins"]
+          "tags": ["8.3-jenkins"]
         },
         "8.2": {
           "image": "php:8.2-cli-alpine",
