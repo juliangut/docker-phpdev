@@ -138,7 +138,7 @@ class ScaffoldCommand extends ScaffoldAllCommand
 
         $directory = $input->getOption('directory');
         $this->assertStringType($directory);
-        $destinationDir = getcwd() . '/' . rtrim($directory, \DIRECTORY_SEPARATOR);
+        $destinationDir = getcwd() . '/' . mb_rtrim($directory, \DIRECTORY_SEPARATOR);
         $this->removeDirectory($destinationDir);
         if (!mkdir($destinationDir, 0o755, true) && !is_dir($destinationDir)) {
             $ioStyle->error(\sprintf('Not possible to create "%s" directory', $destinationDir));

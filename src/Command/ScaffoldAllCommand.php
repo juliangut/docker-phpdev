@@ -56,7 +56,7 @@ class ScaffoldAllCommand extends Command
 
         $directory = $input->getOption('directory');
         $this->assertStringType($directory);
-        $directory = rtrim($directory, \DIRECTORY_SEPARATOR);
+        $directory = mb_rtrim($directory, \DIRECTORY_SEPARATOR);
         $destinationDir = getcwd() . '/' . $directory;
         $this->removeDirectory($destinationDir);
         if (!mkdir($destinationDir, 0o755, true) && !is_dir($destinationDir)) {

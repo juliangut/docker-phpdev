@@ -57,7 +57,7 @@ class ExportCommand extends Command
         foreach ($this->versions as $variant => $variantConfig) {
             foreach ($variantConfig as $version => $config) {
                 $tags = array_map(
-                    static fn(string $tag): string => 'juliangut/phpdev:' . trim($tag),
+                    static fn(string $tag): string => 'juliangut/phpdev:' . mb_trim($tag),
                     $config['tags'],
                 );
 

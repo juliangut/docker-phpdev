@@ -24,7 +24,7 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
-    "php": "^8.3",
+    "php": "^8.4",
     "ext-json": "*",
     "symfony/console": "^7.2",
     "twig/twig": "^3.17"
