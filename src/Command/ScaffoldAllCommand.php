@@ -35,7 +35,7 @@ class ScaffoldAllCommand extends Command
         parent::__construct();
     }
 
-    public static function getDefaultName(): ?string
+    public static function getDefaultName(): string
     {
         return 'scaffold-all|s:a';
     }

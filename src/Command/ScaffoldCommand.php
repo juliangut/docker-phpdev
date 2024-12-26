@@ -95,7 +95,7 @@ class ScaffoldCommand extends ScaffoldAllCommand
         ];
     }
 
-    public static function getDefaultName(): ?string
+    public static function getDefaultName(): string
     {
         return 'scaffold-image|s:i';
     }

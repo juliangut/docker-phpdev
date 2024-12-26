@@ -2,6 +2,7 @@ includes:
   - %rootDir%/../../juliangut/phpstan-config/phpstan-phpunit.neon
 
 parameters:
+  phpVersion: 80300
   level: max
   parallel:
     maximumNumberOfProcesses: 7
