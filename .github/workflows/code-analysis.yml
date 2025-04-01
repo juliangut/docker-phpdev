@@ -56,13 +56,13 @@ jobs:
         run: make lint-ecs
 
       - name: Run mess detection
-        run: make qa-phpmd
+        run: make analyse-phpmd
 
       - name: Run magic number detection
-        run: make qa-phpmnd
+        run: make analyse-phpmnd
 
       - name: Run PHP compatibility
-        run: make qa-compatibility
+        run: make analyse-compatibility
 
       - name: Run static analysis
-        run: make qa-phpstan
+        run: make analyse-phpstan
