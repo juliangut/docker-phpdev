@@ -155,25 +155,25 @@ fix:
 	make --no-print-directory fix-ecs
 
 
-.PHONY: qa-phpmd
-qa-phpmd:
+.PHONY: analyse-phpmd
+analyse-phpmd:
 	vendor/bin/phpmd src ansi unusedcode,naming,design,controversial,codesize
 
-.PHONY: qa-phpmnd
-qa-phpmnd:
+.PHONY: analyse-phpmnd
+analyse-phpmnd:
 	vendor/bin/phpmnd --ansi src
 
-.PHONY: qa-compatibility
-qa-compatibility:
+.PHONY: analyse-compatibility
+analyse-compatibility:
 	vendor/bin/phpcs --standard=PHPCompatibility --runtime-set testVersion 8.2- src
 
-.PHONY: qa-phpstan
-qa-phpstan:
+.PHONY: analyse-phpstan
+analyse-phpstan:
 	vendor/bin/phpstan analyse --memory-limit=2G --no-progress
 
-.PHONY: qa
-qa:
-	make --no-print-directory qa-phpmd && \
-	make --no-print-directory qa-phpmnd && \
-	make --no-print-directory qa-compatibility && \
-	make --no-print-directory qa-phpstan
+.PHONY: analyse
+analyse:
+	make --no-print-directory analyse-phpmd && \
+	make --no-print-directory analyse-phpmnd && \
+	make --no-print-directory analyse-compatibility && \
+	make --no-print-directory analyse-phpstan
