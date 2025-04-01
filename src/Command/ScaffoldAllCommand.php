@@ -1,7 +1,7 @@
 <?php
 
 /*
- * (c) 2016-2024 Julián Gutiérrez <juliangut@gmail.com>
+ * (c) 2016-2025 Julián Gutiérrez <juliangut@gmail.com>
  *
  * @license BSD-3-Clause
  * @link https://github.com/juliangut/docker-phpdev
