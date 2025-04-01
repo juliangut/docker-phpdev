@@ -27,7 +27,7 @@
     "php": "^8.4",
     "ext-json": "*",
     "symfony/console": "^7.2",
-    "twig/twig": "^3.17"
+    "twig/twig": "^3.20"
   },
   "require-dev": {
     "juliangut/easy-coding-standard-config": "^1.20",
@@ -35,7 +35,7 @@
     "overtrue/phplint": "^9.5",
     "phpcompatibility/php-compatibility": "^9.3",
     "phpmd/phpmd": "^2.15",
-    "povils/phpmnd": "^3.5",
+    "povils/phpmnd": "^3.6",
     "roave/security-advisories": "dev-master"
   },
   "autoload": {
