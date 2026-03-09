@@ -59,9 +59,13 @@
   "extra": {
     "versions": {
       "cli": {
+        "8.5": {
+          "image": "php:8.5-cli-alpine",
+          "tags": ["latest", "cli-latest", "cli", "8", "8.5"]
+        },
         "8.4": {
           "image": "php:8.4-cli-alpine",
-          "tags": ["latest", "cli-latest", "cli", "8", "8.4"]
+          "tags": ["8.4"]
         },
         "8.3": {
           "image": "php:8.3-cli-alpine",
@@ -87,9 +91,13 @@
         }
       },
       "fpm": {
+        "8.5": {
+          "image": "php:8.5-fpm-alpine",
+          "tags": ["fpm-latest", "fpm", "8-fpm", "8.5-fpm"]
+        },
         "8.4": {
           "image": "php:8.4-fpm-alpine",
-          "tags": ["fpm-latest", "fpm", "8-fpm", "8.4-fpm"]
+          "tags": ["8.4-fpm"]
         },
         "8.3": {
           "image": "php:8.3-fpm-alpine",
@@ -115,9 +123,13 @@
         }
       },
       "jenkins": {
+        "8.5": {
+          "image": "php:8.5-cli-alpine",
+          "tags": ["jenkins-latest", "jenkins", "8-jenkins", "8.5-jenkins"]
+        },
         "8.4": {
           "image": "php:8.4-cli-alpine",
-          "tags": ["jenkins-latest", "jenkins", "8-jenkins", "8.4-jenkins"]
+          "tags": ["8.4-jenkins"]
         },
         "8.3": {
           "image": "php:8.3-cli-alpine",
