@@ -74,7 +74,9 @@ RUN set -xe \
     intl \
     gd \
     bcmath \
+{% if version < '8.5' %}
     opcache \
+{% endif %}
   \
 {% if version >= '8.1' %}
   && pie install --allow-non-interactive-project-install apcu/apcu \
