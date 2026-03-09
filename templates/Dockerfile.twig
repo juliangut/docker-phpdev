@@ -17,8 +17,13 @@ LABEL org.opencontainers.image.title="juliangut/phpdev" \
   org.opencontainers.image.licenses="BSD-3-Clause" \
   com.juliangut.php.version="{{ version }}" \
   com.juliangut.php.extensions="bcmath, curl, gd, mbstring, opcache, openssl, zlib" \
+{% if version >= '8.1' %}
+  com.juliangut.pie.extensions="apcu{% if xdebug != false %}, xdebug{% endif %}"{% if xdebug != false %} \
+  com.juliangut.xdebug.version="$XDEBUG_VERSION"{% endif %}
+{% else %}
   com.juliangut.pecl.extensions="apcu{% if xdebug != false %}, xdebug{% endif %}"{% if xdebug != false %} \
   com.juliangut.xdebug.version="$XDEBUG_VERSION"{% endif %}
+{% endif %}
 
 
 RUN set -xe \
@@ -45,6 +50,11 @@ RUN set -xe \
     libwebp-dev \
 {% block install %}{% endblock %}
   \
+{% if version >= '8.1' %}
+  && wget -O /usr/local/bin/pie https://github.com/php/pie/releases/latest/download/pie.phar \
+  && chmod +x /usr/local/bin/pie \
+  \
+{% endif %}
   && groupmod -n docker www-data \
   && usermod -l docker -m -d /home/docker -s /sbin/bash -G wheel -a www-data \
   && sed -e 's;^# \(%wheel.*NOPASSWD.*\);\1;g' -i /etc/sudoers \
@@ -66,6 +76,14 @@ RUN set -xe \
     bcmath \
     opcache \
   \
+{% if version >= '8.1' %}
+  && pie install --allow-non-interactive-project-install apcu/apcu \
+{% if xdebug == 'latest' %}
+  && pie install --allow-non-interactive-project-install "xdebug/xdebug:$XDEBUG_VERSION" \
+{% elseif xdebug != false %}
+  && pie install --allow-non-interactive-project-install "xdebug/xdebug:{{ xdebug }}" \
+{% endif %}
+{% else %}
   && pecl update-channels \
   && pecl install \
     apcu \
@@ -81,8 +99,10 @@ RUN set -xe \
     xdebug \
 {% endif %}
   \
-  && apk del .build-deps \
   && pecl clear-cache \
+{% endif %}
+  \
+  && apk del .build-deps \
   && rm -rf /tmp/* /var/cache/apk/* /usr/share/php \
   \
   && sed -i "s/bin\/ash/bin\/bash/" /etc/passwd \
