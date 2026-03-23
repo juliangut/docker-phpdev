@@ -27,7 +27,7 @@
     "php": "^8.4",
     "ext-json": "*",
     "symfony/console": "^7.4",
-    "twig/twig": "^3.23"
+    "twig/twig": "^3.24"
   },
   "require-dev": {
     "juliangut/easy-coding-standard-config": "^1.20",
